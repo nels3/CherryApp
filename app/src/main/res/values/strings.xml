@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">CherryApp</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Sensors</string>
-    <string name="title_notifications">Fight</string>
-    <string name="tactic">Tactic</string>
-    <string name="connect">Connect</string>
-    <string name="sensors">Sensors</string>
-    <string name="option">Option</string>
-    <string name="fight">Fight</string>
+    <string name="title_home">Start</string>
+    <string name="title_dashboard">Sensory</string>
+    <string name="title_notifications">Walka</string>
+    <string name="tactic">Taktyki</string>
+    <string name="connect">Połącz z robotem</string>
+    <string name="sensors">Sensory</string>
+    <string name="option">Opcje</string>
+    <string name="fight">Walka</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
-    <string name="tactic_right">Right</string>
-    <string name="tactic_t_g">Turn-Go</string>
-    <string name="tactic_t">Turn</string>
-    <string name="tactic_dir">Direction</string>
+    <string name="tactic_right">Prawo</string>
+    <string name="tactic_t_g">Obróć i jedź</string>
+    <string name="tactic_t">Obracaj</string>
+    <string name="tactic_dir">Kierunek</string>
 </resources>
