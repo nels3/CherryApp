@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupBottomNavigationView();
 
-
-
         button = findViewById(R.id.buttonTactic);
         button.setOnClickListener(new View.OnClickListener(){
             @Override

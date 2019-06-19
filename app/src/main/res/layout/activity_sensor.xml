@@ -7,16 +7,191 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ToggleButton
+        android:id="@+id/tbMotion"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/cherry_custom_button"
+        android:text="ToggleButton"
+        android:textOff="Włącz silniki"
+        android:textOn="Wyłącz robota!"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tbOrientation"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/cherry_custom_button"
+        android:text="ToggleButton"
+        android:textOff="Kąt robota"
+        android:textOn="Wyłącz:"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tbShowMeasurements"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/cherry_custom_button"
+        android:text="ToggleButton"
+        android:textOff="Pokaż odczyty"
+        android:textOn="Ukryj odczyty"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tbSafety"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/cherry_custom_button"
+        android:text="ToggleButton"
+        android:textOff="Odblokuj robota"
+        android:textOn="Zablokuj robota"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tbSensorRight"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginRight="110dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="Ktir Prawy"
+        android:textOff="Ktir prawy"
+        android:textOn="Ktir prawy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sbPosition" />
+
+    <ToggleButton
+        android:id="@+id/tbSensorLeft"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="110dp"
+
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="170dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="Ktir Lewy"
+        android:textOff="Ktir Lewy"
+        android:textOn="Ktir Lewy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sbPosition" />
+
+    <ToggleButton
+        android:id="@+id/tbSensor1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="1"
+        android:textOff="1"
+        android:textOn="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sbPosition" />
+
+    <ToggleButton
+        android:id="@+id/tbSensor2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="43dp"
+
+        android:layout_marginLeft="43dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="2"
+        android:textOff="2"
+        android:textOn="2"
+        app:layout_constraintStart_toEndOf="@+id/tbSensor1"
+        app:layout_constraintTop_toTopOf="@+id/tbSensor1" />
+
+    <ToggleButton
+        android:id="@+id/tbSensor3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="44dp"
+
+        android:layout_marginLeft="44dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="3"
+        android:textOff="3"
+        android:textOn="3"
+        app:layout_constraintStart_toEndOf="@+id/tbSensor2"
+        app:layout_constraintTop_toTopOf="@+id/tbSensor2" />
+
+    <ToggleButton
+        android:id="@+id/tbSensor4"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="44dp"
+
+        android:layout_marginLeft="44dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="4"
+        android:textOff="4"
+        android:textOn="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tbSensor3"
+        app:layout_constraintTop_toTopOf="@+id/tbSensor3" />
+
+    <ToggleButton
+        android:id="@+id/tbSensor5"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="5"
+        android:textOff="5"
+        android:textOn="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensor4" />
+
+    <SeekBar
+        android:id="@+id/sbPosition"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:progressTint="@color/pinkbutton"
+        android:thumbOffset="30dp"
+        android:thumbTint="@color/pinkbutton"
+
+        app:layout_constraintTop_toBottomOf="@+id/titleSensor"
+        tools:layout_editor_absoluteX="8dp" />
+
+
     <TextView
-        android:id="@+id/message"
-        android:layout_width="111dp"
+        android:id="@+id/titleSensor"
+        android:layout_width="110dp"
         android:layout_height="32dp"
-        android:layout_marginStart="170dp"
-        android:layout_marginLeft="170dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
         android:layout_marginTop="10dp"
         android:text="@string/sensors"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+        android:textColor="@color/pinkbutton"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,10 +202,139 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
+
+    <ToggleButton
+        android:id="@+id/tbTestSensors"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/cherry_custom_button"
+        android:text="ToggleButton"
+        android:textOff="Testuj czujniki"
+        android:textOn="Wyjdź z testowania"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tbSensor0"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/sensor_lamp"
+        android:text="0"
+        android:textOff="0"
+        android:textOn="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensor1" />
+
+    <TextView
+        android:id="@+id/tvSensor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensor1"
+        app:layout_constraintStart_toStartOf="@+id/tbSensor1"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensor1" />
+
+    <TextView
+        android:id="@+id/tvSensor2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSensor1"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensor2"
+        app:layout_constraintStart_toStartOf="@+id/tbSensor2" />
+
+    <TextView
+        android:id="@+id/tvSensor3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSensor2"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensor3"
+        app:layout_constraintStart_toStartOf="@+id/tbSensor3" />
+
+    <TextView
+        android:id="@+id/tvSensor4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSensor3"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensor4"
+        app:layout_constraintStart_toStartOf="@+id/tbSensor4" />
+
+    <TextView
+        android:id="@+id/tvSensor0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensor0"
+        app:layout_constraintStart_toStartOf="@+id/tbSensor0"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensor0" />
+
+    <TextView
+        android:id="@+id/tvSensor5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensor5"
+        app:layout_constraintStart_toStartOf="@+id/tbSensor5"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensor5" />
+
+    <TextView
+        android:id="@+id/tvSensorLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensorLeft"
+        app:layout_constraintStart_toStartOf="@+id/tbSensorLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensorLeft" />
+
+    <TextView
+        android:id="@+id/tvSensorRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tbSensorRight"
+        app:layout_constraintStart_toStartOf="@+id/tbSensorRight"
+        app:layout_constraintTop_toBottomOf="@+id/tbSensorRight" />
+
+    <TextView
+        android:id="@+id/tvOrientationInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="20dp"
+        android:text="Orientacja robota:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSensorLeft" />
+
+    <TextView
+        android:id="@+id/tvOrientation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="11dp"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvOrientationInfo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

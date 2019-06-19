@@ -3,4 +3,19 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="yellow1">#ffff00</color>
+    <color name="yellow2">#eeee00</color>
+    <color name="grey05">#d3d3d3</color>
+    <color name="orange4">#ffa500</color>
+    <color name="orange5">#ee9a00</color>
+    <color name="blue2">#00b2ee</color>
+    <color name="blue25">#1874cd</color>
+
+    <color name="black1">#a1a1a1</color>
+    <color name="pink1">#ff69b4</color>
+    <color name="pink2">#8b3a62</color>
+    <color name="grey1">#ee799f</color>
+    <color name="pinkbutton">#ff69b4</color>
+    <color name="grey2">	#616161</color>
+    <color name="black0">#000</color>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,6 +21,7 @@ public class TacticActivity extends AppCompatActivity {
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -67,17 +69,32 @@ public class TacticActivity extends AppCompatActivity {
         final RadioButton rbTimeShort = findViewById(R.id.rbTimeShort);
         final RadioButton rbTimeLong = findViewById(R.id.rbTimeLong);
         final RadioButton rbTimeVLong = findViewById(R.id.rbTimeVLong);
+        final RadioGroup rgDrive = findViewById(R.id.rgDrive);
+        final RadioGroup rgTime = findViewById(R.id.rgTime);
+        final RadioGroup rgTurn = findViewById(R.id.rgTurn);
+
+
+        final TextView tvTime = findViewById(R.id.tvTime);
+        final TextView tvTurn = findViewById(R.id.tvTurn);
+        final TextView tvDrive = findViewById(R.id.tvDrive);
 
         rbTypeAngle.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 if ( isChecked ){
-                    rbTurnSlow.setChecked(false);
-                    rbTurnFast.setChecked(false);
-                    rbTimeShort.setChecked(false);
-                    rbTimeLong.setChecked(false);
-                    rbTimeVLong.setChecked(false);
+                    rgTurn.setVisibility(View.INVISIBLE);
+                    rgTime.setVisibility(View.INVISIBLE);
+                    rgDrive.setVisibility(View.VISIBLE);
+                    tvTurn.setVisibility(View.INVISIBLE);
+                    tvTime.setVisibility(View.INVISIBLE);
+                    tvDrive.setVisibility(View.VISIBLE);
+                    //rbTurnSlow.setChecked(false);
+                    //rbTurnFast.setChecked(false);
+                    //rbTimeShort.setChecked(false);
+                    //rbTimeLong.setChecked(false);
+                    //rbTimeVLong.setChecked(false);
+                    rbDriveSlow.setChecked(true);
                 }
             }
         });
@@ -87,12 +104,19 @@ public class TacticActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 if ( isChecked ){
-                    rbDriveSlow.setChecked(false);
-                    rbDriveFast.setChecked(false);
-                    rbDriveVFast.setChecked(false);
-                    rbTimeShort.setChecked(false);
-                    rbTimeLong.setChecked(false);
+                    rgTurn.setVisibility(View.VISIBLE);
+                    rgTime.setVisibility(View.INVISIBLE);
+                    rgDrive.setVisibility(View.INVISIBLE);
+                    tvTurn.setVisibility(View.VISIBLE);
+                    tvTime.setVisibility(View.INVISIBLE);
+                    tvDrive.setVisibility(View.INVISIBLE);
+                    //rbDriveSlow.setChecked(false);
+                    //rbDriveFast.setChecked(false);
+                    //rbDriveVFast.setChecked(false);
+                    //rbTimeShort.setChecked(false);
+                    //rbTimeLong.setChecked(false);
                     rbTimeVLong.setChecked(false);
+                    rbTurnFast.setChecked(true);
                 }
             }
         });
@@ -102,91 +126,20 @@ public class TacticActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 if ( isChecked ){
-                    rbTurnSlow.setChecked(false);
-                    rbTurnFast.setChecked(false);
+                    rgTurn.setVisibility(View.INVISIBLE);
+                    rgTime.setVisibility(View.VISIBLE);
+                    rgDrive.setVisibility(View.VISIBLE);
+                    tvTurn.setVisibility(View.INVISIBLE);
+                    tvTime.setVisibility(View.VISIBLE);
+                    tvDrive.setVisibility(View.VISIBLE);
+                    //rbTurnSlow.setChecked(false);
+                    //rbTurnFast.setChecked(false);
+                    rbDriveSlow.setChecked(true);
+                    rbTimeShort.setChecked(true);
                 }
             }
         });
 
-        rbTurnSlow.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeAngle.isChecked() || rbTypeStop.isChecked()){
-                    rbTurnSlow.setChecked(false);
-                }
-            }
-        });
-
-        rbTurnFast.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeAngle.isChecked() || rbTypeStop.isChecked() ){
-                    rbTurnFast.setChecked(false);
-                }
-            }
-        });
-
-        rbDriveSlow.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeTurn.isChecked() ){
-                    rbDriveSlow.setChecked(false);
-                }
-            }
-        });
-
-        rbDriveFast.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeTurn.isChecked() ){
-                    rbDriveFast.setChecked(false);
-                }
-            }
-        });
-
-        rbDriveVFast.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeTurn.isChecked()  ){
-                    rbDriveVFast.setChecked(false);
-                }
-            }
-        });
-
-        rbTimeShort.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeTurn.isChecked() || rbTypeAngle.isChecked() ){
-                    rbTimeShort.setChecked(false);
-                }
-            }
-        });
-
-        rbTimeLong.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeTurn.isChecked() || rbTypeAngle.isChecked() ){
-                    rbTimeLong.setChecked(false);
-                }
-            }
-        });
-
-        rbTimeVLong.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if ( rbTypeTurn.isChecked() || rbTypeAngle.isChecked() ){
-                    rbTimeVLong.setChecked(false);
-                }
-            }
-        });
     }
 
 
@@ -264,10 +217,18 @@ public class TacticActivity extends AppCompatActivity {
         RadioButton rbLeft = findViewById(R.id.rbLeft);
         RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
         RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
+        RadioGroup rgTime = findViewById(R.id.rgTime);
+        RadioGroup rgTurn = findViewById(R.id.rgTurn);
+        TextView tvTime = findViewById(R.id.tvTime);
+        TextView tvTurn = findViewById(R.id.tvTurn);
 
         rbLeft.setChecked(true);
         rbTypeAngle.setChecked(true);
         rbDriveSlow.setChecked(true);
+        rgTime.setVisibility(View.INVISIBLE);
+        rgTurn.setVisibility(View.INVISIBLE);
+        tvTime.setVisibility(View.INVISIBLE);
+        tvTurn.setVisibility(View.INVISIBLE);
 
     }
 
