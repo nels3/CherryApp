@@ -7,38 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvDirection"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="58dp"
-        android:text="Kierunek:"
-        app:layout_constraintBottom_toTopOf="@+id/tvType"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSensor" />
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btTurnOn"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/navigation" />
 
     <TextView
-        android:id="@+id/tvType"
+        android:id="@+id/titleCherry"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="62dp"
-        android:text="Typ:"
-        app:layout_constraintBottom_toTopOf="@+id/tvTurn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDirection" />
-
-    <TextView
-        android:id="@+id/titleSensor"
-        android:layout_width="115dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginRight="150dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/tactic"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
@@ -46,22 +35,32 @@
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/tvDirection"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/tvDirection"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTactic"
-        app:layout_constraintVertical_bias="1.0"
-        app:itemTextColor="@color/bottom_nav_color"
-        app:itemIconTint="@color/bottom_nav_color"
-        app:menu="@menu/navigation" />
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="58dp"
+        android:text="@string/direction"
+        app:layout_constraintBottom_toTopOf="@+id/tvType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleCherry" />
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="63dp"
+        android:text="@string/type"
+        app:layout_constraintBottom_toTopOf="@+id/tvTurn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDirection" />
 
     <TextView
         android:id="@+id/tvTurn"
@@ -69,8 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="63dp"
-        android:text="Obrót:"
+        android:layout_marginBottom="62dp"
+        android:text="@string/turn_vel"
         app:layout_constraintBottom_toTopOf="@+id/tvDrive"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvType" />
@@ -82,7 +81,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="61dp"
-        android:text="Jazda w przód:"
+        android:text="@string/drive"
         app:layout_constraintBottom_toTopOf="@+id/tvTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTurn" />
@@ -94,22 +93,26 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="127dp"
-        android:text="Czas jazdy:"
-        app:layout_constraintBottom_toTopOf="@+id/buttonTactic"
+        android:text="@string/time"
+        app:layout_constraintBottom_toTopOf="@+id/btTurnOn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDrive" />
 
     <Button
-        android:id="@+id/buttonTactic"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginLeft="140dp"
+        android:id="@+id/btTurnOn"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginLeft="135dp"
+        android:layout_marginEnd="135dp"
+        android:layout_marginRight="135dp"
         android:layout_marginBottom="83dp"
         android:background="@drawable/cherry_custom_button"
         android:color="#000000"
-        android:text="Ustaw taktykę!"
+        android:text="@string/set_tactic"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTime" />
 
@@ -131,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Lewo" />
+            android:text="@string/left" />
 
         <RadioButton
             android:id="@+id/rbRight"
@@ -139,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Prawo" />
+            android:text="@string/right" />
     </RadioGroup>
 
     <RadioGroup
@@ -157,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Obrót" />
+            android:text="@string/turn" />
 
         <RadioButton
             android:id="@+id/rbAngle"
@@ -165,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Obrót o kąt" />
+            android:text="@string/angle_turn" />
 
         <RadioButton
             android:id="@+id/rbStop"
@@ -173,7 +176,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Obrót i zatrzymanie" />
+            android:text="@string/stop" />
     </RadioGroup>
 
     <RadioGroup
@@ -191,7 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Wolno" />
+            android:text="@string/slow" />
 
         <RadioButton
             android:id="@+id/rbTurnFast"
@@ -199,7 +202,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Szybko" />
+            android:text="@string/fast" />
     </RadioGroup>
 
     <RadioGroup
@@ -217,7 +220,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Wolno" />
+            android:text="@string/slow" />
 
         <RadioButton
             android:id="@+id/rbDriveFast"
@@ -225,7 +228,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Szybko" />
+            android:text="@string/fast" />
 
         <RadioButton
             android:id="@+id/rbDriveVFast"
@@ -233,7 +236,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Bardzo szybko" />
+            android:text="@string/very_fast" />
     </RadioGroup>
 
     <RadioGroup
@@ -256,7 +259,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Krótko" />
+            android:text="@string/tshort" />
 
         <RadioButton
             android:id="@+id/rbTimeLong"
@@ -264,7 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Długo" />
+            android:text="@string/tlong" />
 
         <RadioButton
             android:id="@+id/rbTimeVLong"
@@ -272,7 +275,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
-            android:text="Bardzo długo" />
+            android:text="@string/very_long" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

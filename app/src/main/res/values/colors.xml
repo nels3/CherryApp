@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="yellow1">#ffff00</color>
-    <color name="yellow2">#eeee00</color>
-    <color name="grey05">#d3d3d3</color>
-    <color name="orange4">#ffa500</color>
-    <color name="orange5">#ee9a00</color>
-    <color name="blue2">#00b2ee</color>
-    <color name="blue25">#1874cd</color>
+    <color name="colorPrimary">#F05595</color>
+    <color name="colorPrimaryDark">#3D051C</color>
+    <color name="colorAccent">#FEEEF6</color>
 
-    <color name="black1">#a1a1a1</color>
-    <color name="pink1">#ff69b4</color>
-    <color name="pink2">#8b3a62</color>
-    <color name="grey1">#ee799f</color>
-    <color name="pinkbutton">#ff69b4</color>
-    <color name="grey2">	#616161</color>
-    <color name="black0">#000</color>
+    <color name="pinkbutton">#E4146A</color>
+    <color name="pinkTitle">#3D051C</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="pink_1">#FEEEF6</color>
+    <color name="pink_2">#FACADE</color>
+    <color name="pink_3">#F69BC1</color>
+    <color name="pink_4">#F05595</color>
+    <color name="pink_5">#E4146A</color>
+    <color name="pink_6">#9E0E49</color>
+    <color name="pink_7">#68203E</color>
+    <color name="pink_8">#580829</color>
+    <color name="pink_9">#3D051C</color>
+
+    <color name="grey_1">#E5E5E5</color>
+    <color name="grey_2">#CBCBCB</color>
+    <color name="grey_3">#A4A4A4</color>
+    <color name="grey_4">#7D7D7D</color>
+    <color name="grey_5">#323232</color>
+    <color name="black">#000000</color>
+
+
 </resources>

@@ -1,18 +1,69 @@
 <resources>
-    <string name="app_name">CherryApp</string>
+    <string name="app_name">WisienkaApp</string>
+
     <string name="title_home">Start</string>
     <string name="title_dashboard">Sensory</string>
     <string name="title_notifications">Walka</string>
-    <string name="tactic">Taktyki</string>
+
     <string name="connect">Połącz z robotem</string>
     <string name="sensors">Sensory</string>
-    <string name="option">Opcje</string>
-    <string name="fight">Walka</string>
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
 
-    <string name="tactic_right">Prawo</string>
-    <string name="tactic_t_g">Obróć i jedź</string>
-    <string name="tactic_t">Obracaj</string>
-    <string name="tactic_dir">Kierunek</string>
+
+
+    <!--activity_main-->
+    <string name="main_scan">Scan</string>
+    <string name="main_gyro">Gyro calibration</string>
+    <string name="main_title">Wisienka</string>
+    <string name="main_tactics">Start tactics</string>
+    <string name="main_device_not_found">Device not found</string>
+
+    <!--activity_fight-->
+    <string name="fight_start">Start</string>
+    <string name="fight_stop">Stop</string>
+    <string name="fight_translation">Set 0 translation</string>
+    <string name="fight_delay">Use start delay not module</string>
+    <string name="fight_leds">Turn off leds</string>
+    <string name="fight_voltage">Lipo voltage:</string>
+    <string name="fight_tactics">Set tactic:</string>
+
+    <!--activity_sensor-->
+    <string name="sen_turn_on_motors">Turn on motors</string>
+    <string name="sen_turn_off_motors">Turn off motors!</string>
+    <string name="sen_show_angle">Show robot angle</string>
+    <string name="sen_hide_angle">Hide robot angle</string>
+    <string name="sen_show_measurements">Show measurements</string>
+    <string name="sen_hide_measurements">Hide measurements</string>
+    <string name="unlock">Unlock robot</string>
+    <string name="lock">Lock robot</string>
+    <string name="rightKtir">Right ktir</string>
+    <string name="leftKtir">Left ktir</string>
+    <string name="s0">0</string>
+    <string name="s1">1</string>
+    <string name="s2">2</string>
+    <string name="s3">3</string>
+    <string name="s4">4</string>
+    <string name="sa5">5</string>
+    <string name="sen_test_sensors">Enter testing mode</string>
+    <string name="sen_quit_sensors">Quit testing mode</string>
+    <string name="sen_orientation">Robot orientation</string>
+
+    <!--activity_tactic n-->
+    <string name="tactic">Choose your tactic:</string>
+    <string name="direction">Direction:</string>
+    <string name="type">Tactic type:</string>
+    <string name="turn_vel">Turn movement:</string>
+    <string name="drive">Going forward:</string>
+    <string name="time">Drive time:</string>
+    <string name="set_tactic">Set tactic</string>
+    <string name="right">Right</string>
+    <string name="left">Left</string>
+    <string name="turn">Turning</string>
+    <string name="angle_turn">Angle turning</string>
+    <string name="stop">Turn, go and stop</string>
+    <string name="slow">Slow</string>
+    <string name="fast">Fast</string>
+    <string name="very_fast">Very fast</string>
+    <string name="tshort">Short</string>
+    <string name="tlong">Long</string>
+    <string name="very_long">Very long</string>
 </resources>

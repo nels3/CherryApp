@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -48,7 +47,7 @@ public class TacticActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupInitTactic();
 
-        Button buttonTactic = findViewById(R.id.buttonTactic);
+        Button buttonTactic = findViewById(R.id.btTurnOn);
         buttonTactic.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

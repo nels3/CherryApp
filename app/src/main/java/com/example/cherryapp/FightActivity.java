@@ -65,7 +65,7 @@ public class FightActivity extends AppCompatActivity {
 
         // Check which checkbox was clicked
         switch(view.getId()) {
-            case R.id.checkNoTranslation:
+            case R.id.cbTranslation:
                 if (checked){
                     sendNoTranslationStatus(true);
                 }
@@ -73,7 +73,7 @@ public class FightActivity extends AppCompatActivity {
                     sendNoTranslationStatus(false);
                 }
                 break;
-            case R.id.checkStartDelay:
+            case R.id.cbDelay:
                 if (checked) {
                     sendStartDelayStatus(true);
                 }
