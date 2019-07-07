@@ -18,6 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvDevicesList"
         app:menu="@menu/navigation" />
 
     <Button
@@ -40,22 +41,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="31dp"
         android:layout_marginLeft="31dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginRight="128dp"
+        android:layout_marginBottom="88dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/main_tactics"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/result"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/llInfo"
         android:layout_width="0dp"
-        android:layout_height="308dp"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="90dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="275dp"
+        android:layout_marginBottom="400dp"
         android:background="@drawable/linear_backgroud"
         android:fadingEdge="horizontal|vertical"
         android:orientation="vertical"
@@ -81,7 +84,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/title_connected_devices"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,16 +132,17 @@
     <Button
         android:id="@+id/buttonInfo"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="247dp"
-        android:layout_marginRight="247dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="246dp"
+        android:layout_marginRight="246dp"
+        android:layout_marginBottom="28dp"
         android:background="@android:drawable/ic_menu_info_details"
         android:backgroundTint="@color/pink_4"
-        app:layout_constraintBottom_toTopOf="@+id/rvDevicesList"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/llInfo"
         app:layout_constraintEnd_toStartOf="@+id/buttonConnect"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -149,18 +153,26 @@
         android:layout_height="400dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="160dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="110dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonStartTactics"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonInfo">
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonStartTactics"
+        app:layout_constraintTop_toBottomOf="@+id/rvDevicesList" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

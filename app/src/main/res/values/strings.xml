@@ -16,6 +16,12 @@
     <string name="main_title">Wisienka</string>
     <string name="main_tactics">Start tactics</string>
     <string name="main_device_not_found">Device not found</string>
+    <string name="paired_devices">Paired devices</string>
+    <string name="other_devices">Other devices</string>
+    <string name="scanning">Scanning</string>
+    <string name="none_paired">None devices paired</string>
+    <string name="select_device">Select device</string>
+    <string name="none_found">None devices found</string>
 
     <!--activity_fight-->
     <string name="fight_start">Start</string>
