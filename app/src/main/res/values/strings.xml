@@ -2,11 +2,11 @@
     <string name="app_name">WisienkaApp</string>
 
     <string name="title_home">Start</string>
-    <string name="title_dashboard">Sensory</string>
-    <string name="title_notifications">Walka</string>
+    <string name="title_sensors">Sensors</string>
+    <string name="title_fight">Fight</string>
 
-    <string name="connect">Połącz z robotem</string>
-    <string name="sensors">Sensory</string>
+    <string name="connect">Connect with robot</string>
+    <string name="sensors">Sensors</string>
 
 
 

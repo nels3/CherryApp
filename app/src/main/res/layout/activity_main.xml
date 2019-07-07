@@ -18,7 +18,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llInfo"
         app:menu="@menu/navigation" />
 
     <Button
@@ -26,37 +25,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/main_scan"
-        tools:layout_editor_absoluteX="307dp"
-        tools:layout_editor_absoluteY="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonInfo"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonCalibration"
-        android:layout_width="151dp"
+        android:id="@+id/buttonStartTactics"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-        android:background="@drawable/cherry_custom_button"
-        android:text="@string/main_gyro"
-        tools:layout_editor_absoluteX="229dp"
-        tools:layout_editor_absoluteY="572dp" />
-
-    <Button
-        android:id="@+id/btTurnOn"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/main_tactics"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="572dp" />
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/llInfo"
         android:layout_width="0dp"
-        android:layout_height="259dp"
+        android:layout_height="308dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="90dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="275dp"
@@ -72,11 +68,11 @@
 
         <Button
             android:id="@+id/buttonClose"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@android:drawable/ic_delete"
-            android:backgroundTint="@color/pink_4" />
+            android:backgroundTint="@color/white" />
 
         <LinearLayout
             android:id="@+id/llName"
@@ -85,11 +81,12 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/cherry_logo_round" />
+                android:background="@android:drawable/dialog_holo_light_frame"
+                app:srcCompat="@mipmap/cherry_logo3_round" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -101,26 +98,29 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Name: WisienkaApp" />
+                    android:text="Name: WisienkaApp"
+                    android:textColor="@color/colorAccent" />
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Author: Kornelia Łukojć" />
+                    android:text="Author: Kornelia Łukojć"
+                    android:textColor="@color/colorAccent" />
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Date of release: 2019" />
+                    android:text="Date of release: 2019"
+                    android:textColor="@color/colorAccent" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llAdd"
             android:layout_width="match_parent"
-            android:layout_height="129dp"
+            android:layout_height="170dp"
             android:orientation="horizontal">
 
         </LinearLayout>
@@ -128,11 +128,39 @@
 
     <Button
         android:id="@+id/buttonInfo"
-        android:layout_width="52dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="247dp"
+        android:layout_marginRight="247dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:drawable/ic_menu_info_details"
         android:backgroundTint="@color/pink_4"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        app:layout_constraintBottom_toTopOf="@+id/rvDevicesList"
+        app:layout_constraintEnd_toStartOf="@+id/buttonConnect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDevicesList"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="110dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStartTactics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonInfo">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

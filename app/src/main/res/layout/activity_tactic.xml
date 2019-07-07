@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btTurnOn"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStartTactics"
         app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/navigation" />
 
@@ -94,12 +94,12 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="127dp"
         android:text="@string/time"
-        app:layout_constraintBottom_toTopOf="@+id/btTurnOn"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStartTactics"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDrive" />
 
     <Button
-        android:id="@+id/btTurnOn"
+        android:id="@+id/buttonStartTactics"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginStart="135dp"

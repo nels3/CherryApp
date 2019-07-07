@@ -20,7 +20,7 @@ public class SensorActivity extends AppCompatActivity {
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_dashboard);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_sensors);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -28,10 +28,10 @@ public class SensorActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         openMainActivity();
                         break;
-                    case R.id.navigation_dashboard:
+                    case R.id.navigation_sensors:
                         openSensorActivity();
                         break;
-                    case R.id.navigation_notifications:
+                    case R.id.navigation_fight:
                         openFightActivity();
                         break;
                 }

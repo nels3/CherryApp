@@ -28,10 +28,10 @@ public class TacticActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         openMainActivity();
                         break;
-                    case R.id.navigation_dashboard:
+                    case R.id.navigation_sensors:
                         openSensorActivity();
                         break;
-                    case R.id.navigation_notifications:
+                    case R.id.navigation_fight:
                         openFightActivity();
                         break;
                 }
@@ -47,7 +47,7 @@ public class TacticActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupInitTactic();
 
-        Button buttonTactic = findViewById(R.id.btTurnOn);
+        Button buttonTactic = findViewById(R.id.buttonStartTactics);
         buttonTactic.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
