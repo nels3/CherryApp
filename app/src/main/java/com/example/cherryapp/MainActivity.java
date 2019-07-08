@@ -42,8 +42,10 @@ import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    private Button buttonInfo, buttonConnect, buttonClose, buttonTactics;
-    private MenuItem nav_sensors, nav_fight;
+    private Button buttonInfo, buttonScan, buttonClose, buttonTactics;
+    private LinearLayout llDevices;
+    private TextView tvPairedDevices;
+
     private RecyclerView rvDevicesList;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -89,13 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
         final LinearLayout llInfo= findViewById(R.id.llInfo);
         llInfo.setVisibility(View.INVISIBLE);
-        rvDevicesList = findViewById(R.id.rvDevicesList);
-        rvDevicesList.setVisibility(View.VISIBLE);
+        rvDevicesList = findViewById(R.id.rvConnectedDevices);
+        rvDevicesList.setVisibility(View.INVISIBLE);
+        //tvPairedDevices.setVisibility(View.INVISIBLE);
         rvDevicesList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDevicesList.setLayoutManager(layoutManager);
-        final TextView tv = findViewById(R.id.result);
-        tv.setText("przed");
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
         mAdapter = new MyAdapter(datasetNames, datasetAddresses, mHandler);
@@ -125,7 +127,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonConnect = findViewById(R.id.buttonConnect);
+        buttonScan = findViewById(R.id.buttonScan);
+        buttonScan.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                scanBluetoothDevices();
+            }
+        });
 
         buttonTactics = findViewById(R.id.buttonStartTactics);
         buttonTactics.setOnClickListener(new View.OnClickListener(){
@@ -136,6 +144,12 @@ public class MainActivity extends AppCompatActivity {
         });
         buttonTactics.setVisibility(View.INVISIBLE);
 
+        scanBluetoothDevices();
+
+
+    }
+
+    public void scanBluetoothDevices(){
 
         // Get a set of currently paired devices
         Set pairedDevices = mBluetoothAdapter.getBondedDevices();
@@ -143,27 +157,14 @@ public class MainActivity extends AppCompatActivity {
         // If there are paired devices, add each one to the ArrayAdapter
         if (pairedDevices.size() > 0) {
             for (int i =0; i<pairedDevices.size(); ++i){
-               datasetNames.add(listPairedDevices.get(i).getName());
-               datasetAddresses.add(listPairedDevices.get(i).getAddress());
-             }
+                datasetNames.add(listPairedDevices.get(i).getName());
+                datasetAddresses.add(listPairedDevices.get(i).getAddress());
+            }
         } else {
             datasetNames.add("No devices found");
             datasetAddresses.add("No address available");
         }
-
-        rvDevicesList.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Zlapalem", Toast.LENGTH_SHORT).show();
-                //TextView tv = v.findViewById(R.id.result);
-                //tv.setText(MyAdapter.getDeviceAddress());
-
-            }
-        });
-
     }
-
-
 
     // The BroadcastReceiver that listens for discovered devices and
     // changes the title when discovery is finished

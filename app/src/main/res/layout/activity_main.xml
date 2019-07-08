@@ -18,42 +18,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvDevicesList"
+        app:layout_constraintTop_toBottomOf="@+id/llBluetoothDevices"
         app:menu="@menu/navigation" />
 
     <Button
-        android:id="@+id/buttonConnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/cherry_custom_button"
-        android:text="@string/main_scan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonInfo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/buttonStartTactics"
-        android:layout_width="0dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginRight="128dp"
-        android:layout_marginBottom="88dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/main_tactics"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/result"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="595dp" />
 
     <LinearLayout
         android:id="@+id/llInfo"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_width="329dp"
+        android:layout_height="81dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -67,6 +47,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.012"
         tools:visibility="visible">
 
         <Button
@@ -85,7 +66,7 @@
 
             <ImageView
                 android:id="@+id/title_connected_devices"
-                android:layout_width="wrap_content"
+                android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:drawable/dialog_holo_light_frame"
@@ -131,48 +112,51 @@
 
     <Button
         android:id="@+id/buttonInfo"
-        android:layout_width="0dp"
+        android:layout_width="53dp"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="246dp"
-        android:layout_marginRight="246dp"
-        android:layout_marginBottom="28dp"
         android:background="@android:drawable/ic_menu_info_details"
         android:backgroundTint="@color/pink_4"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/llInfo"
-        app:layout_constraintEnd_toStartOf="@+id/buttonConnect"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="20dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDevicesList"
+    <LinearLayout
+        android:id="@+id/llBluetoothDevices"
         android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_height="502dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="18dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginRight="68dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonStartTactics"
-        app:layout_constraintTop_toBottomOf="@+id/rvDevicesList" />
+        <Button
+            android:id="@+id/buttonScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/cherry_custom_button"
+            android:text="@string/main_scan"
+            tools:layout_editor_absoluteX="307dp"
+            tools:layout_editor_absoluteY="40dp" />
+
+        <TextView
+            android:id="@+id/tvPairedDevices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/paired_devices"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvConnectedDevices"
+            android:layout_width="match_parent"
+            android:layout_height="407dp" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
