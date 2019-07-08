@@ -21,9 +21,11 @@ import android.bluetooth.BluetoothAdapter;
 
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_CHOSEN_NAME = 6;
+    public static final int MESSAGE_SETTUP_CONNECTION = 7;
+
     //getting from bluetoothchatservice
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
@@ -76,27 +81,6 @@ public class MainActivity extends AppCompatActivity {
     List<String> datasetNames = new ArrayList<>();
     List<String> datasetAddresses = new ArrayList<>();
 
-    private void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        openMainActivity();
-                        break;
-                    case R.id.navigation_sensors:
-                        openSensorActivity();
-                        break;
-                    case R.id.navigation_fight:
-                        openFightActivity();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,10 +94,13 @@ public class MainActivity extends AppCompatActivity {
         rvDevicesList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDevicesList.setLayoutManager(layoutManager);
-        mAdapter = new MyAdapter(datasetNames, datasetAddresses);
-        rvDevicesList.setAdapter(mAdapter);
-        rvDevicesList.setVisibility(View.VISIBLE);
+        final TextView tv = findViewById(R.id.result);
+        tv.setText("przed");
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
+        mAdapter = new MyAdapter(datasetNames, datasetAddresses, mHandler);
+        rvDevicesList.setAdapter(mAdapter);
+
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
@@ -149,8 +136,7 @@ public class MainActivity extends AppCompatActivity {
         });
         buttonTactics.setVisibility(View.INVISIBLE);
 
-        // one for newly discovered devices
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         // Get a set of currently paired devices
         Set pairedDevices = mBluetoothAdapter.getBondedDevices();
         List<BluetoothDevice> listPairedDevices = new ArrayList<BluetoothDevice>(pairedDevices);
@@ -165,43 +151,19 @@ public class MainActivity extends AppCompatActivity {
             datasetAddresses.add("No address available");
         }
 
-        /*TextView tvResult = findViewById(R.id.result);
-        tvResult.addTextChangedListener(new TextWatcher() {
+        rvDevicesList.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Zlapalem", Toast.LENGTH_SHORT).show();
+                //TextView tv = v.findViewById(R.id.result);
+                //tv.setText(MyAdapter.getDeviceAddress());
 
-            public void afterTextChanged(Editable s) {
             }
+        });
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                TextView myOutputBox = (TextView) findViewById(R.id.myOutputBox);
-                myOutputBox.setText(s);
-            }
-        });*/
     }
 
 
-
-
-
-
-    // The on-click listener for all devices in the ListViews
-    private AdapterView.OnItemClickListener mDeviceClickListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView av, View v, int arg2, long arg3) {
-            // Cancel discovery because it's costly and we're about to connect
-            mBluetoothAdapter.cancelDiscovery();
-            // Get the device MAC address, which is the last 17 chars in the View
-            String info = ((TextView) v).getText().toString();
-            String address = info.substring(info.length() - 17);
-            EXTRA_DEVICE_ADDRESS = address;
-            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-            mChatService.connect(device);
-
-        }
-    };
 
     // The BroadcastReceiver that listens for discovered devices and
     // changes the title when discovery is finished
@@ -266,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(this, mHandler);
+        mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
 
         //// Initialize the buffer for outgoing messages
         //mOutStringBuffer = new StringBuffer("");
@@ -346,6 +308,17 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
                             Toast.LENGTH_SHORT).show();
                     break;
+
+                case MESSAGE_SETTUP_CONNECTION:
+                    String deviceName = msg.getData().getString(DEVICE_NAME);
+                    String address = MyAdapter.getDeviceAddress();
+                    // Get the BLuetoothDevice object
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                    //String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                    // Attempt to connect to the device
+                    mChatService.connect(device);
+                    break;
+
             }
         }
     };
@@ -372,4 +345,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        openMainActivity();
+                        break;
+                    case R.id.navigation_sensors:
+                        openSensorActivity();
+                        break;
+                    case R.id.navigation_fight:
+                        openFightActivity();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
 }
