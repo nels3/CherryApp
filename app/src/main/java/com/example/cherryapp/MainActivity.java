@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,37 +13,44 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.bluetooth.BluetoothAdapter;
 
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    private Button buttonInfo, buttonScan, buttonClose, buttonTactics;
+
+    // Constants that indicate the current connection state
+    public static final int STATE_NONE = 0;
+    public static final int STATE_START = 1;
+    public static final int STATE_CONNECTED = 2;
+    private int mState = STATE_NONE;
+
+
+    private Button buttonInfo, buttonScan, buttonDisconnect, buttonClose, buttonTactics;
     private LinearLayout llDevices;
     private TextView tvPairedDevices;
+
+    private LinearLayout llInfo;
+
+    private EditText tvSend;
+    private TextView tvReceice;
+    private Button buttonSend;
 
     private RecyclerView rvDevicesList;
     private RecyclerView.Adapter mAdapter;
@@ -53,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     //bluetooth
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
-    private EditText mOutEditText;
-    private Button mSendButton;
+   // private EditText mOutEditText;
+    //private Button mSendButton;
     // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
@@ -85,15 +91,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mState = STATE_START;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBottomNavigationView();
 
-        final LinearLayout llInfo= findViewById(R.id.llInfo);
+        llInfo= findViewById(R.id.llInfo);
         llInfo.setVisibility(View.INVISIBLE);
         rvDevicesList = findViewById(R.id.rvConnectedDevices);
         rvDevicesList.setVisibility(View.INVISIBLE);
-        //tvPairedDevices.setVisibility(View.INVISIBLE);
+        tvPairedDevices = findViewById(R.id.tvPairedDevices);
+        tvPairedDevices.setVisibility(View.INVISIBLE);
         rvDevicesList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDevicesList.setLayoutManager(layoutManager);
@@ -115,15 +123,10 @@ public class MainActivity extends AppCompatActivity {
         buttonInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                llInfo.setVisibility(View.VISIBLE);
-            }
-        });
-
-        buttonClose = findViewById(R.id.buttonClose);
-        buttonClose.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                llInfo.setVisibility(View.INVISIBLE);
+                if (llInfo.getVisibility()==View.VISIBLE)
+                    llInfo.setVisibility(View.INVISIBLE);
+                else
+                    llInfo.setVisibility(View.VISIBLE);
             }
         });
 
@@ -132,24 +135,45 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 scanBluetoothDevices();
+                rvDevicesList.setVisibility(View.VISIBLE);
+                tvPairedDevices.setVisibility(View.VISIBLE);
             }
         });
 
-        buttonTactics = findViewById(R.id.buttonStartTactics);
-        buttonTactics.setOnClickListener(new View.OnClickListener(){
+        buttonDisconnect = findViewById(R.id.buttonDisconnect);
+        buttonDisconnect    .setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                openTacticActivity();
+                mChatService.stop();
+                rvDevicesList.setVisibility(View.INVISIBLE);
+                tvPairedDevices.setVisibility(View.INVISIBLE);
             }
         });
-        buttonTactics.setVisibility(View.INVISIBLE);
 
         scanBluetoothDevices();
 
-
+        tvSend = findViewById(R.id.tvSend);
+        tvSend.setOnEditorActionListener(mWriteListener);
+        tvReceice = findViewById(R.id.tvReceived);
+        buttonSend = findViewById(R.id.buttonSend);
+        buttonSend.setVisibility(View.INVISIBLE);
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                TextView view = (TextView) findViewById(R.id.tvSend);
+                String message = view.getText().toString();
+                sendMessage(message);
+            }
+        });
+        // Initialize the buffer for outgoing messages
+        mOutStringBuffer = new StringBuffer("");
     }
 
+
+
     public void scanBluetoothDevices(){
+        //clearing list of pairedDevices
+        datasetNames.clear();
+        datasetAddresses.clear();
 
         // Get a set of currently paired devices
         Set pairedDevices = mBluetoothAdapter.getBondedDevices();
@@ -281,29 +305,63 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void sendMessage(String message) {
+
+        // Check that we're actually connected before trying anything
+        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            byte[] send = message.getBytes();
+            mChatService.write(send);
+            // Reset out string buffer to zero and clear the edit text field
+            mOutStringBuffer.setLength(0);
+            tvSend.setText(mOutStringBuffer);
+        }
+    }
+
+    // The action listener for the EditText widget, to listen for the return key
+    private TextView.OnEditorActionListener mWriteListener = new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                    // If the action is a key-up event on the return key, send the message
+                    if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                        String message = view.getText().toString();
+                        sendMessage(message);
+                    }
+                    return true;
+                }
+            };
+
+
     // The Handler that gets information back from the BluetoothChatService
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                /*case MESSAGE_WRITE:
+                case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                    mAdapter.notifyDataSetChanged();
-                    messageList.add(new androidRecyclerView.Message(counter++, writeMessage, "Me"));
+                   // mAdapter.notifyDataSetChanged();
+                    Toast.makeText(getApplicationContext(), "Wysylam "+ writeMessage, Toast.LENGTH_SHORT).show();
+                   // messageList.add(new androidRecyclerView.Message(counter++, writeMessage, "Me"));
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    mAdapter.notifyDataSetChanged();
-                    messageList.add(new androidRecyclerView.Message(counter++, readMessage, mConnectedDeviceName));
-                    break;*/
+                    Toast.makeText(getApplicationContext(), "Odczytalem "+ readMessage, Toast.LENGTH_SHORT).show();
+                    break;
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(), "Connected to "+ mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    buttonSend.setVisibility(View.VISIBLE);
+                    mState = STATE_CONNECTED;
+
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
