@@ -18,7 +18,7 @@ public class FightActivity extends AppCompatActivity {
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_notifications);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_fight);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -26,10 +26,10 @@ public class FightActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         openMainActivity();
                         break;
-                    case R.id.navigation_dashboard:
+                    case R.id.navigation_sensors:
                         openSensorActivity();
                         break;
-                    case R.id.navigation_notifications:
+                    case R.id.navigation_fight:
                         openFightActivity();
                         break;
                 }
@@ -65,7 +65,7 @@ public class FightActivity extends AppCompatActivity {
 
         // Check which checkbox was clicked
         switch(view.getId()) {
-            case R.id.checkNoTranslation:
+            case R.id.cbTranslation:
                 if (checked){
                     sendNoTranslationStatus(true);
                 }
@@ -73,7 +73,7 @@ public class FightActivity extends AppCompatActivity {
                     sendNoTranslationStatus(false);
                 }
                 break;
-            case R.id.checkStartDelay:
+            case R.id.cbDelay:
                 if (checked) {
                     sendStartDelayStatus(true);
                 }

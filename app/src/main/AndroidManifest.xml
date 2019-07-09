@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cherryapp">
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -11,7 +14,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".FightActivity"></activity>
         <activity android:name=".SensorActivity" />
-        <activity android:name=".OptionActivity" />
         <activity android:name=".TacticActivity" />
         <activity
             android:name=".MainActivity"
