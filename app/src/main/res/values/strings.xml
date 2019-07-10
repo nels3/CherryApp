@@ -3,7 +3,7 @@
 
     <string name="title_home">Start</string>
     <string name="title_sensors">Sensors</string>
-    <string name="title_fight">Fight</string>
+    <string name="title_info">Info</string>
 
     <string name="connect">Connect with robot</string>
     <string name="sensors">Sensors</string>
@@ -25,6 +25,9 @@
     <string name="not_connected">Not connected to device</string>
     <string name="test_connection">Send</string>
     <string name="main_disconnect">X</string>
+    <string name="competition">"Competition"</string>
+    <string name="debugging">"Debugging"</string>
+    <string name="tuning">"Tuning"</string>
 
     <!--activity_fight-->
     <string name="fight_start">Start</string>
@@ -34,6 +37,11 @@
     <string name="fight_leds">Turn off leds</string>
     <string name="fight_voltage">Lipo voltage:</string>
     <string name="fight_tactics">Set tactic:</string>
+    <string name="fight_error">Error:</string>
+    <string name="fight_set_translation">Translation:</string>
+    <string name="fight_rotation">Rotation:</string>
+    <string name="fight_right_motor">Right motor velocity:</string>
+    <string name="fight_left_motor">Left motor velocity:</string>
 
     <!--activity_sensor-->
     <string name="sen_turn_on_motors">Turn on motors</string>
@@ -57,7 +65,7 @@
     <string name="sen_orientation">Robot orientation</string>
 
     <!--activity_tactic n-->
-    <string name="tactic">Choose your tactic:</string>
+    <string name="tactic">Choose tactic:</string>
     <string name="direction">Direction:</string>
     <string name="type">Tactic type:</string>
     <string name="turn_vel">Turn movement:</string>

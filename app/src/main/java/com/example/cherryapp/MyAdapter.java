@@ -82,19 +82,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final String name = devices_name.get(position);
         final String address = devices_address.get(position);
+        holder.txtAddress.setText("Address: " + address);
         holder.txtName.setText(name);
-
         holder.txtName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //remove(position);
-                //DEVICE_ADDRESS = name;
-                //Toast.makeText(v.getContext(), "You have clicked: "+name, Toast.LENGTH_SHORT).show();
-                //tv.setText(name);
                 deviceName = name;
-                deviceAddress = address;        // get position
+                deviceAddress = address;
 
-                Message msg = mHandler.obtainMessage(MainActivity.MESSAGE_SETTUP_CONNECTION);
+                Message msg = mHandler.obtainMessage(MainActivity.MESSAGE_SETUP_CONNECTION);
                 Bundle bundle = new Bundle();
                 bundle.putString(MainActivity.DEVICE_NAME, name);
                 msg.setData(bundle);
@@ -102,7 +98,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             }
         });
-        holder.txtAddress.setText("Address: " + address);
     }
 
 

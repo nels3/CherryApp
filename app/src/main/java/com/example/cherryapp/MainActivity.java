@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button buttonInfo, buttonScan, buttonDisconnect, buttonClose, buttonTactics;
-    private LinearLayout llDevices;
+    private Button buttonCompetition, buttonDebugging, buttonTuning;
     private TextView tvPairedDevices;
 
     private LinearLayout llInfo;
@@ -65,10 +65,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_NAME = 4;
+    public static final int MESSAGE_DEVICE_CONNECTED = 4;
     public static final int MESSAGE_TOAST = 5;
-    public static final int MESSAGE_CHOSEN_NAME = 6;
-    public static final int MESSAGE_SETTUP_CONNECTION = 7;
+    public static final int MESSAGE_SETUP_CONNECTION = 6;
 
     //getting from bluetoothchatservice
     public static final String DEVICE_NAME = "device_name";
@@ -139,16 +138,47 @@ public class MainActivity extends AppCompatActivity {
                 tvPairedDevices.setVisibility(View.VISIBLE);
             }
         });
+        buttonScan.setVisibility(View.INVISIBLE);
 
         buttonDisconnect = findViewById(R.id.buttonDisconnect);
-        buttonDisconnect    .setOnClickListener(new View.OnClickListener(){
+        buttonDisconnect.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 mChatService.stop();
                 rvDevicesList.setVisibility(View.INVISIBLE);
                 tvPairedDevices.setVisibility(View.INVISIBLE);
+                buttonTuning.setVisibility(View.INVISIBLE);
+                buttonCompetition.setVisibility(View.INVISIBLE);
+                buttonDebugging.setVisibility(View.INVISIBLE);
+
             }
         });
+        buttonDisconnect.setVisibility(View.INVISIBLE);
+
+        buttonCompetition = findViewById(R.id.buttonCompetition);
+        buttonCompetition.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openTacticActivity();
+            }
+        });
+        buttonCompetition.setVisibility(View.INVISIBLE);
+
+        buttonDebugging = findViewById(R.id.buttonDebugging);
+        buttonDebugging.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        buttonDebugging.setVisibility(View.INVISIBLE);
+
+        buttonTuning = findViewById(R.id.buttonTuning);
+        buttonTuning.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        buttonTuning.setVisibility(View.INVISIBLE);
 
         scanBluetoothDevices();
 
@@ -188,6 +218,25 @@ public class MainActivity extends AppCompatActivity {
             datasetNames.add("No devices found");
             datasetAddresses.add("No address available");
         }
+    }
+
+    private void setupChat() {
+        //mOutEditText = (EditText) findViewById(R.id.edit_text_out);
+        // mOutEditText.setOnEditorActionListener(mWriteListener);
+        //mSendButton = (Button) findViewById(R.id.button_send);
+       /* mSendButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                TextView view = (TextView) findViewById(R.id.edit_text_out);
+                String message = view.getText().toString();
+                sendMessage(message);
+            }
+        });*/
+
+        // Initialize the BluetoothChatService to perform bluetooth connections
+        mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
+
+        //// Initialize the buffer for outgoing messages
+        //mOutStringBuffer = new StringBuffer("");
     }
 
     // The BroadcastReceiver that listens for discovered devices and
@@ -240,25 +289,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupChat() {
-        //mOutEditText = (EditText) findViewById(R.id.edit_text_out);
-       // mOutEditText.setOnEditorActionListener(mWriteListener);
-        //mSendButton = (Button) findViewById(R.id.button_send);
-       /* mSendButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                TextView view = (TextView) findViewById(R.id.edit_text_out);
-                String message = view.getText().toString();
-                sendMessage(message);
-            }
-        });*/
-
-        // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
-
-        //// Initialize the buffer for outgoing messages
-        //mOutStringBuffer = new StringBuffer("");
+    public void setViewAsConnected(){
+        rvDevicesList.setVisibility(View.INVISIBLE);
+        tvPairedDevices.setVisibility(View.INVISIBLE);
+        buttonScan.setVisibility(View.INVISIBLE);
+        buttonTuning.setVisibility(View.VISIBLE);
+        buttonCompetition.setVisibility(View.VISIBLE);
+        buttonDebugging.setVisibility(View.VISIBLE);
     }
-
 
 
     @Override
@@ -355,12 +393,13 @@ public class MainActivity extends AppCompatActivity {
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     Toast.makeText(getApplicationContext(), "Odczytalem "+ readMessage, Toast.LENGTH_SHORT).show();
                     break;
-                case MESSAGE_DEVICE_NAME:
+                case MESSAGE_DEVICE_CONNECTED:
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(), "Connected to "+ mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                     buttonSend.setVisibility(View.VISIBLE);
                     mState = STATE_CONNECTED;
+                    setViewAsConnected();
 
                     break;
                 case MESSAGE_TOAST:
@@ -368,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     break;
 
-                case MESSAGE_SETTUP_CONNECTION:
+                case MESSAGE_SETUP_CONNECTION:
                     String deviceName = msg.getData().getString(DEVICE_NAME);
                     String address = MyAdapter.getDeviceAddress();
                     // Get the BLuetoothDevice object

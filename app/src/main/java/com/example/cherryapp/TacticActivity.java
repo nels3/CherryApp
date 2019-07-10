@@ -209,6 +209,8 @@ public class TacticActivity extends AppCompatActivity {
             //more for stop tactic
         }
 
+        openFightActivity();
+
     }
 
 

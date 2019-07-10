@@ -110,7 +110,7 @@
 
     <LinearLayout
         android:id="@+id/llBluetoothDevices"
-        android:layout_width="0dp"
+        android:layout_width="359dp"
         android:layout_height="502dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -179,7 +179,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:background="@android:drawable/ic_delete"
+        android:background="@android:drawable/ic_lock_power_off"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -197,6 +197,46 @@
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintStart_toStartOf="@+id/tvReceived"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llDeviceConnected"
+        android:layout_width="249dp"
+        android:layout_height="409dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llInfo">
+
+        <Button
+            android:id="@+id/buttonCompetition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/cherry_custom_button"
+            android:text="@string/competition" />
+
+        <Button
+            android:id="@+id/buttonDebugging"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/cherry_custom_button"
+            android:text="@string/debugging" />
+
+        <Button
+            android:id="@+id/buttonTuning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/cherry_custom_button"
+            android:text="@string/tuning" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,6 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llVariables"
         app:menu="@menu/navigation" />
 
     <ToggleButton
@@ -66,45 +67,228 @@
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tvLipo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/fight_voltage"
+    <LinearLayout
+        android:id="@+id/llVariables"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="150dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvShowVoltage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginLeft="19dp"
-        android:text="0"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvLipo"
-        app:layout_constraintStart_toEndOf="@+id/tvLipo" />
+        <LinearLayout
+            android:id="@+id/llVar1"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvShowSetTactic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="0"
-        app:layout_constraintStart_toStartOf="@+id/tvShowVoltage"
-        app:layout_constraintTop_toBottomOf="@+id/tvShowVoltage" />
+            <TextView
+                android:id="@+id/tvVar1"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/fight_voltage"
+                android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvShowTactics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/fight_tactics"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLipo" />
+            <TextView
+                android:id="@+id/tvOutVar1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar2"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/fight_error" />
+
+            <TextView
+                android:id="@+id/tvOutVar2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar3"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar3"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/fight_set_translation" />
+
+            <TextView
+                android:id="@+id/tvOutVar3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar4"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar4"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/fight_rotation" />
+
+            <TextView
+                android:id="@+id/tvOutVar4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar5"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar5"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/fight_right_motor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvOutVar5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar6"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar6"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/fight_left_motor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvOutVar6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar7"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar7"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/fight_rotation" />
+
+            <TextView
+                android:id="@+id/tvOutVar7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar8"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar8"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/fight_rotation" />
+
+            <TextView
+                android:id="@+id/tvOutVar8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVar9"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvVar9"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/fight_rotation" />
+
+            <TextView
+                android:id="@+id/tvOutVar9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="TextView" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
