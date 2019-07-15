@@ -24,14 +24,15 @@
     <string name="none_found">None devices found</string>
     <string name="not_connected">Not connected to device</string>
     <string name="test_connection">Send</string>
-    <string name="main_disconnect">X</string>
-    <string name="competition">"Competition"</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="competition">"Fighting"</string>
     <string name="debugging">"Debugging"</string>
     <string name="tuning">"Tuning"</string>
 
     <!--activity_fight-->
     <string name="fight_start">Start</string>
     <string name="fight_stop">Stop</string>
+    <string name="fight_send_data">Send data</string>
     <string name="fight_translation">Set 0 translation</string>
     <string name="fight_delay">Use start delay not module</string>
     <string name="fight_leds">Turn off leds</string>
@@ -42,6 +43,12 @@
     <string name="fight_rotation">Rotation:</string>
     <string name="fight_right_motor">Right motor velocity:</string>
     <string name="fight_left_motor">Left motor velocity:</string>
+    <string name="fight_sensorssi">SI sensors count:</string>
+    <string name="fight_sensorktir">KTIR sensors count:</string>
+    <string name="fight_angle">Yaw:</string>
+    <string name="fight_acc_x">Acceleration x:</string>
+    <string name="fight_acc_y">Acceleration y:</string>
+    <string name="fight_acc_z">Acceleration z:</string>
 
     <!--activity_sensor-->
     <string name="sen_turn_on_motors">Turn on motors</string>
@@ -58,11 +65,18 @@
     <string name="s1">1</string>
     <string name="s2">2</string>
     <string name="s3">3</string>
-    <string name="s4">4</string>
+    <string name="sa4">4</string>
     <string name="sa5">5</string>
-    <string name="sen_test_sensors">Enter testing mode</string>
-    <string name="sen_quit_sensors">Quit testing mode</string>
-    <string name="sen_orientation">Robot orientation</string>
+    <string name="sen_starting">Start</string>
+    <string name="sen_stop">Stop</string>
+    <string name="sen_display">Display</string>
+    <string name="sen_fining">Tuning</string>
+    <string name="imu">IMU:</string>
+    <string name="gyro">Yaw:</string>
+    <string name="acc_x">Acc x:</string>
+    <string name="acc_y">Acc y:</string>
+    <string name="acc_z">Acc z:</string>
+
 
     <!--activity_tactic n-->
     <string name="tactic">Choose tactic:</string>
@@ -83,4 +97,12 @@
     <string name="tshort">Short</string>
     <string name="tlong">Long</string>
     <string name="very_long">Very long</string>
+
+    <string name="t_send">Send</string>
+    <string name="t_start">Start</string>
+    <string name="t_debugging">Debugging</string>
+    <string name="t_fetch">Fetch</string>
+    <string name="t_sensors">Sensors</string>
+    <string name="t_motors">Motors</string>
+
 </resources>

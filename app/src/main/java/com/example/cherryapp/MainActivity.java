@@ -35,22 +35,10 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;
-    public static final int STATE_START = 1;
-    public static final int STATE_CONNECTED = 2;
-    private int mState = STATE_NONE;
+    private Button bScan, bDisconnect, bTuning, bDebugging, bFighting;
+    private TextView tvDevices;
 
-
-    private Button buttonInfo, buttonScan, buttonDisconnect, buttonClose, buttonTactics;
-    private Button buttonCompetition, buttonDebugging, buttonTuning;
-    private TextView tvPairedDevices;
-
-    private LinearLayout llInfo;
-
-    private EditText tvSend;
-    private TextView tvReceice;
-    private Button buttonSend;
+    private LinearLayout llDevices, llMenu;
 
     private RecyclerView rvDevicesList;
     private RecyclerView.Adapter mAdapter;
@@ -59,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     //bluetooth
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
-   // private EditText mOutEditText;
-    //private Button mSendButton;
     // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
@@ -80,27 +66,23 @@ public class MainActivity extends AppCompatActivity {
     private String mConnectedDeviceName = null;
     // String buffer for outgoing messages
     private StringBuffer mOutStringBuffer;
-    // devices list
-    private ArrayAdapter mPairedDevicesArrayAdapter = null;
-    private ArrayAdapter mNewDevicesArrayAdapter = null;
-    public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
     List<String> datasetNames = new ArrayList<>();
     List<String> datasetAddresses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mState = STATE_START;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBottomNavigationView();
-
-        llInfo= findViewById(R.id.llInfo);
-        llInfo.setVisibility(View.INVISIBLE);
+        llDevices = findViewById(R.id.llBluetoothDevicesList);
+        llMenu = findViewById(R.id.llMenu);
         rvDevicesList = findViewById(R.id.rvConnectedDevices);
+        tvDevices = findViewById(R.id.tvPairedDevices);
+        setupButtonsAction();
+
         rvDevicesList.setVisibility(View.INVISIBLE);
-        tvPairedDevices = findViewById(R.id.tvPairedDevices);
-        tvPairedDevices.setVisibility(View.INVISIBLE);
+        tvDevices.setVisibility(View.INVISIBLE);
         rvDevicesList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDevicesList.setLayoutManager(layoutManager);
@@ -109,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
         mAdapter = new MyAdapter(datasetNames, datasetAddresses, mHandler);
         rvDevicesList.setAdapter(mAdapter);
-
+        scanBluetoothDevices();
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
@@ -118,86 +100,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        buttonInfo = findViewById(R.id.buttonInfo);
-        buttonInfo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (llInfo.getVisibility()==View.VISIBLE)
-                    llInfo.setVisibility(View.INVISIBLE);
-                else
-                    llInfo.setVisibility(View.VISIBLE);
-            }
-        });
-
-        buttonScan = findViewById(R.id.buttonScan);
-        buttonScan.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                scanBluetoothDevices();
-                rvDevicesList.setVisibility(View.VISIBLE);
-                tvPairedDevices.setVisibility(View.VISIBLE);
-            }
-        });
-        buttonScan.setVisibility(View.INVISIBLE);
-
-        buttonDisconnect = findViewById(R.id.buttonDisconnect);
-        buttonDisconnect.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                mChatService.stop();
-                rvDevicesList.setVisibility(View.INVISIBLE);
-                tvPairedDevices.setVisibility(View.INVISIBLE);
-                buttonTuning.setVisibility(View.INVISIBLE);
-                buttonCompetition.setVisibility(View.INVISIBLE);
-                buttonDebugging.setVisibility(View.INVISIBLE);
-
-            }
-        });
-        buttonDisconnect.setVisibility(View.INVISIBLE);
-
-        buttonCompetition = findViewById(R.id.buttonCompetition);
-        buttonCompetition.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                openTacticActivity();
-            }
-        });
-        buttonCompetition.setVisibility(View.INVISIBLE);
-
-        buttonDebugging = findViewById(R.id.buttonDebugging);
-        buttonDebugging.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        buttonDebugging.setVisibility(View.INVISIBLE);
-
-        buttonTuning = findViewById(R.id.buttonTuning);
-        buttonTuning.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        buttonTuning.setVisibility(View.INVISIBLE);
-
-        scanBluetoothDevices();
-
-        tvSend = findViewById(R.id.tvSend);
-        tvSend.setOnEditorActionListener(mWriteListener);
-        tvReceice = findViewById(R.id.tvReceived);
-        buttonSend = findViewById(R.id.buttonSend);
-        buttonSend.setVisibility(View.INVISIBLE);
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                TextView view = (TextView) findViewById(R.id.tvSend);
-                String message = view.getText().toString();
-                sendMessage(message);
-            }
-        });
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
     }
-
 
 
     public void scanBluetoothDevices(){
@@ -220,64 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupChat() {
-        //mOutEditText = (EditText) findViewById(R.id.edit_text_out);
-        // mOutEditText.setOnEditorActionListener(mWriteListener);
-        //mSendButton = (Button) findViewById(R.id.button_send);
-       /* mSendButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                TextView view = (TextView) findViewById(R.id.edit_text_out);
-                String message = view.getText().toString();
-                sendMessage(message);
-            }
-        });*/
 
-        // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
-
-        //// Initialize the buffer for outgoing messages
-        //mOutStringBuffer = new StringBuffer("");
-    }
-
-    // The BroadcastReceiver that listens for discovered devices and
-    // changes the title when discovery is finished
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                /*// Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // If it's already paired, skip it, because it's been listed already
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                }
-                // When discovery is finished, change the Activity title*/
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                /*setProgressBarIndeterminateVisibility(false);
-                setTitle(R.string.select_device);
-                if (mNewDevicesArrayAdapter.getCount() == 0) {
-                    String noDevices = getResources().getText(R.string.none_found).toString();
-                    mNewDevicesArrayAdapter.add(noDevices);
-                }*/
-            }
-        }
-    };
-
-    private void doDiscovery() {
-        // Indicate scanning in the title
-        setProgressBarIndeterminateVisibility(true);
-        setTitle(R.string.scanning);
-        // Turn on sub-title for new devices
-        //findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
-        // If we're already discovering, stop it
-        if (mBluetoothAdapter.isDiscovering()) {
-            mBluetoothAdapter.cancelDiscovery();
-        }
-        // Request discover from BluetoothAdapter
-        mBluetoothAdapter.startDiscovery();
-    }
 
     @Override
     public void onStart() {
@@ -290,12 +138,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setViewAsConnected(){
-        rvDevicesList.setVisibility(View.INVISIBLE);
-        tvPairedDevices.setVisibility(View.INVISIBLE);
-        buttonScan.setVisibility(View.INVISIBLE);
-        buttonTuning.setVisibility(View.VISIBLE);
-        buttonCompetition.setVisibility(View.VISIBLE);
-        buttonDebugging.setVisibility(View.VISIBLE);
+        llDevices.setVisibility(View.INVISIBLE);
+        bTuning.setVisibility(View.VISIBLE);
+        bFighting.setVisibility(View.VISIBLE);
+        bDisconnect.setVisibility(View.VISIBLE);
+        bDebugging.setVisibility(View.VISIBLE);
     }
 
 
@@ -307,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 mChatService.start();
             }
         }
+
     }
 
     @Override
@@ -334,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
                     // Bluetooth is now enabled, so set up a chat session
-                    setupChat();
+                    mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
                 } else {
                     // User did not enable Bluetooth or an error occured
                     Toast.makeText(this, "Not enabled bluetooth", Toast.LENGTH_SHORT).show();
@@ -357,21 +205,21 @@ public class MainActivity extends AppCompatActivity {
             mChatService.write(send);
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
-            tvSend.setText(mOutStringBuffer);
+            //tvSend.setText(mOutStringBuffer);
         }
     }
 
     // The action listener for the EditText widget, to listen for the return key
     private TextView.OnEditorActionListener mWriteListener = new TextView.OnEditorActionListener() {
-                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                    // If the action is a key-up event on the return key, send the message
-                    if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
-                        String message = view.getText().toString();
-                        sendMessage(message);
-                    }
-                    return true;
-                }
-            };
+        public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+            // If the action is a key-up event on the return key, send the message
+            if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                String message = view.getText().toString();
+                sendMessage(message);
+            }
+            return true;
+        }
+    };
 
 
     // The Handler that gets information back from the BluetoothChatService
@@ -383,9 +231,9 @@ public class MainActivity extends AppCompatActivity {
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                   // mAdapter.notifyDataSetChanged();
+                    // mAdapter.notifyDataSetChanged();
                     Toast.makeText(getApplicationContext(), "Wysylam "+ writeMessage, Toast.LENGTH_SHORT).show();
-                   // messageList.add(new androidRecyclerView.Message(counter++, writeMessage, "Me"));
+                    // messageList.add(new androidRecyclerView.Message(counter++, writeMessage, "Me"));
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -397,8 +245,7 @@ public class MainActivity extends AppCompatActivity {
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(), "Connected to "+ mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                    buttonSend.setVisibility(View.VISIBLE);
-                    mState = STATE_CONNECTED;
+                    //buttonSend.setVisibility(View.VISIBLE);
                     setViewAsConnected();
 
                     break;
@@ -433,15 +280,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSensorActivity() {
-        Intent intent = new Intent(this, SensorActivity.class);
+        Intent intent = new Intent(this, DebbugingActivity.class);
         startActivity(intent);
     }
+
+
+    public void openDebuggingActivity() {
+        Intent intent = new Intent(this, DebbugingActivity.class);
+        startActivity(intent);
+    }
+
+    public void openTuningActivity() {
+        Intent intent = new Intent(this, TuningV2Activity.class);
+        startActivity(intent);
+    }
+
+
 
     public void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
@@ -463,4 +322,77 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupButtonsAction(){
+        bScan = findViewById(R.id.bScan);
+        bScan.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                scanBluetoothDevices();
+                rvDevicesList.setVisibility(View.VISIBLE);
+                tvDevices.setVisibility(View.VISIBLE);
+            }
+        });
+
+        bDisconnect = findViewById(R.id.bDisconnect);
+        bDisconnect.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mChatService.stop();
+                rvDevicesList.setVisibility(View.INVISIBLE);
+                bTuning.setVisibility(View.INVISIBLE);
+                bFighting.setVisibility(View.INVISIBLE);
+                bDisconnect.setVisibility(View.INVISIBLE);
+                bDebugging.setVisibility(View.INVISIBLE);
+                bScan.setVisibility(View.VISIBLE);
+                tvDevices.setVisibility(View.INVISIBLE);
+                rvDevicesList.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        bFighting = findViewById(R.id.bFight);
+        bFighting.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openTacticActivity();
+            }
+        });
+
+        bDebugging = findViewById(R.id.bDebug);
+        bDebugging.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openDebuggingActivity();
+            }
+        });
+
+        bTuning = findViewById(R.id.bTuning);
+        bTuning.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openTuningActivity();
+            }
+        });
+
+        bTuning.setVisibility(View.INVISIBLE);
+        bFighting.setVisibility(View.INVISIBLE);
+        bDisconnect.setVisibility(View.INVISIBLE);
+        bDebugging.setVisibility(View.INVISIBLE);
+
+        /*tvSend = findViewById(R.id.tvSend);
+        tvSend.setOnEditorActionListener(mWriteListener);
+        tvReceice = findViewById(R.id.tvReceived);
+        buttonSend = findViewById(R.id.buttonSend);
+        buttonSend.setVisibility(View.INVISIBLE);
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                TextView view = (TextView) findViewById(R.id.tvSend);
+                String message = view.getText().toString();
+                sendMessage(message);
+            }
+        }); */
+
+
+    }
+
 }

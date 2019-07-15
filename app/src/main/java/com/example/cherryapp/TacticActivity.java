@@ -18,28 +18,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TacticActivity extends AppCompatActivity {
 
-    private void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        openMainActivity();
-                        break;
-                    case R.id.navigation_sensors:
-                        openSensorActivity();
-                        break;
-                    case R.id.navigation_fight:
-                        openFightActivity();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,11 +66,6 @@ public class TacticActivity extends AppCompatActivity {
                     tvTurn.setVisibility(View.INVISIBLE);
                     tvTime.setVisibility(View.INVISIBLE);
                     tvDrive.setVisibility(View.VISIBLE);
-                    //rbTurnSlow.setChecked(false);
-                    //rbTurnFast.setChecked(false);
-                    //rbTimeShort.setChecked(false);
-                    //rbTimeLong.setChecked(false);
-                    //rbTimeVLong.setChecked(false);
                     rbDriveSlow.setChecked(true);
                 }
             }
@@ -109,11 +82,6 @@ public class TacticActivity extends AppCompatActivity {
                     tvTurn.setVisibility(View.VISIBLE);
                     tvTime.setVisibility(View.INVISIBLE);
                     tvDrive.setVisibility(View.INVISIBLE);
-                    //rbDriveSlow.setChecked(false);
-                    //rbDriveFast.setChecked(false);
-                    //rbDriveVFast.setChecked(false);
-                    //rbTimeShort.setChecked(false);
-                    //rbTimeLong.setChecked(false);
                     rbTimeVLong.setChecked(false);
                     rbTurnFast.setChecked(true);
                 }
@@ -131,8 +99,6 @@ public class TacticActivity extends AppCompatActivity {
                     tvTurn.setVisibility(View.INVISIBLE);
                     tvTime.setVisibility(View.VISIBLE);
                     tvDrive.setVisibility(View.VISIBLE);
-                    //rbTurnSlow.setChecked(false);
-                    //rbTurnFast.setChecked(false);
                     rbDriveSlow.setChecked(true);
                     rbTimeShort.setChecked(true);
                 }
@@ -143,95 +109,92 @@ public class TacticActivity extends AppCompatActivity {
 
 
 
-    public void setTactic(){
-        final RadioButton rbDirLeft = findViewById(R.id.rbLeft);
-        final RadioButton rbDirRight = findViewById(R.id.rbRight);
-        final RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
-        final RadioButton rbTypeTurn = findViewById(R.id.rbTurn);
-        final RadioButton rbTypeStop = findViewById(R.id.rbStop);
-        final RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
-        final RadioButton rbDriveFast = findViewById(R.id.rbDriveFast);
-        final RadioButton rbDriveVFast = findViewById(R.id.rbDriveVFast);
-        final RadioButton rbTurnSlow = findViewById(R.id.rbTurnSlow);
-        final RadioButton rbTurnFast = findViewById(R.id.rbTurnFast);
+        public void setTactic(){
+            final RadioButton rbDirLeft = findViewById(R.id.rbLeft);
+            final RadioButton rbDirRight = findViewById(R.id.rbRight);
+            final RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
+            final RadioButton rbTypeTurn = findViewById(R.id.rbTurn);
+            final RadioButton rbTypeStop = findViewById(R.id.rbStop);
+            final RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
+            final RadioButton rbDriveFast = findViewById(R.id.rbDriveFast);
+            final RadioButton rbDriveVFast = findViewById(R.id.rbDriveVFast);
+            final RadioButton rbTurnSlow = findViewById(R.id.rbTurnSlow);
+            final RadioButton rbTurnFast = findViewById(R.id.rbTurnFast);
 
-        //ImageView img= findViewById(R.id.ivTactic);
+            //send direction
+            if (rbDirLeft.isChecked()) {
 
+            }
+            else {
 
-        //send direction
-        if (rbDirLeft.isChecked()) {
+            }
+
+            //send type
+            if (rbTypeAngle.isChecked()){
+                //img.setImageResource(R.drawable.go_back_arrow);
+                if (rbDriveSlow.isChecked()){
+
+                }
+                else if (rbDriveFast.isChecked()){
+
+                }
+                else if (rbDriveVFast.isChecked()){
+
+                }
+                else{
+
+                }
+            }
+            else if (rbTypeTurn.isChecked()){
+                //img.setImageResource(R.drawable.returnturn);
+                if (rbTurnSlow.isChecked()){
+
+                }
+                else if (rbTurnFast.isChecked()){
+
+                }
+                else{
+
+                }
+            }
+            else if (rbTypeStop.isChecked()){
+                //img.setImageResource(R.drawable.back_arrows);
+                if (rbDriveSlow.isChecked()){
+
+                }
+                else if (rbDriveFast.isChecked()){
+
+                }
+                else if (rbDriveVFast.isChecked()){
+
+                }
+
+                //more for stop tactic
+            }
+
+            openFightActivity();
 
         }
-        else {
+
+
+        public void setupInitTactic(){
+            RadioButton rbLeft = findViewById(R.id.rbLeft);
+            RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
+            RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
+            RadioGroup rgTime = findViewById(R.id.rgTime);
+            RadioGroup rgTurn = findViewById(R.id.rgTurn);
+            TextView tvTime = findViewById(R.id.tvTime);
+            TextView tvTurn = findViewById(R.id.tvTurn);
+
+            rbLeft.setChecked(true);
+            rbTypeAngle.setChecked(true);
+            rbDriveSlow.setChecked(true);
+            rgTime.setVisibility(View.INVISIBLE);
+            rgTurn.setVisibility(View.INVISIBLE);
+            tvTime.setVisibility(View.INVISIBLE);
+            tvTurn.setVisibility(View.INVISIBLE);
 
         }
-
-        //send type
-        if (rbTypeAngle.isChecked()){
-            //img.setImageResource(R.drawable.go_back_arrow);
-            if (rbDriveSlow.isChecked()){
-
-            }
-            else if (rbDriveFast.isChecked()){
-
-            }
-            else if (rbDriveVFast.isChecked()){
-
-            }
-            else{
-
-            }
-        }
-        else if (rbTypeTurn.isChecked()){
-            //img.setImageResource(R.drawable.returnturn);
-            if (rbTurnSlow.isChecked()){
-
-            }
-            else if (rbTurnFast.isChecked()){
-
-            }
-            else{
-
-            }
-        }
-        else if (rbTypeStop.isChecked()){
-            //img.setImageResource(R.drawable.back_arrows);
-            if (rbDriveSlow.isChecked()){
-
-            }
-            else if (rbDriveFast.isChecked()){
-
-            }
-            else if (rbDriveVFast.isChecked()){
-
-            }
-
-            //more for stop tactic
-        }
-
-        openFightActivity();
-
-    }
-
-
-    public void setupInitTactic(){
-        RadioButton rbLeft = findViewById(R.id.rbLeft);
-        RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
-        RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
-        RadioGroup rgTime = findViewById(R.id.rgTime);
-        RadioGroup rgTurn = findViewById(R.id.rgTurn);
-        TextView tvTime = findViewById(R.id.tvTime);
-        TextView tvTurn = findViewById(R.id.tvTurn);
-
-        rbLeft.setChecked(true);
-        rbTypeAngle.setChecked(true);
-        rbDriveSlow.setChecked(true);
-        rgTime.setVisibility(View.INVISIBLE);
-        rgTurn.setVisibility(View.INVISIBLE);
-        tvTime.setVisibility(View.INVISIBLE);
-        tvTurn.setVisibility(View.INVISIBLE);
-
-    }
 
 
     public void openFightActivity() {
@@ -240,7 +203,7 @@ public class TacticActivity extends AppCompatActivity {
     }
 
     public void openSensorActivity() {
-        Intent intent = new Intent(this, SensorActivity.class);
+        Intent intent = new Intent(this, DebbugingActivity.class);
         startActivity(intent);
     }
 
@@ -248,4 +211,27 @@ public class TacticActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    private void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        openMainActivity();
+                        break;
+                    case R.id.navigation_sensors:
+                        openSensorActivity();
+                        break;
+                    case R.id.navigation_fight:
+                        openFightActivity();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
 }
