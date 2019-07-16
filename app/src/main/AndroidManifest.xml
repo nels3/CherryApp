@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".FightActivity"></activity>
         <activity android:name=".DebbugingActivity" />
+        <activity android:name=".TuningActivity" />
         <activity android:name=".TacticActivity" />
         <activity
             android:name=".MainActivity"

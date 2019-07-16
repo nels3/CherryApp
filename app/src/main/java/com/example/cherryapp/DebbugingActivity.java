@@ -76,7 +76,7 @@ public class DebbugingActivity extends AppCompatActivity {
 
         final ToggleButton tbStart = findViewById(R.id.tbStart);
         final ToggleButton tbDisplay = findViewById(R.id.tbTSend);
-        final Button bTuning = findViewById(R.id.tbTTuning);
+        final Button bTuning = findViewById(R.id.tbTDebbuging);
 
         tbStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -135,7 +135,7 @@ public class DebbugingActivity extends AppCompatActivity {
 
 
     public void openTuningActivity() {
-        Intent intent = new Intent(this, TuningV2Activity.class);
+        Intent intent = new Intent(this, TuningActivity.class);
         startActivity(intent);
     }
 

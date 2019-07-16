@@ -89,8 +89,8 @@
     <string name="right">Right</string>
     <string name="left">Left</string>
     <string name="turn">Turning</string>
-    <string name="angle_turn">Angle turning</string>
-    <string name="stop">Turn, go and stop</string>
+    <string name="angle_turn">Angle turn</string>
+    <string name="stop">Turn - stop</string>
     <string name="slow">Slow</string>
     <string name="fast">Fast</string>
     <string name="very_fast">Very fast</string>
@@ -105,4 +105,12 @@
     <string name="t_sensors">Sensors</string>
     <string name="t_motors">Motors</string>
 
+    <string name="si0">SI 0</string>
+    <string name="si1">SI 1</string>
+    <string name="si2">SI 2</string>
+    <string name="si3">SI 3</string>
+    <string name="si4">SI 4</string>
+    <string name="si5">SI 5</string>
+    <string name="rightkt">Right</string>
+    <string name="leftkt">Left</string>
 </resources>

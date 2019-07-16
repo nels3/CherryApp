@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openTuningActivity() {
-        Intent intent = new Intent(this, TuningV2Activity.class);
+        Intent intent = new Intent(this, TuningActivity.class);
         startActivity(intent);
     }
 

@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,7 +23,7 @@
         app:menu="@menu/navigation" />
 
     <Button
-        android:id="@+id/tbTTuning"
+        android:id="@+id/tbTDebbuging"
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
@@ -170,7 +171,7 @@
         android:text="@string/sen_display"
         android:textOff="@string/sen_display"
         android:textOn="@string/sen_display"
-        app:layout_constraintStart_toStartOf="@+id/tbTTuning"
+        app:layout_constraintStart_toStartOf="@+id/tbTDebbuging"
         app:layout_constraintTop_toTopOf="@+id/llImu" />
 
     <LinearLayout
@@ -488,7 +489,7 @@
         <LinearLayout
             android:id="@+id/llKtirRight"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:orientation="horizontal"
             android:paddingBottom="10dp">
 
@@ -526,7 +527,7 @@
         <LinearLayout
             android:id="@+id/llKtirLeft"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:orientation="horizontal"
             android:paddingBottom="10dp">
 

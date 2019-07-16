@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -25,7 +26,7 @@
     <TextView
         android:id="@+id/titleCherry"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="30dp"
         android:text="@string/tactic"
@@ -118,7 +119,7 @@
 
     <RadioGroup
         android:id="@+id/rgDirection"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
 
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
@@ -130,7 +131,7 @@
 
         <RadioButton
             android:id="@+id/rbLeft"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -138,7 +139,7 @@
 
         <RadioButton
             android:id="@+id/rbRight"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -147,7 +148,7 @@
 
     <RadioGroup
         android:id="@+id/rgType"
-        android:layout_width="365dp"
+        android:layout_width="300dp"
         android:layout_height="35dp"
         android:layout_marginTop="14dp"
         android:orientation="horizontal"
@@ -156,7 +157,7 @@
 
         <RadioButton
             android:id="@+id/rbTurn"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -164,15 +165,16 @@
 
         <RadioButton
             android:id="@+id/rbAngle"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:paddingTop="0dp"
             android:text="@string/angle_turn" />
 
         <RadioButton
             android:id="@+id/rbStop"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -181,7 +183,7 @@
 
     <RadioGroup
         android:id="@+id/rgTurn"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="35dp"
         android:layout_marginTop="13dp"
         android:orientation="horizontal"
@@ -190,7 +192,7 @@
 
         <RadioButton
             android:id="@+id/rbTurnSlow"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -198,7 +200,7 @@
 
         <RadioButton
             android:id="@+id/rbTurnFast"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -207,7 +209,7 @@
 
     <RadioGroup
         android:id="@+id/rgDrive"
-        android:layout_width="365dp"
+        android:layout_width="300dp"
         android:layout_height="35dp"
         android:layout_marginTop="13dp"
         android:orientation="horizontal"
@@ -216,7 +218,7 @@
 
         <RadioButton
             android:id="@+id/rbDriveSlow"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -224,7 +226,7 @@
 
         <RadioButton
             android:id="@+id/rbDriveFast"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -232,7 +234,7 @@
 
         <RadioButton
             android:id="@+id/rbDriveVFast"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -241,7 +243,7 @@
 
     <RadioGroup
         android:id="@+id/rgTime"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
@@ -255,7 +257,7 @@
 
         <RadioButton
             android:id="@+id/rbTimeShort"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -263,7 +265,7 @@
 
         <RadioButton
             android:id="@+id/rbTimeLong"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
@@ -271,7 +273,7 @@
 
         <RadioButton
             android:id="@+id/rbTimeVLong"
-            android:layout_width="match_parent"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
