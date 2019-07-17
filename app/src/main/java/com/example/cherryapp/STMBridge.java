@@ -1,22 +1,20 @@
 package com.example.cherryapp;
 
 public class STMBridge {
-    public int START_BYTE = 0xFF;
-    public int END_BYTE = 0xFE;
+    public byte START_BYTE = 127;
+    public byte END_BYTE = 126;
 
-    public int MESSAGE_TEST = 0x01;
-    public int MESSAGE_DEBUG = 0x02;
-    public int MESSAGE_TUNING_SENSORS_FETCH = 0x03;
-    public int MESSAGE_TUNING_SENSORS_SET = 0x04;
-    public int MESSAGE_TUNING_MOTORS_FETCH = 0x05;
-    public int MESSAGE_TUNINT_MOTORS_SET = 0x06;
-    public int MESSAGE_FIGHT_FETCH = 0x07;
-    public int MESSAGE_FIGHT_SET = 0x08;
-    private int mStartByte;
-    private int mCode;
-    public int mLength;
+    public byte MESSAGE_TEST = 1;
+    public byte MESSAGE_DEBUG = 2;
+    public byte MESSAGE_TUNING_SENSORS_FETCH = 0x03;
+    public byte MESSAGE_TUNING_SENSORS_SET = 0x04;
+    public byte MESSAGE_TUNING_MOTORS_FETCH = 0x05;
+    public byte MESSAGE_TUNINT_MOTORS_SET = 0x06;
+    public byte MESSAGE_FIGHT_FETCH = 0x07;
+    public byte MESSAGE_FIGHT_SET = 0x08;
+    private byte mCode;
+    public byte mLength;
     private int mData;
-    private int mEndByte;
 
     public byte[] writeSTMBuf;
 

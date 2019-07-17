@@ -12,7 +12,7 @@
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/grey_5"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -298,7 +298,7 @@
             <ProgressBar
                 android:id="@+id/pbSensor0"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -328,7 +328,7 @@
             <ProgressBar
                 android:id="@+id/pbSensor1"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -358,7 +358,7 @@
             <ProgressBar
                 android:id="@+id/pbSensor2"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -388,7 +388,7 @@
             <ProgressBar
                 android:id="@+id/pbSensor3"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -418,7 +418,7 @@
             <ProgressBar
                 android:id="@+id/pbSensor4"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -448,7 +448,7 @@
             <ProgressBar
                 android:id="@+id/pbSensor5"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -518,7 +518,7 @@
                 android:id="@+id/pbRight"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="120dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:progressDrawable="@drawable/progress_drawable_horizontal" />
 
@@ -556,7 +556,7 @@
                 android:id="@+id/pbLeft"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="120dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:progressDrawable="@drawable/progress_drawable_horizontal" />
 

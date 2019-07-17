@@ -150,7 +150,7 @@ public class BluetoothChatService {
         // Send the name of the connected device back to the UI Activity
         Message msg = mHandler.obtainMessage(MainActivity.MESSAGE_DEVICE_CONNECTED);
         Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.DEVICE_NAME, device.getName());
+        bundle.putString(MainActivity.WISIENKA_DeviceName, device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
         setState(STATE_CONNECTED);
@@ -368,11 +368,27 @@ public class BluetoothChatService {
             while (true) {
                 try {
                     // Read from the InputStream
-                    bytes = mmInStream.read(buffer, 0, len_of_msg);
+                    if (len_of_msg ==0) {
+                        bytes = mmInStream.read(buffer);
 
-                    // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
-                            .sendToTarget();
+                        // Send the obtained bytes to the UI Activity
+                        //mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
+                         //       .sendToTarget();
+                    }
+                    else {
+
+                        bytes = mmInStream.read(buffer, 0, 1);
+                        if(buffer[0]==MainActivity.START_BYTE){
+
+                            byte[] buffer_send = new byte[1];
+                            buffer_send[0] = buffer[3];
+                            // Send the obtained bytes to the UI Activity
+                            mHandler.obtainMessage(MainActivity.MESSAGE_READ, 1, -1, buffer_send)
+                                        .sendToTarget();
+
+                        }
+
+                    }
                 } catch (IOException e) {
                     connectionLost();
                     break;

@@ -11,8 +11,8 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:layout_height="50dp"
+        android:background="@color/grey_5"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,15 +23,13 @@
         app:menu="@menu/navigation" />
 
     <LinearLayout
-        android:id="@+id/llBluetoothDevicesList"
-        android:layout_width="359dp"
-        android:layout_height="601dp"
+        android:id="@+id/llMenu"
+        android:layout_width="247dp"
+        android:layout_height="471dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="114dp"
+        android:layout_marginBottom="90dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,44 +38,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/bScan"
+            android:id="@+id/bConnect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginBottom="20dp"
             android:background="@drawable/cherry_custom_button"
-            android:text="@string/main_scan"
-            tools:layout_editor_absoluteX="307dp"
-            tools:layout_editor_absoluteY="40dp" />
-
-        <TextView
-            android:id="@+id/tvPairedDevices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/paired_devices"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvConnectedDevices"
-            android:layout_width="match_parent"
-            android:layout_height="316dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llMenu"
-        android:layout_width="247dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="114dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="100dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="@+id/llBluetoothDevicesList"
-        app:layout_constraintHorizontal_bias="0.651"
-        app:layout_constraintStart_toStartOf="@+id/llBluetoothDevicesList"
-        app:layout_constraintTop_toTopOf="parent">
+            android:text="Connect" />
 
         <Button
             android:id="@+id/bFight"
@@ -104,14 +70,6 @@
             android:text="@string/tuning" />
 
         <Button
-            android:id="@+id/bDisconnect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/cherry_custom_button"
-            android:text="@string/disconnect" />
-
-        <Button
             android:id="@+id/bTest"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -128,6 +86,17 @@
             android:text="Test2" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bDisc"
+        android:layout_width="48dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@mipmap/cherry_logo3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

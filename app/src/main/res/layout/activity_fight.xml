@@ -12,7 +12,7 @@
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/grey_5"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/fight_translation"
+        android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/cbLeds"
         app:layout_constraintStart_toStartOf="@+id/cbDelay" />
@@ -70,6 +71,7 @@
         android:layout_marginLeft="28dp"
         android:layout_marginBottom="8dp"
         android:text="@string/fight_delay"
+        android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/cbTranslation"
         app:layout_constraintStart_toStartOf="parent" />
@@ -80,6 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/fight_leds"
+        android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintStart_toStartOf="@+id/cbTranslation" />
@@ -112,6 +115,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_voltage"
                 android:textSize="18sp" />
 
@@ -120,6 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -135,6 +140,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_error"
                 android:textSize="18sp" />
 
@@ -143,6 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -158,6 +165,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_set_translation"
                 android:textSize="18sp" />
 
@@ -166,6 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -181,6 +190,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_rotation"
                 android:textSize="18sp" />
 
@@ -189,6 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -204,6 +215,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_right_motor"
                 android:textSize="18sp" />
 
@@ -212,6 +224,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -227,6 +240,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_left_motor"
                 android:textSize="18sp" />
 
@@ -235,6 +249,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -250,6 +265,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_sensorssi"
                 android:textSize="18sp" />
 
@@ -258,6 +274,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -273,6 +290,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_sensorktir"
                 android:textSize="18sp" />
 
@@ -281,6 +299,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -296,6 +315,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_angle"
                 android:textSize="18sp" />
 
@@ -304,6 +324,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -319,6 +340,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_acc_x"
                 android:textSize="18sp" />
 
@@ -327,6 +349,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -342,6 +365,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_acc_y"
                 android:textSize="18sp" />
 
@@ -350,6 +374,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -365,6 +390,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="@string/fight_acc_z"
                 android:textSize="18sp" />
 
@@ -373,6 +399,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/tx_color"
                 android:text="TextView"
                 android:textSize="18sp" />
         </LinearLayout>
