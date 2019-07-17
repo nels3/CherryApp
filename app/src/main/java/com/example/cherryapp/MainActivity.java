@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     // mAdapter.notifyDataSetChanged();
-                    Toast.makeText(getApplicationContext(), "Wysylam "+ writeMessage, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Wysylam "+ writeMessage, Toast.LENGTH_SHORT).show();
                     // messageList.add(new androidRecyclerView.Message(counter++, writeMessage, "Me"));
                     break;
                 case MESSAGE_READ:
@@ -392,7 +392,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }); */
 
-
+        Button bTest = findViewById(R.id.bTest);
+        bTest.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String message = "a";
+                byte[] send = message.getBytes();
+                mChatService.setLengthOfMessage(1);
+                mChatService.write(send);
+            }
+        });
+        Button bTest2 = findViewById(R.id.bTest2);
+        bTest2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String message = "b";
+                byte[] send = message.getBytes();
+                mChatService.setLengthOfMessage(1);
+                mChatService.write(send);
+            }
+        });
     }
+
+
 
 }

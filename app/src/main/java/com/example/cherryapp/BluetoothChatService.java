@@ -43,6 +43,7 @@ public class BluetoothChatService {
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
+    private int len_of_msg = 0;
     /**
      * Constructor. Prepares a new BluetoothChat session.
      *
@@ -367,7 +368,8 @@ public class BluetoothChatService {
             while (true) {
                 try {
                     // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
+                    bytes = mmInStream.read(buffer, 0, len_of_msg);
+
                     // Send the obtained bytes to the UI Activity
                     mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
                             .sendToTarget();
@@ -400,5 +402,10 @@ public class BluetoothChatService {
             } catch (IOException e) {
             }
         }
+    }
+
+    public void setLengthOfMessage(int length){
+        len_of_msg = length;
+
     }
 }
