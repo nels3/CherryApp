@@ -17,16 +17,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.Serializable;
 
-public class DebbugingActivity extends AppCompatActivity implements Serializable {
- //   private BluetoothChatService mChatService = null;
- //   public STMBridge mSTMBridge = null;
+public class DebbugingActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    //    mChatService = (BluetoothChatService) getIntent().getSerializableExtra("ChatService");
-    //    mSTMBridge = (STMBridge) getIntent().getSerializableExtra("STMBridge");
+        startService(new Intent(this, MyBluetoothService.class));
 
         setContentView(R.layout.activity_sensor);
         setupBottomNavigationView();
@@ -178,7 +174,8 @@ public class DebbugingActivity extends AppCompatActivity implements Serializable
                         openMainActivity();
                         break;
                     case R.id.navigation_sensors:
-                        openSensorActivity();
+                        //openSensorActivity();
+                        mService.generateToast();
                         break;
                     case R.id.navigation_fight:
                         openFightActivity();

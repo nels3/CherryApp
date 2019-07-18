@@ -2,7 +2,7 @@ package com.example.cherryapp;
 
 import java.io.Serializable;
 
-public class STMBridge implements Serializable {
+public class STMBridge {
     public static byte START_BYTE = 127;
     public static byte END_BYTE = 126;
 

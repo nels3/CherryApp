@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -49,8 +52,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public static final String TOAST = "toast";
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the chat services
-    private BluetoothChatService mChatService = null;
+
     // Name of the connected device
     private String mConnectedDeviceName = null;
     // String buffer for outgoing messages
@@ -60,6 +62,26 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public static  String WISIENKA_DeviceAddress = null;
 
     public STMBridge mSTMBridge = null;
+    protected MyBluetoothService mService = new MyBluetoothService();;
+    protected boolean mBound = false;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+
+            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +99,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             finish();
             return;
         }
-        mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
-
-        scanBluetoothDevices();
-        setupButtonsAction();
-        // Initialize the buffer for outgoing messages
-        mOutStringBuffer = new StringBuffer("");
     }
 
     public void scanBluetoothDevices(){
@@ -106,7 +122,19 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             Toast.makeText(this, "Waiting for bluetooth to be enabled", Toast.LENGTH_LONG).show();
         }
+        Intent intent = new Intent(this, MyBluetoothService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        startService(new Intent(getBaseContext(), MyBluetoothService.class));
+
+        mService.createBluetoothChatService(mBluetoothAdapter,mHandler);
+
+        scanBluetoothDevices();
+        setupButtonsAction();
+        // Initialize the buffer for outgoing messages
+        mOutStringBuffer = new StringBuffer("");
     }
+
 
     public void setViewAsConnected(){
         bTuning.setEnabled(true);
@@ -122,9 +150,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     @Override
     public synchronized void onResume() {
         super.onResume();
-        if (mChatService != null) {
-            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-                mChatService.start();
+        if (mService.getChatService() != null) {
+            if (mService.getChatService().getState() == BluetoothChat.STATE_NONE) {
+                mService.startChatService();
             }
         }
     }
@@ -132,7 +160,16 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mChatService != null) mChatService.stop();
+        if (mService.getChatService() != null) mService.stopChatService();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
     }
 
     // The Handler that gets information back from the BluetoothChatService
@@ -207,7 +244,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         openMainActivity();
                         break;
                     case R.id.navigation_sensors:
-                        openSensorActivity();
+                        if (mBound) {
+                            mService.generateToast();
+                        }
+                        //openSensorActivity();
                         break;
                     case R.id.navigation_fight:
                         openFightActivity();
@@ -224,14 +264,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View v) {
                 BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(WISIENKA_DeviceAddress);
-                mChatService.connect(device);
+                mService.connect(device);
             }
         });
 
         bDisconnect = findViewById(R.id.bDisc);
         bDisconnect.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mChatService.stop();
+                mService.stopChatService();
                 setViewAsUnConnected();
             }
         });
@@ -267,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             public void onClick(View v) {
                 mSTMBridge.pack_message_test(1);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mChatService.write(send);
+                mService.write(send);
             }
         });
         Button bTest2 = findViewById(R.id.bTest2);
@@ -275,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             public void onClick(View v) {
                 mSTMBridge.pack_message_sensors_fetch();
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mChatService.write(send);
+                mService.write(send);
             }
         });
 
@@ -287,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
                     // Bluetooth is now enabled, so set up a chat session
-                    mChatService = new BluetoothChatService(this, mBluetoothAdapter, mHandler );
+                    mService.createBluetoothChatService(mBluetoothAdapter,mHandler);
                 } else {
                     // User did not enable Bluetooth or an error occured
                     Toast.makeText(this, "Not enabled bluetooth", Toast.LENGTH_SHORT).show();
