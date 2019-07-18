@@ -24,11 +24,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
 
     private Button bConnect, bDisconnect, bTuning, bDebugging, bFighting;
 
@@ -142,12 +143,14 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     String writeMessage = new String(writeBuf);
-                    Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    Toast.makeText(getApplicationContext(), "Got "+ readMessage, Toast.LENGTH_SHORT).show();
+                    mSTMBridge.unpack_message(readBuf, (int) msg.arg1);
+
+                    Toast.makeText(getApplicationContext(), "Got code: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_DEVICE_CONNECTED:
                     Toast.makeText(getApplicationContext(), "Connected to Wisienka", Toast.LENGTH_SHORT).show();
@@ -178,7 +181,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void openDebuggingActivity() {
+
         Intent intent = new Intent(this, DebbugingActivity.class);
+      //  intent.putExtra("Handler", mHandler);
         startActivity(intent);
     }
 
@@ -262,16 +267,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mSTMBridge.pack_message_test(1);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mChatService.setLengthOfMessage(5);
                 mChatService.write(send);
             }
         });
         Button bTest2 = findViewById(R.id.bTest2);
         bTest2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mSTMBridge.pack_message_test(2);
+                mSTMBridge.pack_message_sensors_fetch();
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mChatService.setLengthOfMessage(5);
                 mChatService.write(send);
             }
         });

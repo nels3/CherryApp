@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.UUID;
 import android.provider.Settings.Secure;
 /**
@@ -43,7 +44,6 @@ public class BluetoothChatService {
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
-    private int len_of_msg = 0;
     /**
      * Constructor. Prepares a new BluetoothChat session.
      *
@@ -224,7 +224,7 @@ public class BluetoothChatService {
      * like a server-side client. It runs until a connection is accepted
      * (or until cancelled).
      */
-    private class AcceptThread extends Thread {
+    private class AcceptThread extends Thread{
         // The local server socket
         private final BluetoothServerSocket mmServerSocket;
 
@@ -286,7 +286,7 @@ public class BluetoothChatService {
      * with a device. It runs straight through; the connection either
      * succeeds or fails.
      */
-    private class ConnectThread extends Thread {
+    private class ConnectThread extends Thread{
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
 
@@ -342,7 +342,7 @@ public class BluetoothChatService {
      * This thread runs during a connection with a remote device.
      * It handles all incoming and outgoing transmissions.
      */
-    private class ConnectedThread extends Thread {
+    private class ConnectedThread extends Thread{
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
@@ -368,27 +368,20 @@ public class BluetoothChatService {
             while (true) {
                 try {
                     // Read from the InputStream
-                    if (len_of_msg ==0) {
+
+
                         bytes = mmInStream.read(buffer);
+                        //if(buffer[0]==MainActivity.START_BYTE){
 
-                        // Send the obtained bytes to the UI Activity
-                        //mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
-                         //       .sendToTarget();
-                    }
-                    else {
-
-                        bytes = mmInStream.read(buffer, 0, 1);
-                        if(buffer[0]==MainActivity.START_BYTE){
-
-                            byte[] buffer_send = new byte[1];
-                            buffer_send[0] = buffer[3];
+                        //    byte[] buffer_send = new byte[1];
+                         //   buffer_send[0] = buffer[3];
                             // Send the obtained bytes to the UI Activity
-                            mHandler.obtainMessage(MainActivity.MESSAGE_READ, 1, -1, buffer_send)
+                            mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
                                         .sendToTarget();
 
-                        }
+                        //}
 
-                    }
+
                 } catch (IOException e) {
                     connectionLost();
                     break;
@@ -420,8 +413,4 @@ public class BluetoothChatService {
         }
     }
 
-    public void setLengthOfMessage(int length){
-        len_of_msg = length;
-
-    }
 }

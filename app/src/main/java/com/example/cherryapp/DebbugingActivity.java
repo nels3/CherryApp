@@ -15,11 +15,19 @@ import android.widget.ToggleButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class DebbugingActivity extends AppCompatActivity {
+import java.io.Serializable;
+
+public class DebbugingActivity extends AppCompatActivity implements Serializable {
+ //   private BluetoothChatService mChatService = null;
+ //   public STMBridge mSTMBridge = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    //    mChatService = (BluetoothChatService) getIntent().getSerializableExtra("ChatService");
+    //    mSTMBridge = (STMBridge) getIntent().getSerializableExtra("STMBridge");
+
         setContentView(R.layout.activity_sensor);
         setupBottomNavigationView();
 
@@ -88,6 +96,9 @@ public class DebbugingActivity extends AppCompatActivity {
                     tbDisplay.setEnabled(true);
                     bTuning.setEnabled(true);
                 }
+       //         mSTMBridge.pack_message_sensors_fetch();
+       //         byte[] send = mSTMBridge.writeSTMBuf;
+      //          mChatService.write(send);
             }
         });
 
@@ -136,6 +147,7 @@ public class DebbugingActivity extends AppCompatActivity {
 
     public void openTuningActivity() {
         Intent intent = new Intent(this, TuningActivity.class);
+
         startActivity(intent);
     }
 
@@ -146,6 +158,7 @@ public class DebbugingActivity extends AppCompatActivity {
 
     public void openSensorActivity() {
         Intent intent = new Intent(this, DebbugingActivity.class);
+
         startActivity(intent);
     }
 

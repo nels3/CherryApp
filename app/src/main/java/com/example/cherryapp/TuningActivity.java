@@ -2,6 +2,8 @@ package com.example.cherryapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +25,11 @@ public class TuningActivity extends AppCompatActivity {
     private LinearLayout llSensors, llMotors;
     private ToggleButton bStart;
     private Button bFetch, bSend, bSensors, bMotors, bDebbuging;
+
+    private final Handler mHandler = null;
+
+    public TuningActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +170,7 @@ public class TuningActivity extends AppCompatActivity {
 
                 tvKL3.setText("1");
                 tvKR3.setText("1");
+
             }
         });
 
