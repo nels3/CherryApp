@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements Serializable {
+public class MainActivity extends AppCompatActivity {
 
     private Button bConnect, bDisconnect, bTuning, bDebugging, bFighting;
 
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_CONNECTED = 4;
     public static final int MESSAGE_TOAST = 5;
-    public static final int MESSAGE_SETUP_CONNECTION = 6;
 
     //getting from bluetoothchatservice
     public static final String TOAST = "toast";
@@ -62,25 +61,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public static  String WISIENKA_DeviceAddress = null;
 
     public STMBridge mSTMBridge = null;
-    protected MyBluetoothService mService = new MyBluetoothService();;
+    protected MyBluetoothService mService;
     protected boolean mBound = false;
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-
-            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
 
 
     @Override
@@ -117,23 +99,42 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     @Override
     public void onStart() {
         super.onStart();
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            Toast.makeText(this, "Waiting for bluetooth to be enabled", Toast.LENGTH_LONG).show();
-        }
         Intent intent = new Intent(this, MyBluetoothService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-        startService(new Intent(getBaseContext(), MyBluetoothService.class));
+        //startService(new Intent(getBaseContext(), MyBluetoothService.class));
 
-        mService.createBluetoothChatService(mBluetoothAdapter,mHandler);
+        //mService.createBluetoothChatService(mBluetoothAdapter,mHandler);
 
         scanBluetoothDevices();
         setupButtonsAction();
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            Toast.makeText(this, "Waiting for bluetooth to be enabled", Toast.LENGTH_LONG).show();
+        }
     }
+
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+
+            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
 
     public void setViewAsConnected(){
@@ -150,11 +151,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     @Override
     public synchronized void onResume() {
         super.onResume();
-        if (mService.getChatService() != null) {
-            if (mService.getChatService().getState() == BluetoothChat.STATE_NONE) {
-                mService.startChatService();
-            }
-        }
     }
 
     @Override
@@ -187,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     mSTMBridge.unpack_message(readBuf, (int) msg.arg1);
 
-                    Toast.makeText(getApplicationContext(), "Got code: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Got coding: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_DEVICE_CONNECTED:
                     Toast.makeText(getApplicationContext(), "Connected to Wisienka", Toast.LENGTH_SHORT).show();
@@ -220,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public void openDebuggingActivity() {
 
         Intent intent = new Intent(this, DebbugingActivity.class);
-      //  intent.putExtra("Handler", mHandler);
         startActivity(intent);
     }
 
@@ -259,10 +254,18 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
 
     private void setupButtonsAction(){
+
         bConnect= findViewById(R.id.bConnect);
         bConnect.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                mService.createBluetoothChatService(mBluetoothAdapter,mHandler);
+                if (mService.getChatService() != null) {
+                    if (mService.getChatService().getState() == BluetoothChat.STATE_NONE) {
+                       mService.startChatService();
+                    }
+                }
+
                 BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(WISIENKA_DeviceAddress);
                 mService.connect(device);
             }
@@ -307,15 +310,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             public void onClick(View v) {
                 mSTMBridge.pack_message_test(1);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(send);
+                mService.write(mService.MAIN_ACTIVITY_ID, send);
             }
         });
         Button bTest2 = findViewById(R.id.bTest2);
         bTest2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mSTMBridge.pack_message_sensors_fetch();
+                mSTMBridge.pack_message_sensors_fetch(true);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(send);
+                mService.write(mService.MAIN_ACTIVITY_ID, send);
             }
         });
 

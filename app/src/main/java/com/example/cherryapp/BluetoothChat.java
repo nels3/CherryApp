@@ -23,6 +23,9 @@ import android.provider.Settings.Secure;
  * thread for performing data transmissions when connected.
  */
 public class BluetoothChat {
+    final public int MAIN_ACTIVITY_ID = 0;
+    final public int DEBUGGING_ACTIVITY_ID = 1;
+
     BluetoothDevice mDevice;
     // Name for the SDP record when creating server socket
     private static final String NAME = "BluetoothChat";
@@ -33,10 +36,12 @@ public class BluetoothChat {
     // Member fields
     private BluetoothAdapter mAdapter = null;
     private Handler mHandler= null;
+    private Handler mDebugHandler= null;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
     private int mState;
+    private int mActivityID;
 
     // Constants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing
@@ -54,6 +59,13 @@ public class BluetoothChat {
         mAdapter = mBluetoothAdapter;
         mState = STATE_NONE;
         mHandler = handler;
+    }
+
+    public void attachHandler(int ID, Handler handler){
+        switch(ID){
+            case (DEBUGGING_ACTIVITY_ID):
+                mDebugHandler = handler;
+        }
     }
 
     /**
@@ -181,7 +193,8 @@ public class BluetoothChat {
      * @param out The bytes to write
      * @see ConnectedThread#write(byte[])
      */
-    public void write(byte[] out) {
+    public void write(int ID, byte[] out) {
+        mActivityID = ID;
         // Create temporary object
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
@@ -371,15 +384,19 @@ public class BluetoothChat {
 
 
                         bytes = mmInStream.read(buffer);
-                        //if(buffer[0]==MainActivity.START_BYTE){
 
-                        //    byte[] buffer_send = new byte[1];
-                         //   buffer_send[0] = buffer[3];
-                            // Send the obtained bytes to the UI Activity
-                            mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
+                        switch(mActivityID){
+                            case MAIN_ACTIVITY_ID:
+                                mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
                                         .sendToTarget();
+                                break;
+                            case DEBUGGING_ACTIVITY_ID:
+                                mDebugHandler.obtainMessage(DebbugingActivity.MESSAGE_READ, bytes, -1, buffer)
+                                        .sendToTarget();
+                                break;
 
-                        //}
+                        }
+
 
 
                 } catch (IOException e) {

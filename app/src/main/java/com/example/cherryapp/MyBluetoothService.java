@@ -11,12 +11,17 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class MyBluetoothService extends Service {
+    final public int MAIN_ACTIVITY_ID = 0;
+    final public int DEBUGGING_ACTIVITY_ID = 1;
+
+
     private Handler handler = new Handler();
+    private Handler debuggingHandler = new Handler();
     private final IBinder mBinder = new LocalBinder();
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private final Handler mHandler = null;
-    private BluetoothChat mChatService = null;
+    private BluetoothChat mChatService;
 
     public class LocalBinder extends Binder {
         MyBluetoothService getService() {
@@ -31,6 +36,10 @@ public class MyBluetoothService extends Service {
 
     public void createBluetoothChatService(BluetoothAdapter myBluetoothAdapter, Handler myHandler){
         mChatService = new BluetoothChat(this, myBluetoothAdapter, myHandler );
+    }
+
+    public void attachHandler(int ID, Handler myHandler){
+        mChatService.attachHandler(ID, myHandler);
     }
 
     public BluetoothChat getChatService(){
@@ -49,8 +58,8 @@ public class MyBluetoothService extends Service {
         mChatService.connect(device);
     }
 
-    public void write(byte[] send){
-        mChatService.write(send);
+    public void write(int ID, byte[] send){
+        mChatService.write(ID, send);
     }
 
     public void write(){
