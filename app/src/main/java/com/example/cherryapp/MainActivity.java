@@ -181,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    mSTMBridge.unpack_message(readBuf, (int) msg.arg1);
+                    //mSTMBridge.unpack_message();
 
-                    Toast.makeText(getApplicationContext(), "Got coding: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "Got coding: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_DEVICE_CONNECTED:
                     Toast.makeText(getApplicationContext(), "Connected to Wisienka", Toast.LENGTH_SHORT).show();

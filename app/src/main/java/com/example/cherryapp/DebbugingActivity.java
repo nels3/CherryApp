@@ -37,12 +37,12 @@ public class DebbugingActivity extends AppCompatActivity {
     private boolean mAnalog = false;
     private boolean mFetched = false;
 
-    private ToggleButton tbSensor0, tbSensor1, tbSensor2, tbSensor3, tbSensor4, tbSensor5, tbSensorLeft, tbSensorRight;
-    private TextView tvSensor0, tvSensor1, tvSensor2, tvSensor3, tvSensor4, tvSensor5, tvTSensor0, tvTSensor1, tvTSensor2, tvTSensor3, tvTSensor4, tvTSensor5;
-    private TextView tvSensorRight, tvSensorLeft, tvTSensorRight, tvTSensorLeft;
+    private ToggleButton tbSensor[] = new ToggleButton[8];
+    private TextView tvSensor[] = new TextView[8];
+    private TextView tvThresSensor[] = new TextView[8];
     private LinearLayout llSISensors, llImu, llKTIR;
 
-    public static final byte MESSAGE_TEST = 0;
+    public static final byte MESSAGE_TEST = 9;
     public static final byte MESSAGE_DEBUG_ANALOG = 1;
     public static final byte MESSAGE_DEBUG_DIGITAL = 2;
     public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
@@ -51,7 +51,7 @@ public class DebbugingActivity extends AppCompatActivity {
     public static final byte MESSAGE_TUNINT_MOTORS_SET = 6;
     public static final byte MESSAGE_FIGHT_FETCH = 7;
     public static final byte MESSAGE_FIGHT_SET = 8;
-    public static final byte MESSAGE_FETCH_THRESHOLD = 9;
+    public static final byte MESSAGE_FETCH_THRESHOLD = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,32 +66,33 @@ public class DebbugingActivity extends AppCompatActivity {
         setupBottomNavigationView();
 
 
-        tbSensor0 = findViewById(R.id.tbSensor0);
-        tbSensor1 = findViewById(R.id.tbSensor1);
-        tbSensor2 = findViewById(R.id.tbSensor2);
-        tbSensor3 = findViewById(R.id.tbSensor3);
-        tbSensor4 = findViewById(R.id.tbSensor4);
-        tbSensor5 = findViewById(R.id.tbSensor5);
-        tbSensorLeft = findViewById(R.id.tbSensorLeft);
-        tbSensorRight = findViewById(R.id.tbSensorRight);
-        tvSensor0 = findViewById(R.id.tvSensor0);
-        tvSensor1 = findViewById(R.id.tvSensor1);
-        tvSensor2 = findViewById(R.id.tvSensor2);
-        tvSensor3 = findViewById(R.id.tvSensor3);
-        tvSensor4 = findViewById(R.id.tvSensor4);
-        tvSensor5 = findViewById(R.id.tvSensor5);
-        tvTSensor0 = findViewById(R.id.tvTSensor0);
-        tvTSensor1 = findViewById(R.id.tvTSensor1);
-        tvTSensor2 = findViewById(R.id.tvTSensor2);
-        tvTSensor3 = findViewById(R.id.tvTSensor3);
-        tvTSensor4 = findViewById(R.id.tvTSensor4);
-        tvTSensor5 = findViewById(R.id.tvTSensor5);
-        //tvRight = findViewById(R.id.tvRight);
-        tvSensorRight = findViewById(R.id.tvShowRight);
-        tvTSensorRight = findViewById(R.id.tvTShowRight);
-        //tvLeft = findViewById(R.id.tvLeft);
-        tvSensorLeft = findViewById(R.id.tvShowLeft);
-        tvTSensorLeft = findViewById(R.id.tvTShowLeft);
+        tbSensor[0] = findViewById(R.id.tbSensor0);
+        tbSensor[1] = findViewById(R.id.tbSensor1);
+        tbSensor[2] = findViewById(R.id.tbSensor2);
+        tbSensor[3] = findViewById(R.id.tbSensor3);
+        tbSensor[4] = findViewById(R.id.tbSensor4);
+        tbSensor[5] = findViewById(R.id.tbSensor5);
+        tbSensor[6] = findViewById(R.id.tbSensorRight);
+        tbSensor[7] = findViewById(R.id.tbSensorLeft);
+        tvSensor[0] = findViewById(R.id.tvSensor0);
+        tvSensor[1] = findViewById(R.id.tvSensor1);
+        tvSensor[2] = findViewById(R.id.tvSensor2);
+        tvSensor[3] = findViewById(R.id.tvSensor3);
+        tvSensor[4] = findViewById(R.id.tvSensor4);
+        tvSensor[5] = findViewById(R.id.tvSensor5);
+        tvThresSensor[0] = findViewById(R.id.tvTSensor0);
+        tvThresSensor[1] = findViewById(R.id.tvTSensor1);
+        tvThresSensor[2] = findViewById(R.id.tvTSensor2);
+        tvThresSensor[3] = findViewById(R.id.tvTSensor3);
+        tvThresSensor[4] = findViewById(R.id.tvTSensor4);
+        tvThresSensor[5] = findViewById(R.id.tvTSensor5);
+
+        tvSensor[6] = findViewById(R.id.tvShowRight);
+        tvThresSensor[6] = findViewById(R.id.tvTShowRight);
+
+        tvSensor[7] = findViewById(R.id.tvShowLeft);
+        tvThresSensor[7] = findViewById(R.id.tvTShowLeft);
+
         llImu = findViewById(R.id.llImu);
         llSISensors = findViewById(R.id.llSensors);
         llKTIR = findViewById(R.id.llKtir);
@@ -99,26 +100,23 @@ public class DebbugingActivity extends AppCompatActivity {
         llSISensors.setVisibility(View.INVISIBLE);
         llKTIR.setVisibility(View.INVISIBLE);
 
-        /*tbSensor0.setEnabled(false);
-        tbSensor1.setEnabled(false);
-        tbSensor2.setEnabled(false);
-        tbSensor3.setEnabled(false);
-        tbSensor4.setEnabled(false);
-        tbSensor5.setEnabled(false);
-        tbSensorLeft.setEnabled(false);
-        tbSensorRight.setEnabled(false);*/
-        /*tvSensor0.setText("0");
-        tvSensor1.setText("0");
-        tvSensor2.setText("0");
-        tvSensor3.setText("0");
-        tvSensor4.setText("0");
-        tvSensor5.setText("0");
-        tvSensorLeft.setText("0");
-        tvSensorRight.setText("0");*/
-
         final ToggleButton tbStart = findViewById(R.id.tbStart);
         final ToggleButton tbDisplay = findViewById(R.id.tbTSend);
         final Button bTuning = findViewById(R.id.tbTDebbuging);
+        final Button bFetch = findViewById(R.id.tbTFetch);
+
+        bFetch.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (!mAttached){
+                    mService.attachHandler(mService.DEBUGGING_ACTIVITY_ID, mHandler);
+                    mAttached = true;
+                }
+
+                fetchThreshold();
+
+            }
+        });
 
         tbStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -128,19 +126,15 @@ public class DebbugingActivity extends AppCompatActivity {
                     mAttached = true;
                 }
 
-                if (!mFetched){
-                    fetchThreshold();
-                    mFetched = true;
-                }
-
                 if (isChecked){
                     tbDisplay.setEnabled(false);
                     bTuning.setEnabled(false);
+                    fetchData();
                 }else{
                     tbDisplay.setEnabled(true);
                     bTuning.setEnabled(true);
                 }
-                fetchData();
+
 
             }
         });
@@ -150,31 +144,19 @@ public class DebbugingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    tbSensor1.setChecked(true);
                     mAnalog = true;
-                    tbSensor0.setVisibility(View.INVISIBLE);
-                    tbSensor1.setVisibility(View.INVISIBLE);
-                    tbSensor2.setVisibility(View.INVISIBLE);
-                    tbSensor3.setVisibility(View.INVISIBLE);
-                    tbSensor4.setVisibility(View.INVISIBLE);
-                    tbSensor5.setVisibility(View.INVISIBLE);
-                    tbSensorLeft.setVisibility(View.INVISIBLE);
-                    tbSensorRight.setVisibility(View.INVISIBLE);
+                    for (int i=0; i<8; ++i)
+                        tbSensor[i].setVisibility(View.INVISIBLE);
+
                     llSISensors.setVisibility(View.VISIBLE);
                     llKTIR.setVisibility(View.VISIBLE);
                     llImu.setVisibility(View.VISIBLE);
 
                 }else{
-                    tbSensor1.setChecked(false);
                     mAnalog = false;
-                    tbSensor0.setVisibility(View.VISIBLE);
-                    tbSensor1.setVisibility(View.VISIBLE);
-                    tbSensor2.setVisibility(View.VISIBLE);
-                    tbSensor3.setVisibility(View.VISIBLE);
-                    tbSensor4.setVisibility(View.VISIBLE);
-                    tbSensor5.setVisibility(View.VISIBLE);
-                    tbSensorLeft.setVisibility(View.VISIBLE);
-                    tbSensorRight.setVisibility(View.VISIBLE);
+                    for (int i=0; i<8; ++i)
+                        tbSensor[i].setVisibility(View.VISIBLE);
+
                     llSISensors.setVisibility(View.INVISIBLE);
                     llKTIR.setVisibility(View.INVISIBLE);
                     llImu.setVisibility(View.INVISIBLE);
@@ -204,40 +186,21 @@ public class DebbugingActivity extends AppCompatActivity {
     }
 
     private void showDataSensorsAnalog(){
-        tvSensor0.setText("1234");
-        tvSensor0.setText(mSTMBridge.getSensorValue(0));
-        tvSensor1.setText(mSTMBridge.getSensorValue(1));
-        tvSensor2.setText(mSTMBridge.getSensorValue(2));
-        tvSensor3.setText(mSTMBridge.getSensorValue(3));
-        tvSensor4.setText(mSTMBridge.getSensorValue(4));
-        tvSensor5.setText(mSTMBridge.getSensorValue(5));
-        tvSensorLeft.setText(mSTMBridge.getSensorValue(6));
-        tvSensorRight.setText(mSTMBridge.getSensorValue(7));
+        for (int i=0; i<6; ++i){
+            tvSensor[i].setText(Integer.toString(mSTMBridge.getSensorValue(i)));
+        }
     }
 
     private void showDataSensorsDigital(){
-        tbSensor0.setChecked(true);
-
-        tbSensor0.setChecked(mSTMBridge.getSensorValueBool(0));
-        tbSensor1.setChecked(mSTMBridge.getSensorValueBool(1));
-        tbSensor2.setChecked(mSTMBridge.getSensorValueBool(2));
-        tbSensor3.setChecked(mSTMBridge.getSensorValueBool(3));
-        tbSensor4.setChecked(mSTMBridge.getSensorValueBool(4));
-        tbSensor5.setChecked(mSTMBridge.getSensorValueBool(5));
-        tbSensorLeft.setChecked(mSTMBridge.getSensorValueBool(6));
-        tbSensorRight.setChecked(mSTMBridge.getSensorValueBool(7));
+        for (int i=0; i<6; ++i){
+            tbSensor[i].setChecked(mSTMBridge.getSensorValueBool(i));
+        }
     }
 
     private void showFetchData(){
-        tvTSensor0.setText("1234");
-        tvTSensor0.setText(mSTMBridge.getSensorValue(0));
-        tvTSensor1.setText(mSTMBridge.getSensorValue(1));
-        tvTSensor2.setText(mSTMBridge.getSensorValue(2));
-        tvTSensor3.setText(mSTMBridge.getSensorValue(3));
-        tvTSensor4.setText(mSTMBridge.getSensorValue(4));
-        tvTSensor5.setText(mSTMBridge.getSensorValue(5));
-        tvTSensorLeft.setText(mSTMBridge.getSensorValue(6));
-        tvTSensorRight.setText(mSTMBridge.getSensorValue(7));
+        for (int i=0; i<6; ++i){
+            tvThresSensor[i].setText(Integer.toString(mSTMBridge.getSensorValue(i)));
+        }
     }
 
 
@@ -329,10 +292,25 @@ public class DebbugingActivity extends AppCompatActivity {
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    mSTMBridge.unpack_message(readBuf, (int) msg.arg1);
-                    unpack_message();
-                    Toast.makeText(getApplicationContext(), "Got code: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                    //String readMessage = new String(readBuf, 0, msg.arg1);
+                    mSTMBridge.receive_bytes(readBuf, msg.arg1);
+
+                    if (mSTMBridge.msg_received) {
+                        boolean success = mSTMBridge.unpack_message();
+
+
+                        if (success) {
+                            Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                            unpack_message();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees / Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
+
+                    }
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
