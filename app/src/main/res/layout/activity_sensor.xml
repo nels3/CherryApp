@@ -16,37 +16,24 @@
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llSensors"
         app:menu="@menu/navigation" />
 
     <Button
         android:id="@+id/tbTDebbuging"
         android:layout_width="140dp"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/sen_fining"
         android:textOff="@string/sen_fining"
         android:textOn="@string/sen_fining"
-        app:layout_constraintStart_toStartOf="@+id/tbTFetch"
-        app:layout_constraintTop_toBottomOf="@+id/tbTSend" />
-
-    <Button
-        android:id="@+id/tbTFetch"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/cherry_custom_button"
-        android:text="Fetch"
-        android:textOff="Fetch"
-        android:textOn="Fetch"
         app:layout_constraintStart_toEndOf="@+id/llImu"
-        app:layout_constraintTop_toBottomOf="@+id/tbTDebbuging" />
+        app:layout_constraintTop_toBottomOf="@+id/tbTSend" />
 
     <ToggleButton
         android:id="@+id/tbStart"
@@ -210,14 +197,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvAngle"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvImu1"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/gyro" />
 
             <TextView
-                android:id="@+id/tvShowAngle"
+                android:id="@+id/tvImu10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -230,14 +217,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvImu2"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/acc_x" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tvImu20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -250,14 +237,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvImu3"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/acc_y" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/tvImu30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -270,14 +257,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvImu4"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/acc_z" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/tvImu40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -314,10 +301,12 @@
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
                 android:id="@+id/tvSensor0"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -325,6 +314,7 @@
 
             <TextView
                 android:id="@+id/tvTSensor0"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -344,6 +334,7 @@
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
@@ -374,6 +365,7 @@
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
@@ -404,6 +396,7 @@
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
@@ -434,6 +427,7 @@
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
@@ -441,6 +435,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
+                android:gravity="center"
                 android:text="TextView" />
 
             <TextView
@@ -448,6 +443,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
+                android:gravity="center"
                 android:text="TextView" />
         </LinearLayout>
 
@@ -464,6 +460,7 @@
                 android:layout_height="180dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
@@ -471,6 +468,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
+                android:gravity="center"
                 android:text="TextView" />
 
             <TextView
@@ -478,6 +476,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
+                android:gravity="center"
                 android:text="TextView" />
         </LinearLayout>
     </LinearLayout>

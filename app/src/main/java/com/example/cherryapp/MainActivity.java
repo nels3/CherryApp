@@ -236,16 +236,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        openMainActivity();
+                        //openMainActivity();
                         break;
                     case R.id.navigation_sensors:
-                        if (mBound) {
-                            mService.generateToast();
-                        }
+
                         //openSensorActivity();
                         break;
                     case R.id.navigation_fight:
-                        openFightActivity();
+                        //openFightActivity();
                         break;
                 }
                 return true;
@@ -304,23 +302,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setViewAsUnConnected();
-
-        Button bTest = findViewById(R.id.bTest);
-        bTest.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mSTMBridge.pack_message_test(1);
-                byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(mService.MAIN_ACTIVITY_ID, send);
-            }
-        });
-        Button bTest2 = findViewById(R.id.bTest2);
-        bTest2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mSTMBridge.pack_message_sensors_fetch(true);
-                byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(mService.MAIN_ACTIVITY_ID, send);
-            }
-        });
 
     }
 

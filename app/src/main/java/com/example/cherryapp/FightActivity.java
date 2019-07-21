@@ -88,10 +88,10 @@ public class FightActivity extends AppCompatActivity {
                         openMainActivity();
                         break;
                     case R.id.navigation_sensors:
-                        openSensorActivity();
+                        //openSensorActivity();
                         break;
                     case R.id.navigation_fight:
-                        openFightActivity();
+                        //openFightActivity();
                         break;
                 }
                 return true;

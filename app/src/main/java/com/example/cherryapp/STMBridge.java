@@ -6,16 +6,20 @@ public class STMBridge {
     public static byte START_BYTE = 127;
     public static byte END_BYTE = 126;
 
-    public static final byte MESSAGE_TEST = 9;
-    public static final byte MESSAGE_DEBUG_ANALOG = 1;
-    public static final byte MESSAGE_DEBUG_DIGITAL = 2;
-    public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
-    public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
-    public static final byte MESSAGE_TUNING_MOTORS_FETCH = 5;
-    public static final byte MESSAGE_TUNINT_MOTORS_SET = 6;
-    public static final byte MESSAGE_FIGHT_FETCH = 7;
-    public static final byte MESSAGE_FIGHT_SET = 8;
-    public static final byte MESSAGE_FETCH_THRESHOLD = 0;
+    //public static final byte MESSAGE_TEST = 9;
+    public static final byte MESSAGE_FETCH = 1;
+
+    //public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
+    //public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
+    //public static final byte MESSAGE_TUNING_MOTORS_FETCH = 5;
+    //public static final byte MESSAGE_TUNINT_MOTORS_SET = 6;
+    //public static final byte MESSAGE_FIGHT_FETCH = 7;
+    //public static final byte MESSAGE_FIGHT_SET = 8;
+
+    public static final byte MSG_DIGITAL = 1;
+    public static final byte MSG_ANALOG = 2;
+    public static final byte MSG_THRESHOLD = 3;
+    public static final int MSG_IMU = 4;
 
     public static byte mCode;
     public static byte mLength;
@@ -46,15 +50,19 @@ public class STMBridge {
             if (msg == START_BYTE){
                 msg_index = 0;
             }
-		else{
+		    else{
                 msg_index = -1;
             }
         }
         else if (msg_index ==1){
             msg_id = msg;
+            if (msg_id != mCode){
+                msg_index = -1;
+            }
         }
         else if (msg_index == 2){
             msg_len = msg+3;
+
         }
         else if (msg_index > 2 && msg_index < msg_len ){
             msg_msg[ind] = (int) msg;
@@ -77,43 +85,19 @@ public class STMBridge {
 
     }
 
-    public void pack_message_test(int msg) {
-        mCode = MESSAGE_TEST;
+
+    public void pack_message_sensors_fetch(byte msg) {
+        mCode = MESSAGE_FETCH;
         mLength = 1;
         byte[] writeBuf = new byte[mLength + 4];
-        writeBuf[0] = (byte) START_BYTE;
-        writeBuf[1] = (byte) MESSAGE_TEST;
-        writeBuf[2] = (byte) 1;
-        writeBuf[3] = (byte) 1;
-        writeBuf[4] = (byte) END_BYTE;
-        writeSTMBuf = writeBuf;
-    }
-
-    public void pack_message_sensors_fetch(boolean analog) {
-        if (analog)
-            mCode = MESSAGE_DEBUG_ANALOG;
-        else
-            mCode = MESSAGE_DEBUG_DIGITAL;
-
-        mLength = 0;
-        byte[] writeBuf = new byte[mLength + 4];
         writeBuf[0] = START_BYTE;
         writeBuf[1] = mCode;
         writeBuf[2] = mLength;
-        writeBuf[3] = END_BYTE;
+        writeBuf[3] = msg;
+        writeBuf[4] = END_BYTE;
         writeSTMBuf = writeBuf;
     }
 
-    public void pack_message_fetch_threshold() {
-        mCode = MESSAGE_FETCH_THRESHOLD;
-        mLength = 0;
-        byte[] writeBuf = new byte[mLength + 4];
-        writeBuf[0] = START_BYTE;
-        writeBuf[1] = mCode;
-        writeBuf[2] = mLength;
-        writeBuf[3] = END_BYTE;
-        writeSTMBuf = writeBuf;
-    }
 
 
     public static boolean unpack_message(){
@@ -121,11 +105,8 @@ public class STMBridge {
         mRecCode = (byte) msg_id;
         mRecLength = (byte) msg_len;
 
-        if (mRecCode ==MESSAGE_TEST){
-            mRecData = (byte) msg_msg[3];
-        }
-        else if (mRecCode == MESSAGE_DEBUG_ANALOG || mRecCode == MESSAGE_DEBUG_DIGITAL || mRecCode == MESSAGE_FETCH_THRESHOLD){
-            for (int i = 0; i<6; i++){
+        if (mRecCode == MESSAGE_FETCH){
+            for (int i = 0; i<12; i++) {
                 sensors[i] = msg_msg[i];
             }
         }

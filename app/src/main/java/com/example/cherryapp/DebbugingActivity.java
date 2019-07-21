@@ -37,9 +37,15 @@ public class DebbugingActivity extends AppCompatActivity {
     private boolean mAnalog = false;
     private boolean mFetched = false;
 
+    private int mRequest = 0;
+    public static final int MSG_DIGITAL = 1;
+    public static final int MSG_ANALOG = 2;
+    public static final int MSG_THRESHOLD = 3;
+
     private ToggleButton tbSensor[] = new ToggleButton[8];
     private TextView tvSensor[] = new TextView[8];
     private TextView tvThresSensor[] = new TextView[8];
+    private TextView tvImu[] = new TextView[4];
     private LinearLayout llSISensors, llImu, llKTIR;
 
     public static final byte MESSAGE_TEST = 9;
@@ -86,6 +92,10 @@ public class DebbugingActivity extends AppCompatActivity {
         tvThresSensor[3] = findViewById(R.id.tvTSensor3);
         tvThresSensor[4] = findViewById(R.id.tvTSensor4);
         tvThresSensor[5] = findViewById(R.id.tvTSensor5);
+        tvImu[0] = findViewById(R.id.tvImu10);
+        tvImu[1] = findViewById(R.id.tvImu20);
+        tvImu[2] = findViewById(R.id.tvImu30);
+        tvImu[3] = findViewById(R.id.tvImu40);
 
         tvSensor[6] = findViewById(R.id.tvShowRight);
         tvThresSensor[6] = findViewById(R.id.tvTShowRight);
@@ -103,36 +113,28 @@ public class DebbugingActivity extends AppCompatActivity {
         final ToggleButton tbStart = findViewById(R.id.tbStart);
         final ToggleButton tbDisplay = findViewById(R.id.tbTSend);
         final Button bTuning = findViewById(R.id.tbTDebbuging);
-        final Button bFetch = findViewById(R.id.tbTFetch);
-
-        bFetch.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (!mAttached){
-                    mService.attachHandler(mService.DEBUGGING_ACTIVITY_ID, mHandler);
-                    mAttached = true;
-                }
-
-                fetchThreshold();
-
-            }
-        });
 
         tbStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!mAttached){
-                    mService.attachHandler(mService.DEBUGGING_ACTIVITY_ID, mHandler);
-                    mAttached = true;
-                }
+                attachService();
 
-                if (isChecked){
+                if (isChecked) {
                     tbDisplay.setEnabled(false);
                     bTuning.setEnabled(false);
-                    fetchData();
+                    if (mAnalog){
+                        mRequest = MSG_ANALOG;
+                        fetchData(mSTMBridge.MSG_ANALOG);
+                    }
+                    else{
+                        mRequest = MSG_DIGITAL;
+                        fetchData(mSTMBridge.MSG_DIGITAL);
+                    }
                 }else{
                     tbDisplay.setEnabled(true);
                     bTuning.setEnabled(true);
+                    mRequest = MSG_THRESHOLD;
+                    fetchData(mSTMBridge.MSG_THRESHOLD);
                 }
 
 
@@ -143,6 +145,10 @@ public class DebbugingActivity extends AppCompatActivity {
         tbDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                attachService();
+
+
+
                 if (isChecked){
                     mAnalog = true;
                     for (int i=0; i<8; ++i)
@@ -151,6 +157,9 @@ public class DebbugingActivity extends AppCompatActivity {
                     llSISensors.setVisibility(View.VISIBLE);
                     llKTIR.setVisibility(View.VISIBLE);
                     llImu.setVisibility(View.VISIBLE);
+
+                    mRequest = MSG_THRESHOLD;
+                    fetchData(mSTMBridge.MSG_THRESHOLD);
 
                 }else{
                     mAnalog = false;
@@ -170,53 +179,68 @@ public class DebbugingActivity extends AppCompatActivity {
                 openTuningActivity();
             }
         });
-
+        setAsNotFetched();
     }
 
-    private void fetchThreshold(){
-        mSTMBridge.pack_message_fetch_threshold();
-        byte[] send = mSTMBridge.writeSTMBuf;
-        mService.write(mService.DEBUGGING_ACTIVITY_ID, send);
-    }
-
-    private void fetchData(){
-        mSTMBridge.pack_message_sensors_fetch(mAnalog);
+    private void fetchData(byte msg){
+        mSTMBridge.pack_message_sensors_fetch(msg);
         byte[] send = mSTMBridge.writeSTMBuf;
         mService.write(mService.DEBUGGING_ACTIVITY_ID, send);
     }
 
     private void showDataSensorsAnalog(){
-        for (int i=0; i<6; ++i){
+        for (int i=0; i<8; ++i){
             tvSensor[i].setText(Integer.toString(mSTMBridge.getSensorValue(i)));
         }
+        for (int i=0; i<4; ++i){
+            tvImu[i].setText(Integer.toString(mSTMBridge.getSensorValue(8+i)));
+        }
+
     }
 
     private void showDataSensorsDigital(){
-        for (int i=0; i<6; ++i){
+        for (int i=0; i<8; ++i){
             tbSensor[i].setChecked(mSTMBridge.getSensorValueBool(i));
         }
     }
 
     private void showFetchData(){
-        for (int i=0; i<6; ++i){
-            tvThresSensor[i].setText(Integer.toString(mSTMBridge.getSensorValue(i)));
+        for (int i=0; i<8; ++i){
+            tvThresSensor[i].setText("T: "+Integer.toString(mSTMBridge.getSensorValue(i)));
         }
     }
 
 
     private void unpack_message(){
-        switch (mSTMBridge.mRecCode){
-            case MESSAGE_DEBUG_ANALOG:
+        switch (mRequest){
+            case MSG_ANALOG:
                 showDataSensorsAnalog();
                 break;
-            case MESSAGE_DEBUG_DIGITAL:
+            case MSG_DIGITAL:
                 showDataSensorsDigital();
                 break;
-            case MESSAGE_FETCH_THRESHOLD:
+            case MSG_THRESHOLD:
                 showFetchData();
                 break;
 
         }
+    }
+
+    private void attachService(){
+        if (!mAttached){
+            mService.attachHandler(mService.DEBUGGING_ACTIVITY_ID, mHandler);
+            mAttached = true;
+        }
+    }
+
+    private void setAsNotFetched(){
+        for (int i =0 ;i<8; i++){
+            tvSensor[i].setText(Integer.toString(-1));
+        }
+        for (int i=0; i<4; i++){
+            tvImu[i].setText(Integer.toString(-1));
+        }
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -272,7 +296,7 @@ public class DebbugingActivity extends AppCompatActivity {
                         //openSensorActivity();
                         break;
                     case R.id.navigation_fight:
-                        openFightActivity();
+                        //openFightActivity();
                         break;
                 }
                 return true;
@@ -303,14 +327,14 @@ public class DebbugingActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                             unpack_message();
                         } else {
-                            Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees / Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Not succees / len: " + msg.arg1 + " . Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                         }
 
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
+                   // else{
+                   //     Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
 
-                    }
+                    //}
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
