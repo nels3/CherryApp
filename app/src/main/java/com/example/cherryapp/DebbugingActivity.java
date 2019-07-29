@@ -48,21 +48,9 @@ public class DebbugingActivity extends AppCompatActivity {
     private TextView tvImu[] = new TextView[4];
     private LinearLayout llSISensors, llImu, llKTIR;
 
-    public static final byte MESSAGE_TEST = 9;
-    public static final byte MESSAGE_DEBUG_ANALOG = 1;
-    public static final byte MESSAGE_DEBUG_DIGITAL = 2;
-    public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
-    public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
-    public static final byte MESSAGE_TUNING_MOTORS_FETCH = 5;
-    public static final byte MESSAGE_TUNINT_MOTORS_SET = 6;
-    public static final byte MESSAGE_FIGHT_FETCH = 7;
-    public static final byte MESSAGE_FIGHT_SET = 8;
-    public static final byte MESSAGE_FETCH_THRESHOLD = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //startService(new Intent(this, MyBluetoothService.class));
         Intent intent = new Intent(this, MyBluetoothService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
@@ -146,9 +134,6 @@ public class DebbugingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 attachService();
-
-
-
                 if (isChecked){
                     mAnalog = true;
                     for (int i=0; i<8; ++i)
@@ -320,8 +305,7 @@ public class DebbugingActivity extends AppCompatActivity {
                     mSTMBridge.receive_bytes(readBuf, msg.arg1);
 
                     if (mSTMBridge.msg_received) {
-                        boolean success = mSTMBridge.unpack_message();
-
+                        boolean success = mSTMBridge.unpack_message_sensors_fetch();
 
                         if (success) {
                             Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();

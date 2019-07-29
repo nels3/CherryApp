@@ -6,8 +6,11 @@ public class STMBridge {
     public static byte START_BYTE = 127;
     public static byte END_BYTE = 126;
 
-    //public static final byte MESSAGE_TEST = 9;
-    public static final byte MESSAGE_FETCH = 1;
+    public static final byte MESSAGE_FETCH = 0;
+    public static final byte MSG_DIGITAL = 1;
+    public static final byte MSG_ANALOG = 2;
+    public static final byte MSG_THRESHOLD = 3;
+    public static final byte MSG_ANALOGY = 4;
 
     //public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
     //public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
@@ -16,16 +19,13 @@ public class STMBridge {
     //public static final byte MESSAGE_FIGHT_FETCH = 7;
     //public static final byte MESSAGE_FIGHT_SET = 8;
 
-    public static final byte MSG_DIGITAL = 1;
-    public static final byte MSG_ANALOG = 2;
-    public static final byte MSG_THRESHOLD = 3;
     public static final int MSG_IMU = 4;
 
     public static byte mCode;
     public static byte mLength;
     public static byte mRecCode;
     public static byte mRecLength;
-    public static byte mRecData = 0;
+    public static byte mType;
     public byte[] writeSTMBuf;
 
     public static int[] sensors = new int[20];
@@ -62,7 +62,6 @@ public class STMBridge {
         }
         else if (msg_index == 2){
             msg_len = msg+3;
-
         }
         else if (msg_index > 2 && msg_index < msg_len ){
             msg_msg[ind] = (int) msg;
@@ -75,19 +74,18 @@ public class STMBridge {
             msg_index = -1;
         }
         msg_index++;
-
     }
 
     public static void receive_bytes(byte[] msg, int len){
         for (int i=0; i<len; ++i){
             receive_byte(msg[i]);
         }
-
     }
 
 
     public void pack_message_sensors_fetch(byte msg) {
         mCode = MESSAGE_FETCH;
+        mType = msg;
         mLength = 1;
         byte[] writeBuf = new byte[mLength + 4];
         writeBuf[0] = START_BYTE;
@@ -100,26 +98,17 @@ public class STMBridge {
 
 
 
-    public static boolean unpack_message(){
-
-        mRecCode = (byte) msg_id;
-        mRecLength = (byte) msg_len;
-
-        if (mRecCode == MESSAGE_FETCH){
-            for (int i = 0; i<12; i++) {
-                sensors[i] = msg_msg[i];
-            }
-        }
+    public static boolean unpack_message_sensors_fetch(){
         msg_received = false;
         return true;
     }
 
     public int getSensorValue(int ID){
-        return (int) sensors[ID];
+        return (int) msg_msg[ID];
     }
 
     public boolean getSensorValueBool(int ID){
-        if (sensors[ID] ==0){
+        if (msg_msg[ID] ==0){
             return false;
         }
         else{

@@ -25,6 +25,7 @@ import android.provider.Settings.Secure;
 public class BluetoothChat {
     final public int MAIN_ACTIVITY_ID = 0;
     final public int DEBUGGING_ACTIVITY_ID = 1;
+    final public int TUNING_ACTIVITY_ID = 2;
 
     BluetoothDevice mDevice;
     // Name for the SDP record when creating server socket
@@ -37,6 +38,7 @@ public class BluetoothChat {
     private BluetoothAdapter mAdapter = null;
     private Handler mHandler= null;
     private Handler mDebugHandler= null;
+    private Handler mTuningHandler= null;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
@@ -65,6 +67,11 @@ public class BluetoothChat {
         switch(ID){
             case (DEBUGGING_ACTIVITY_ID):
                 mDebugHandler = handler;
+                break;
+            case (TUNING_ACTIVITY_ID):
+                mTuningHandler = handler;
+                break;
+
         }
     }
 
@@ -395,6 +402,10 @@ public class BluetoothChat {
                                         .sendToTarget();
                                 break;
 
+                            case TUNING_ACTIVITY_ID:
+                                mTuningHandler.obtainMessage(TuningActivity.MESSAGE_READ, bytes, -1, buffer)
+                                        .sendToTarget();
+                                break;
                         }
 
 

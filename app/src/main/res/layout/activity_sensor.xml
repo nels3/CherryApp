@@ -339,6 +339,7 @@
 
             <TextView
                 android:id="@+id/tvSensor1"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -346,6 +347,7 @@
 
             <TextView
                 android:id="@+id/tvTSensor1"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -370,6 +372,7 @@
 
             <TextView
                 android:id="@+id/tvSensor2"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -377,6 +380,7 @@
 
             <TextView
                 android:id="@+id/tvTSensor2"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -401,6 +405,7 @@
 
             <TextView
                 android:id="@+id/tvSensor3"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -408,6 +413,7 @@
 
             <TextView
                 android:id="@+id/tvTSensor3"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"

@@ -12,7 +12,7 @@
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/grey_5"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -380,7 +380,8 @@
             android:id="@+id/tvTKtir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="KTIR Sensors:" />
+            android:text="KTIR Sensors:"
+            android:textColor="@color/tx_color" />
 
         <LinearLayout
             android:layout_width="match_parent"

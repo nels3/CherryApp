@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class MyBluetoothService extends Service {
     final public int MAIN_ACTIVITY_ID = 0;
     final public int DEBUGGING_ACTIVITY_ID = 1;
-
+    final public int TUNING_ACTIVITY_ID = 2;
 
     private Handler handler = new Handler();
     private Handler debuggingHandler = new Handler();
