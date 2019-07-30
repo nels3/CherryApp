@@ -252,7 +252,7 @@ public class DebbugingActivity extends AppCompatActivity {
     }
 
     public void openFightActivity() {
-        Intent intent = new Intent(this, FightActivity.class);
+        Intent intent = new Intent(this, TacticActivity.class);
         startActivity(intent);
     }
 
@@ -275,7 +275,7 @@ public class DebbugingActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        openMainActivity();
+                        openFightActivity();
                         break;
                     case R.id.navigation_sensors:
                         //openSensorActivity();

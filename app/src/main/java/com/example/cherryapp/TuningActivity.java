@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -44,7 +45,9 @@ public class TuningActivity extends AppCompatActivity {
 
     private TextView tvSensor[] = new TextView[8];
     private TextView tvThreshold[] = new TextView[8];
-    private TextView tvUserThreshold[] = new TextView[8];
+    private EditText tvUserThreshold[] = new EditText[8];
+    private byte tvUserThresholdInput[] = new byte[8];
+
 
     private LinearLayout llSensors, llMotors;
     private ToggleButton bStart;
@@ -102,7 +105,7 @@ public class TuningActivity extends AppCompatActivity {
                 case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     String writeMessage = new String(writeBuf);
-                    //Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -120,10 +123,9 @@ public class TuningActivity extends AppCompatActivity {
                         }
 
                     }
-                    // else{
-                    //     Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
-
-                    //}
+                    else{
+                         Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
@@ -166,6 +168,9 @@ public class TuningActivity extends AppCompatActivity {
         tvUserThreshold[6] = findViewById(R.id.tvKTR4);
         tvUserThreshold[7] = findViewById(R.id.tvKTL4);
 
+        for (int i=0; i<8; i++)
+            tvUserThresholdInput[i] = 0;
+
 
         bFetch = findViewById(R.id.tbFetch);
         bSend = findViewById(R.id.tbTSend);
@@ -179,7 +184,11 @@ public class TuningActivity extends AppCompatActivity {
         llSensors.setVisibility(View.INVISIBLE);
         llMotors.setVisibility(View.INVISIBLE);
 
-        bStart.setEnabled(false);
+        llSensors.setVisibility(View.VISIBLE);
+        llMotors.setVisibility(View.INVISIBLE);
+        bSensors.setEnabled(false);
+        bMotors.setEnabled(true);
+        bStart.setEnabled(true);
 
         bSensors.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -262,6 +271,14 @@ public class TuningActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 attachService();
+                for (int i=0; i<8; ++i) {
+                    String value = tvUserThreshold[i].getText().toString();
+                    tvUserThresholdInput[i] = (byte) Integer.parseInt(value);
+                }
+                mSTMBridge.pack_message_threshold(tvUserThresholdInput);
+                byte[] send = mSTMBridge.writeSTMBuf;
+                mRequest = MSG_THRESHOLD;
+                mService.write(mService.TUNING_ACTIVITY_ID, send);
             }
         });
 
@@ -298,7 +315,7 @@ public class TuningActivity extends AppCompatActivity {
     }
 
     public void openFightActivity() {
-        Intent intent = new Intent(this, FightActivity.class);
+        Intent intent = new Intent(this, TacticActivity.class);
         startActivity(intent);
     }
 
@@ -322,14 +339,13 @@ public class TuningActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        openMainActivity();
+                        openFightActivity();
                         break;
                     case R.id.navigation_sensors:
-                        //openSensorActivity();
-                        mService.generateToast();
+                        openSensorActivity();
                         break;
                     case R.id.navigation_fight:
-                        openFightActivity();
+                        //openFightActivity();
                         break;
                 }
                 return true;

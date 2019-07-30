@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setupBottomNavigationView();
 
         mSTMBridge = new STMBridge();
 
@@ -224,32 +223,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    private void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        //openMainActivity();
-                        break;
-                    case R.id.navigation_sensors:
-
-                        //openSensorActivity();
-                        break;
-                    case R.id.navigation_fight:
-                        //openFightActivity();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
 
     private void setupButtonsAction(){
 

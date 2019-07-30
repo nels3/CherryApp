@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WisienkaApp</string>
 
-    <string name="title_home">Start</string>
+    <string name="title_home">Fight</string>
     <string name="title_sensors">Sensors</string>
     <string name="title_info">Info</string>
 

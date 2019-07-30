@@ -157,7 +157,7 @@ public class FightActivity extends AppCompatActivity {
     };
 
     public void openFightActivity() {
-        Intent intent = new Intent(this, FightActivity.class);
+        Intent intent = new Intent(this, TacticActivity.class);
         startActivity(intent);
     }
 
@@ -179,10 +179,11 @@ public class FightActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        openMainActivity();
+                        openFightActivity();
+                        //openMainActivity();
                         break;
                     case R.id.navigation_sensors:
-                        //openSensorActivity();
+                        openSensorActivity();
                         break;
                     case R.id.navigation_fight:
                         //openFightActivity();

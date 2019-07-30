@@ -11,6 +11,7 @@ public class STMBridge {
     public static final byte MSG_ANALOG = 2;
     public static final byte MSG_THRESHOLD = 3;
     public static final byte MSG_ANALOGY = 4;
+    public static final byte MESSAGE_SEND_THRESHOLD = 1;
 
     //public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
     //public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
@@ -93,6 +94,20 @@ public class STMBridge {
         writeBuf[2] = mLength;
         writeBuf[3] = msg;
         writeBuf[4] = END_BYTE;
+        writeSTMBuf = writeBuf;
+    }
+
+    public void pack_message_threshold(byte[] msg) {
+        mCode = MESSAGE_SEND_THRESHOLD;
+        mType = MSG_THRESHOLD;
+        mLength = 8;
+        byte[] writeBuf = new byte[mLength + 4];
+        writeBuf[0] = START_BYTE;
+        writeBuf[1] = mCode;
+        writeBuf[2] = mLength;
+        for (int i=0; i<8; ++i)
+            writeBuf[3+i] = msg[i];
+        writeBuf[11] = END_BYTE;
         writeSTMBuf = writeBuf;
     }
 

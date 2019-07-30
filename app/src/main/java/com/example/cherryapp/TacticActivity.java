@@ -220,13 +220,13 @@ public class TacticActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        openMainActivity();
+                        //openMainActivity();
                         break;
                     case R.id.navigation_sensors:
                         openSensorActivity();
                         break;
                     case R.id.navigation_fight:
-                        openFightActivity();
+                        //openFightActivity();
                         break;
                 }
                 return true;

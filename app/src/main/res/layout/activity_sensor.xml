@@ -27,7 +27,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="28dp"
         android:layout_marginLeft="28dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/sen_fining"
         android:textOff="@string/sen_fining"
@@ -39,12 +39,10 @@
         android:id="@+id/tbStart"
         android:layout_width="140dp"
         android:layout_height="40dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/cherry_custom_button"
         android:textOff="@string/sen_starting"
         android:textOn="@string/sen_stop"
-        app:layout_constraintBottom_toTopOf="@+id/tbTSend"
         app:layout_constraintStart_toStartOf="@+id/tbTSend"
         app:layout_constraintTop_toTopOf="@+id/llImu" />
 
@@ -165,13 +163,13 @@
         android:id="@+id/tbTSend"
         android:layout_width="138dp"
         android:layout_height="40dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/sen_display"
         android:textOff="@string/sen_display"
         android:textOn="@string/sen_display"
         app:layout_constraintStart_toStartOf="@+id/tbTDebbuging"
-        app:layout_constraintTop_toTopOf="@+id/llImu" />
+        app:layout_constraintTop_toBottomOf="@+id/tbStart" />
 
     <LinearLayout
         android:id="@+id/llImu"
