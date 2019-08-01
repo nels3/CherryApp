@@ -12,6 +12,11 @@ public class STMBridge {
     public static final byte MSG_THRESHOLD = 3;
     public static final byte MSG_ANALOGY = 4;
     public static final byte MESSAGE_SEND_THRESHOLD = 1;
+    public static final byte MESSAGE_SEND_TACTIC = 2;
+    public static final byte MSG_TACTIC = 5;
+    public static final byte MESSAGE_GET_FIGHT = 3;
+    public static final byte MSG_FIGHT = 6;
+    public static final byte MESSAGE_SEND_FIGHT = 4;
 
     //public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
     //public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
@@ -24,8 +29,7 @@ public class STMBridge {
 
     public static byte mCode;
     public static byte mLength;
-    public static byte mRecCode;
-    public static byte mRecLength;
+    public static int mRecCode;
     public static byte mType;
     public byte[] writeSTMBuf;
 
@@ -73,6 +77,7 @@ public class STMBridge {
             msg_end = msg;
             ind = 0;
             msg_index = -1;
+            mRecCode = msg_id;
         }
         msg_index++;
     }
@@ -111,6 +116,46 @@ public class STMBridge {
         writeSTMBuf = writeBuf;
     }
 
+    public void pack_message_tactic(byte[] msg){
+        mCode = MESSAGE_SEND_TACTIC;
+        mType = MSG_TACTIC;
+        mLength = 5;
+        byte[] writeBuf = new byte[mLength + 4];
+        writeBuf[0] = START_BYTE;
+        writeBuf[1] = mCode;
+        writeBuf[2] = mLength;
+        for (int i=0; i<5; ++i)
+            writeBuf[3+i] = msg[i];
+        writeBuf[8] = END_BYTE;
+        writeSTMBuf = writeBuf;
+    }
+
+    public void pack_message_fight_fetch(){
+        mCode = MESSAGE_GET_FIGHT;
+        mType = MSG_FIGHT;
+        mLength = 0;
+        byte[] writeBuf = new byte[mLength + 4];
+        writeBuf[0] = START_BYTE;
+        writeBuf[1] = mCode;
+        writeBuf[2] = mLength;
+        writeBuf[3] = END_BYTE;
+        writeSTMBuf = writeBuf;
+    }
+
+    public void pack_message_fight_send(byte[] msg){
+        mCode = MESSAGE_SEND_FIGHT;
+        mType = MSG_FIGHT;
+        mLength = 3;
+        byte[] writeBuf = new byte[mLength + 4];
+        writeBuf[0] = START_BYTE;
+        writeBuf[1] = mCode;
+        writeBuf[2] = mLength;
+        for (int i=0; i<3; ++i)
+            writeBuf[3+i] = msg[i];
+        writeBuf[6] = END_BYTE;
+        writeSTMBuf = writeBuf;
+    }
+
 
 
     public static boolean unpack_message_sensors_fetch(){
@@ -118,8 +163,9 @@ public class STMBridge {
         return true;
     }
 
-    public int getSensorValue(int ID){
-        return (int) msg_msg[ID];
+    public int getBridgeValue(int ID){
+        //int sensor = msg_msg[2*ID]*100+msg_msg[2*ID];
+        return (int)msg_msg[ID];
     }
 
     public boolean getSensorValueBool(int ID){

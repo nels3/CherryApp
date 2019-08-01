@@ -175,10 +175,10 @@ public class DebbugingActivity extends AppCompatActivity {
 
     private void showDataSensorsAnalog(){
         for (int i=0; i<8; ++i){
-            tvSensor[i].setText(Integer.toString(mSTMBridge.getSensorValue(i)));
+            tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeValue(i)));
         }
         for (int i=0; i<4; ++i){
-            tvImu[i].setText(Integer.toString(mSTMBridge.getSensorValue(8+i)));
+            tvImu[i].setText(Integer.toString(mSTMBridge.getBridgeValue(8+i)));
         }
 
     }
@@ -191,7 +191,7 @@ public class DebbugingActivity extends AppCompatActivity {
 
     private void showFetchData(){
         for (int i=0; i<8; ++i){
-            tvThresSensor[i].setText("T: "+Integer.toString(mSTMBridge.getSensorValue(i)));
+            tvThresSensor[i].setText("T: "+Integer.toString(mSTMBridge.getBridgeValue(i)));
         }
     }
 

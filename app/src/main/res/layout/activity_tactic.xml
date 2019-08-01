@@ -27,6 +27,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="30dp"
+        android:textColor="@color/tx_color"
         android:text="@string/tactic"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
@@ -45,6 +46,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="58dp"
         android:text="@string/direction"
+        android:textColor="@color/tx_color"
         app:layout_constraintBottom_toTopOf="@+id/tvType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleCherry" />
@@ -56,6 +58,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="63dp"
+        android:textColor="@color/tx_color"
         android:text="@string/type"
         app:layout_constraintBottom_toTopOf="@+id/tvTurn"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +72,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="62dp"
         android:text="@string/turn_vel"
+        android:textColor="@color/tx_color"
         app:layout_constraintBottom_toTopOf="@+id/tvDrive"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvType" />
@@ -81,6 +85,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="61dp"
         android:text="@string/drive"
+        android:textColor="@color/tx_color"
         app:layout_constraintBottom_toTopOf="@+id/tvTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTurn" />
@@ -93,6 +98,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="127dp"
         android:text="@string/time"
+        android:textColor="@color/tx_color"
         app:layout_constraintBottom_toTopOf="@+id/buttonStartTactics"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDrive" />
@@ -133,6 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/left" />
 
         <RadioButton
@@ -141,6 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/right" />
     </RadioGroup>
 
@@ -159,6 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/turn" />
 
         <RadioButton
@@ -167,6 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:paddingTop="0dp"
             android:text="@string/angle_turn" />
 
@@ -176,6 +186,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/stop" />
     </RadioGroup>
 
@@ -194,6 +205,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/slow" />
 
         <RadioButton
@@ -202,6 +214,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/fast" />
     </RadioGroup>
 
@@ -220,6 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/slow" />
 
         <RadioButton
@@ -228,6 +242,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/fast" />
 
         <RadioButton
@@ -236,6 +251,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/very_fast" />
     </RadioGroup>
 
@@ -259,6 +275,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/tshort" />
 
         <RadioButton
@@ -267,6 +284,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/tlong" />
 
         <RadioButton
@@ -275,6 +293,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:buttonTint="@color/pinkbutton"
+            android:textColor="@color/tx_color"
             android:text="@string/very_long" />
     </RadioGroup>
 

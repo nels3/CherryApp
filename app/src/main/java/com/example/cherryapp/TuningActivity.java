@@ -171,7 +171,6 @@ public class TuningActivity extends AppCompatActivity {
         for (int i=0; i<8; i++)
             tvUserThresholdInput[i] = 0;
 
-
         bFetch = findViewById(R.id.tbFetch);
         bSend = findViewById(R.id.tbTSend);
         bSensors = findViewById(R.id.tbTSensors);
@@ -292,13 +291,13 @@ public class TuningActivity extends AppCompatActivity {
 
     private void showDataSensors(){
         for (int i=0; i<8; ++i){
-            tvSensor[i].setText(Integer.toString(mSTMBridge.getSensorValue(i)));
+            tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeValue(i)));
         }
     }
 
     private void showFetchThreshold(){
         for (int i=0; i<8; ++i){
-            tvThreshold[i].setText("T: "+Integer.toString(mSTMBridge.getSensorValue(i)));
+            tvThreshold[i].setText("T: "+Integer.toString(mSTMBridge.getBridgeValue(i)));
         }
     }
 

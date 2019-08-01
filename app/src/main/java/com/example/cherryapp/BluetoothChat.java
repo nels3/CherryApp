@@ -26,6 +26,8 @@ public class BluetoothChat {
     final public int MAIN_ACTIVITY_ID = 0;
     final public int DEBUGGING_ACTIVITY_ID = 1;
     final public int TUNING_ACTIVITY_ID = 2;
+    final public int TACTIC_ACTIVITY_ID = 3;
+    final public int FIGHT_ACTIVITY_ID = 4;
 
     BluetoothDevice mDevice;
     // Name for the SDP record when creating server socket
@@ -39,6 +41,8 @@ public class BluetoothChat {
     private Handler mHandler= null;
     private Handler mDebugHandler= null;
     private Handler mTuningHandler= null;
+    private Handler mTacticHandler= null;
+    private Handler mFightHandler= null;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
@@ -71,7 +75,12 @@ public class BluetoothChat {
             case (TUNING_ACTIVITY_ID):
                 mTuningHandler = handler;
                 break;
-
+            case (TACTIC_ACTIVITY_ID):
+                mTacticHandler = handler;
+                break;
+            case (FIGHT_ACTIVITY_ID):
+                mFightHandler = handler;
+                break;
         }
     }
 
@@ -404,6 +413,14 @@ public class BluetoothChat {
 
                             case TUNING_ACTIVITY_ID:
                                 mTuningHandler.obtainMessage(TuningActivity.MESSAGE_READ, bytes, -1, buffer)
+                                        .sendToTarget();
+                                break;
+                            case TACTIC_ACTIVITY_ID:
+                                mTacticHandler.obtainMessage(TacticActivity.MESSAGE_READ, bytes, -1, buffer)
+                                        .sendToTarget();
+                                break;
+                            case FIGHT_ACTIVITY_ID:
+                                mFightHandler.obtainMessage(FightActivity.MESSAGE_READ, bytes, -1, buffer)
                                         .sendToTarget();
                                 break;
                         }

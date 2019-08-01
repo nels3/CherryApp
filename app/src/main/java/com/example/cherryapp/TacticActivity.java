@@ -3,8 +3,14 @@ package com.example.cherryapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -13,14 +19,35 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TacticActivity extends AppCompatActivity {
+    public static final int MESSAGE_READ = 2;
+    public static final int MESSAGE_WRITE = 3;
+    public static final int MESSAGE_TOAST = 5;
+    public static final String TOAST = "toast";
 
+    protected MyBluetoothService mService;
+    protected boolean mBound = false;
+    private STMBridge mSTMBridge;
+    private boolean mAttached = false;
+    private boolean mAnalog = false;
+    private boolean mFetched = false;
+
+    private byte mTacticBytes[] = new byte[5];
+
+    private int mRequest = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = new Intent(this, MyBluetoothService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        mSTMBridge = new STMBridge();
+
         setContentView(R.layout.activity_tactic);
         setupBottomNavigationView();
         setupInitTactic();
@@ -29,6 +56,7 @@ public class TacticActivity extends AppCompatActivity {
         buttonTactic.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                attachService();
                 setTactic();
             }
         });
@@ -120,59 +148,63 @@ public class TacticActivity extends AppCompatActivity {
             final RadioButton rbDriveVFast = findViewById(R.id.rbDriveVFast);
             final RadioButton rbTurnSlow = findViewById(R.id.rbTurnSlow);
             final RadioButton rbTurnFast = findViewById(R.id.rbTurnFast);
+            final RadioButton rbTimeShort= findViewById(R.id.rbTimeShort);
+            final RadioButton rbTimeLong = findViewById(R.id.rbTimeLong);
+            final RadioButton rbTimeVLong = findViewById(R.id.rbTimeVLong);
+
+            for (int i=0; i<5; ++i){
+                mTacticBytes[i] = 0;
+            }
 
             //send direction
             if (rbDirLeft.isChecked()) {
-
+                mTacticBytes[0] = 1;
             }
             else {
-
+                mTacticBytes[0] = 2;
             }
 
-            //send type
             if (rbTypeAngle.isChecked()){
-                //img.setImageResource(R.drawable.go_back_arrow);
-                if (rbDriveSlow.isChecked()){
 
-                }
-                else if (rbDriveFast.isChecked()){
-
-                }
-                else if (rbDriveVFast.isChecked()){
-
-                }
-                else{
-
-                }
+                mTacticBytes[1] = 1;
             }
             else if (rbTypeTurn.isChecked()){
-                //img.setImageResource(R.drawable.returnturn);
-                if (rbTurnSlow.isChecked()){
-
-                }
-                else if (rbTurnFast.isChecked()){
-
-                }
-                else{
-
-                }
+                mTacticBytes[1] = 2;
             }
             else if (rbTypeStop.isChecked()){
-                //img.setImageResource(R.drawable.back_arrows);
-                if (rbDriveSlow.isChecked()){
-
-                }
-                else if (rbDriveFast.isChecked()){
-
-                }
-                else if (rbDriveVFast.isChecked()){
-
-                }
-
-                //more for stop tactic
+                mTacticBytes[1] = 3;
             }
 
-            openFightActivity();
+            if (rbTurnSlow.isChecked()){
+                mTacticBytes[2] = 1;
+            }
+            else if (rbTurnFast.isChecked()){
+                mTacticBytes[2] = 2;
+            }
+
+            if (rbDriveSlow.isChecked()){
+                mTacticBytes[3] = 1;
+            }
+            else if (rbDriveFast.isChecked()){
+                mTacticBytes[3] = 2;
+            }
+            else if (rbDriveVFast.isChecked()) {
+                mTacticBytes[3] = 3;
+            }
+
+            if (rbTimeShort.isChecked()){
+                mTacticBytes[4] = 1;
+            }
+            else if (rbTimeLong.isChecked()){
+                mTacticBytes[4] = 2;
+            }
+            else if (rbTimeVLong.isChecked()){
+                mTacticBytes[4] = 3;
+            }
+
+            mSTMBridge.pack_message_tactic(mTacticBytes);
+            byte[] send = mSTMBridge.writeSTMBuf;
+            mService.write(mService.TACTIC_ACTIVITY_ID, send);
 
         }
 
@@ -195,6 +227,70 @@ public class TacticActivity extends AppCompatActivity {
             tvTurn.setVisibility(View.INVISIBLE);
 
         }
+
+
+    private void attachService(){
+        if (!mAttached){
+            mService.attachHandler(mService.TACTIC_ACTIVITY_ID, mHandler);
+            mAttached = true;
+        }
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+
+            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+
+    // The Handler that gets information back from the BluetoothChatService
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    String writeMessage = new String(writeBuf);
+                    Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
+                    break;
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    //String readMessage = new String(readBuf, 0, msg.arg1);
+                    mSTMBridge.receive_bytes(readBuf, msg.arg1);
+
+                    if (mSTMBridge.msg_received) {
+                        boolean success = mSTMBridge.unpack_message_sensors_fetch();
+
+                        if (success) {
+                            Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                            openFightActivity();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Not succees / len: " + msg.arg1 + " . Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case MESSAGE_TOAST:
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
 
 
     public void openFightActivity() {
