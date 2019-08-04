@@ -102,17 +102,19 @@ public class STMBridge {
         writeSTMBuf = writeBuf;
     }
 
-    public void pack_message_threshold(byte[] msg) {
+    public void pack_message_threshold(int[] msg) {
         mCode = MESSAGE_SEND_THRESHOLD;
         mType = MSG_THRESHOLD;
-        mLength = 8;
+        mLength = 16;
         byte[] writeBuf = new byte[mLength + 4];
         writeBuf[0] = START_BYTE;
         writeBuf[1] = mCode;
         writeBuf[2] = mLength;
-        for (int i=0; i<8; ++i)
-            writeBuf[3+i] = msg[i];
-        writeBuf[11] = END_BYTE;
+        for (int i = 0; i < 8; ++i){
+            writeBuf[3 + 2 * i] =  (byte)(msg[i] & 0xFF);
+            writeBuf[3 + 2 * i + 1] = (byte)(msg[i] >> 8);
+        }
+        writeBuf[19] = END_BYTE;
         writeSTMBuf = writeBuf;
     }
 
@@ -166,6 +168,12 @@ public class STMBridge {
     public int getBridgeValue(int ID){
         //int sensor = msg_msg[2*ID]*100+msg_msg[2*ID];
         return (int)msg_msg[ID];
+    }
+
+    public int getBridgeInt16Value(int ID){
+        int sensor = (((msg_msg[2*ID+1] & 0xFF) << 8) | (msg_msg[2*ID]& 0xFF));
+        return sensor;
+
     }
 
     public boolean getSensorValueBool(int ID){

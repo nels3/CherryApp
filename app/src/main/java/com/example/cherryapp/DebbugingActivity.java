@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -47,6 +48,7 @@ public class DebbugingActivity extends AppCompatActivity {
     private TextView tvThresSensor[] = new TextView[8];
     private TextView tvImu[] = new TextView[4];
     private LinearLayout llSISensors, llImu, llKTIR;
+    private ProgressBar pbSensor[] = new ProgressBar[8];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +167,25 @@ public class DebbugingActivity extends AppCompatActivity {
             }
         });
         setAsNotFetched();
+        setProgressBars();
+    }
+
+    private void setProgressBars(){
+        pbSensor[0] = findViewById(R.id.pbSensor0);
+        pbSensor[1] = findViewById(R.id.pbSensor1);
+        pbSensor[2] = findViewById(R.id.pbSensor2);
+        pbSensor[3] = findViewById(R.id.pbSensor3);
+        pbSensor[4] = findViewById(R.id.pbSensor4);
+        pbSensor[5] = findViewById(R.id.pbSensor5);
+        pbSensor[6] = findViewById(R.id.pbRight);
+        pbSensor[7] = findViewById(R.id.pbLeft);
+
+        for (int i=0; i<6; ++i) {
+            pbSensor[i].setMax(2000);
+        }
+        for (int i=6; i<8; ++i) {
+            pbSensor[i].setMax(4000);
+        }
     }
 
     private void fetchData(byte msg){
@@ -175,10 +196,13 @@ public class DebbugingActivity extends AppCompatActivity {
 
     private void showDataSensorsAnalog(){
         for (int i=0; i<8; ++i){
-            tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeValue(i)));
+            tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
         }
         for (int i=0; i<4; ++i){
-            tvImu[i].setText(Integer.toString(mSTMBridge.getBridgeValue(8+i)));
+            tvImu[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(8+i)));
+        }
+        for (int i=0; i<8; ++i){
+            pbSensor[i].setProgress(mSTMBridge.getBridgeInt16Value(i));
         }
 
     }
@@ -191,7 +215,7 @@ public class DebbugingActivity extends AppCompatActivity {
 
     private void showFetchData(){
         for (int i=0; i<8; ++i){
-            tvThresSensor[i].setText("T: "+Integer.toString(mSTMBridge.getBridgeValue(i)));
+            tvThresSensor[i].setText("T: "+Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
         }
     }
 

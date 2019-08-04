@@ -46,7 +46,7 @@ public class TuningActivity extends AppCompatActivity {
     private TextView tvSensor[] = new TextView[8];
     private TextView tvThreshold[] = new TextView[8];
     private EditText tvUserThreshold[] = new EditText[8];
-    private byte tvUserThresholdInput[] = new byte[8];
+    private int tvUserThresholdInput[] = new int[8];
 
 
     private LinearLayout llSensors, llMotors;
@@ -254,25 +254,28 @@ public class TuningActivity extends AppCompatActivity {
             }
         });
 
+
         bFetch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 for (int i=0; i<8; i++)
                     tvThreshold[i].setVisibility(View.VISIBLE);
                 attachService();
+                bSend.setEnabled(true);
                 mRequest = MSG_THRESHOLD;
                 fetchData(mSTMBridge.MSG_THRESHOLD);
 
             }
         });
 
+        bSend.setEnabled(false);
         bSend.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 attachService();
                 for (int i=0; i<8; ++i) {
                     String value = tvUserThreshold[i].getText().toString();
-                    tvUserThresholdInput[i] = (byte) Integer.parseInt(value);
+                    tvUserThresholdInput[i] = (int) Integer.parseInt(value);
                 }
                 mSTMBridge.pack_message_threshold(tvUserThresholdInput);
                 byte[] send = mSTMBridge.writeSTMBuf;
@@ -291,13 +294,14 @@ public class TuningActivity extends AppCompatActivity {
 
     private void showDataSensors(){
         for (int i=0; i<8; ++i){
-            tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeValue(i)));
+            tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
         }
     }
 
     private void showFetchThreshold(){
         for (int i=0; i<8; ++i){
-            tvThreshold[i].setText("T: "+Integer.toString(mSTMBridge.getBridgeValue(i)));
+            tvThreshold[i].setText("T: "+Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
+            tvUserThreshold[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
         }
     }
 

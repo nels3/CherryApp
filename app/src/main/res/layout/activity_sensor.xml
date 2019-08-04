@@ -288,7 +288,7 @@
 
         <LinearLayout
             android:id="@+id/llSensor0"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -297,31 +297,31 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="50dp"
                 android:layout_height="180dp"
+                android:layout_gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
                 android:id="@+id/tvSensor0"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingTop="10dp"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/tvTSensor0"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingTop="10dp"
                 android:text="TextView" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llSensor1"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -330,31 +330,31 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="50dp"
                 android:layout_height="180dp"
+                android:layout_gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_gravity="center"
                 android:progressDrawable="@drawable/progress_drawable_vertical" />
 
             <TextView
                 android:id="@+id/tvSensor1"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingTop="10dp"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/tvTSensor1"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingTop="10dp"
                 android:text="TextView" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llSensor2"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -387,7 +387,7 @@
 
         <LinearLayout
             android:id="@+id/llSensor3"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -420,7 +420,7 @@
 
         <LinearLayout
             android:id="@+id/llSensor4"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -453,7 +453,7 @@
 
         <LinearLayout
             android:id="@+id/llSensor5"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
