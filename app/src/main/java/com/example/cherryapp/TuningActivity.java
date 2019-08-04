@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -25,38 +24,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TuningActivity extends AppCompatActivity {
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_READ = 1;
+    public static final int MESSAGE_TOAST = 2;
     public static final String TOAST = "toast";
 
     protected MyBluetoothService mService;
     protected boolean mBound = false;
     private STMBridge mSTMBridge;
     private boolean mAttached = false;
-    private boolean mAnalog = false;
-    private boolean mFetched = false;
 
-    private int mRequest = 0;
-
-    public static final int MSG_THRESHOLD = 3;
-    public static final int MSG_ANALOGY = 4;
-    public static final int MSG_THRESHOLD_SEND = 1;
+    private byte mDataRequest = 0;
+    public final byte MSG_THRESHOLD = 3;
+    public final byte MSG_ANALOGY = 4;
 
     private TextView tvSensor[] = new TextView[8];
     private TextView tvThreshold[] = new TextView[8];
     private EditText tvUserThreshold[] = new EditText[8];
     private int tvUserThresholdInput[] = new int[8];
 
-
     private LinearLayout llSensors, llMotors;
     private ToggleButton bStart;
     private Button bFetch, bSend, bSensors, bMotors, bDebbuging;
-
-    //private final Handler mHandler = null;
-
-    public TuningActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +57,7 @@ public class TuningActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_tuning);
         setupBottomNavigationView();
-        findObjectsOnView();
+        findObjectsByID();
     }
 
     private void attachService(){
@@ -80,16 +68,13 @@ public class TuningActivity extends AppCompatActivity {
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
-
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
-
             MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
         }
-
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
@@ -102,26 +87,15 @@ public class TuningActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    String writeMessage = new String(writeBuf);
-                    Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
-                    break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     //String readMessage = new String(readBuf, 0, msg.arg1);
                     mSTMBridge.receive_bytes(readBuf, msg.arg1);
 
                     if (mSTMBridge.msg_received) {
-                        boolean success = mSTMBridge.unpack_message_sensors_fetch();
-
-                        if (success) {
-                            Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                            unpack_message();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Not succees / len: " + msg.arg1 + " . Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                        }
-
+                        mSTMBridge.message_processed();
+                        Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                        unpack_app_bridge_message();
                     }
                     else{
                          Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
@@ -134,7 +108,7 @@ public class TuningActivity extends AppCompatActivity {
         }
     };
 
-    private void findObjectsOnView(){
+    private void findObjectsByID(){
         tvSensor[0] = findViewById(R.id.tvSi02);
         tvSensor[1]  = findViewById(R.id.tvSi12);
         tvSensor[2]  = findViewById(R.id.tvSi22);
@@ -238,7 +212,6 @@ public class TuningActivity extends AppCompatActivity {
                     bSensors.setVisibility(View.INVISIBLE);
                     bMotors.setVisibility(View.INVISIBLE);
 
-                    mRequest = MSG_ANALOGY;
                     fetchData(mSTMBridge.MSG_ANALOGY);
 
                 }else{
@@ -262,7 +235,6 @@ public class TuningActivity extends AppCompatActivity {
                     tvThreshold[i].setVisibility(View.VISIBLE);
                 attachService();
                 bSend.setEnabled(true);
-                mRequest = MSG_THRESHOLD;
                 fetchData(mSTMBridge.MSG_THRESHOLD);
 
             }
@@ -279,7 +251,7 @@ public class TuningActivity extends AppCompatActivity {
                 }
                 mSTMBridge.pack_message_threshold(tvUserThresholdInput);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mRequest = MSG_THRESHOLD;
+                mDataRequest = mSTMBridge.MSG_THRESHOLD;
                 mService.write(mService.TUNING_ACTIVITY_ID, send);
             }
         });
@@ -287,15 +259,15 @@ public class TuningActivity extends AppCompatActivity {
     }
 
     private void fetchData(byte msg){
+        mDataRequest = msg;
         mSTMBridge.pack_message_sensors_fetch(msg);
         byte[] send = mSTMBridge.writeSTMBuf;
         mService.write(mService.TUNING_ACTIVITY_ID, send);
     }
 
     private void showDataSensors(){
-        for (int i=0; i<8; ++i){
+        for (int i=0; i<8; ++i)
             tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
-        }
     }
 
     private void showFetchThreshold(){
@@ -305,8 +277,8 @@ public class TuningActivity extends AppCompatActivity {
         }
     }
 
-    private void unpack_message(){
-        switch (mRequest){
+    private void unpack_app_bridge_message(){
+        switch (mDataRequest){
             case MSG_ANALOGY:
                 showDataSensors();
                 break;
@@ -326,12 +298,6 @@ public class TuningActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DebbugingActivity.class);
         startActivity(intent);
     }
-
-    public void openMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
 
     private void setupBottomNavigationView() {
 

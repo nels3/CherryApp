@@ -3,31 +3,21 @@ package com.example.cherryapp;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -36,27 +26,16 @@ public class MainActivity extends AppCompatActivity {
 
     private Button bConnect, bDisconnect, bTuning, bDebugging, bFighting;
 
-    public static final byte START_BYTE = 127;
-    public static final byte END_BYTE = 126;
-
     private static final int REQUEST_ENABLE_BT = 1;
-    // Message types sent from the BluetoothChatService Handler
-    public static final int MESSAGE_STATE_CHANGE = 1;
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_CONNECTED = 4;
-    public static final int MESSAGE_TOAST = 5;
-    public static final int MESSAGE_DEVICE_LOST = 6;
 
-    //getting from bluetoothchatservice
+    // Message types sent from the BluetoothChatService Handler
+    public static final int MESSAGE_DEVICE_CONNECTED = 1;
+    public static final int MESSAGE_TOAST = 2;
+    public static final int MESSAGE_DEVICE_LOST = 3;
     public static final String TOAST = "toast";
+
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-
-    // Name of the connected device
-    private String mConnectedDeviceName = null;
-    // String buffer for outgoing messages
-    private StringBuffer mOutStringBuffer;
 
     public static  String WISIENKA_DeviceName = "HC05_CHARLIE";
     public static  String WISIENKA_DeviceAddress = null;
@@ -65,14 +44,12 @@ public class MainActivity extends AppCompatActivity {
     protected MyBluetoothService mService;
     protected boolean mBound = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mSTMBridge = new STMBridge();
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // If the adapter is null, then Bluetooth is not supported
@@ -102,14 +79,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MyBluetoothService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-        //startService(new Intent(getBaseContext(), MyBluetoothService.class));
-
-        //mService.createBluetoothChatService(mBluetoothAdapter,mHandler);
-
-        scanBluetoothDevices();
         setupButtonsAction();
-        // Initialize the buffer for outgoing messages
-        mOutStringBuffer = new StringBuffer("");
 
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -118,13 +88,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
-
             MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
@@ -173,18 +141,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    String writeMessage = new String(writeBuf);
-                    //Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
-                    break;
-                case MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    //mSTMBridge.unpack_message();
-
-                   // Toast.makeText(getApplicationContext(), "Got coding: "+ mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                    break;
                 case MESSAGE_DEVICE_CONNECTED:
                     Toast.makeText(getApplicationContext(), "Connected to Wisienka", Toast.LENGTH_SHORT).show();
                     setViewAsConnected();
@@ -206,25 +162,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openFightActivity() {
-        Intent intent = new Intent(this, FightActivity.class);
-        startActivity(intent);
-    }
-
-    public void openSensorActivity() {
-        Intent intent = new Intent(this, DebbugingActivity.class);
-        startActivity(intent);
-    }
-
     public void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-
-
     public void openDebuggingActivity() {
-
         Intent intent = new Intent(this, DebbugingActivity.class);
         startActivity(intent);
     }
@@ -303,5 +246,4 @@ public class MainActivity extends AppCompatActivity {
                 }
         }
     }
-
 }

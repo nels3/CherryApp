@@ -30,15 +30,13 @@ public class FightActivity extends AppCompatActivity {
 
     protected MyBluetoothService mService;
     protected boolean mBound = false;
-    private STMBridge mSTMBridge;
     private boolean mAttached = false;
-    private boolean mAnalog = false;
-    private boolean mFetched = false;
 
-    private int mRequest = 0;
-    public static final int MSG_FETCH = 1;
-    public static final int MSG_SEND = 2;
+    private STMBridge mSTMBridge;
 
+    private byte mDataRequest = 0;
+    public static final byte MSG_FETCH = 1;
+    public static final byte MSG_SEND = 2;
 
     private byte mFightBytes[] = new byte[3];
     private TextView tvOut[] = new TextView[12];
@@ -54,7 +52,7 @@ public class FightActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fight);
         setupBottomNavigationView();
-        findObjectsOnView();
+        findObjectsByID();
 
         final CheckBox cbDelay = findViewById(R.id.cbDelay);
         final CheckBox cbTranslation = findViewById(R.id.cbTranslation);
@@ -73,7 +71,7 @@ public class FightActivity extends AppCompatActivity {
                     cbLeds.setEnabled(false);
                     cbTranslation.setEnabled(false);
 
-                    mRequest = MSG_FETCH;
+                    mDataRequest = MSG_FETCH;
                     mSTMBridge.pack_message_fight_fetch();
                     byte[] send = mSTMBridge.writeSTMBuf;
                     mService.write(mService.FIGHT_ACTIVITY_ID, send);
@@ -102,7 +100,7 @@ public class FightActivity extends AppCompatActivity {
                 else
                     mFightBytes[2] = 0;
 
-                mRequest = MSG_SEND;
+                mDataRequest = MSG_SEND;
                 mSTMBridge.pack_message_fight_send(mFightBytes);
                 byte[] send = mSTMBridge.writeSTMBuf;
                 mService.write(mService.FIGHT_ACTIVITY_ID, send);
@@ -132,7 +130,6 @@ public class FightActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
-
             MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
@@ -150,31 +147,15 @@ public class FightActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    String writeMessage = new String(writeBuf);
-                    //Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
-                    break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
-                    //String readMessage = new String(readBuf, 0, msg.arg1);
                     mSTMBridge.receive_bytes(readBuf, msg.arg1);
 
                     if (mSTMBridge.msg_received) {
-                        boolean success = mSTMBridge.unpack_message_sensors_fetch();
-
-                        if (success) {
-                            Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                            unpack_message();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Not succees / len: " + msg.arg1 + " . Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                        }
-
+                        mSTMBridge.message_processed();
+                        Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                        unpack_app_bridge_message();
                     }
-                    // else{
-                    //     Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
-
-                    //}
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
@@ -190,11 +171,6 @@ public class FightActivity extends AppCompatActivity {
 
     public void openSensorActivity() {
         Intent intent = new Intent(this, DebbugingActivity.class);
-        startActivity(intent);
-    }
-
-    public void openMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -227,15 +203,15 @@ public class FightActivity extends AppCompatActivity {
         }
     }
 
-    private void unpack_message(){
-        switch (mRequest){
+    private void unpack_app_bridge_message(){
+        switch (mDataRequest){
             case MSG_FETCH:
                 showDataFight();
                 break;
         }
     }
 
-    private void findObjectsOnView() {
+    private void findObjectsByID() {
         tvOut[0] = findViewById(R.id.tvOutVar1);
         tvOut[1] = findViewById(R.id.tvOutVar2);
         tvOut[2] = findViewById(R.id.tvOutVar3);
@@ -248,7 +224,5 @@ public class FightActivity extends AppCompatActivity {
         tvOut[9] = findViewById(R.id.tvOutVar10);
         tvOut[10] = findViewById(R.id.tvOutVar11);
         tvOut[11] = findViewById(R.id.tvOutVar12);
-
     }
-
 }

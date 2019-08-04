@@ -7,10 +7,11 @@ public class STMBridge {
     public static byte END_BYTE = 126;
 
     public static final byte MESSAGE_FETCH = 0;
-    public static final byte MSG_DIGITAL = 1;
-    public static final byte MSG_ANALOG = 2;
-    public static final byte MSG_THRESHOLD = 3;
-    public static final byte MSG_ANALOGY = 4;
+    public final byte MSG_DIGITAL = 1;
+    public final byte MSG_ANALOG = 2;
+    public final byte MSG_THRESHOLD = 3;
+    public final byte MSG_ANALOGY = 4;
+
     public static final byte MESSAGE_SEND_THRESHOLD = 1;
     public static final byte MESSAGE_SEND_TACTIC = 2;
     public static final byte MSG_TACTIC = 5;
@@ -18,30 +19,21 @@ public class STMBridge {
     public static final byte MSG_FIGHT = 6;
     public static final byte MESSAGE_SEND_FIGHT = 4;
 
-    //public static final byte MESSAGE_TUNING_SENSORS_FETCH = 3;
-    //public static final byte MESSAGE_TUNING_SENSORS_SET = 4;
-    //public static final byte MESSAGE_TUNING_MOTORS_FETCH = 5;
-    //public static final byte MESSAGE_TUNINT_MOTORS_SET = 6;
-    //public static final byte MESSAGE_FIGHT_FETCH = 7;
-    //public static final byte MESSAGE_FIGHT_SET = 8;
-
-    public static final int MSG_IMU = 4;
-
     public static byte mCode;
     public static byte mLength;
     public static int mRecCode;
     public static byte mType;
     public byte[] writeSTMBuf;
 
-    public static int[] sensors = new int[20];
 
-    public static int msg_index = 0;
-    public static int msg_st = 0;
-    public static int msg_id = 0;
-    public static int msg_len = 0;
-    public static int[] msg_msg = new int[255];
-    public static int msg_end = 0;
-    public static int ind = 0;
+    public static int start_byte = 0;
+    public static int id = 0;
+    public static int length = 0;
+    public static int[] msg = new int[255];
+    public static int end_byte = 0;
+
+    public static int byte_iterator = 0;
+    public static int index = 0;
 
     public static boolean msg_received= false;
 
@@ -49,37 +41,37 @@ public class STMBridge {
 
     }
 
-    public static void receive_byte(byte msg){
-        if (msg_index ==0){
-            msg_st = msg;
-            if (msg == START_BYTE){
-                msg_index = 0;
+    public static void receive_byte(byte msg_byte){
+        if (byte_iterator ==0){
+            start_byte = msg_byte;
+            if (start_byte == START_BYTE){
+                byte_iterator = 0;
             }
 		    else{
-                msg_index = -1;
+                byte_iterator = -1;
             }
         }
-        else if (msg_index ==1){
-            msg_id = msg;
-            if (msg_id != mCode){
-                msg_index = -1;
+        else if (byte_iterator ==1){
+            id = msg_byte;
+            if (id != mCode){
+                byte_iterator = -1;
             }
         }
-        else if (msg_index == 2){
-            msg_len = msg+3;
+        else if (byte_iterator == 2){
+            length = msg_byte+3;
         }
-        else if (msg_index > 2 && msg_index < msg_len ){
-            msg_msg[ind] = (int) msg;
-            ind++;
+        else if (byte_iterator > 2 && byte_iterator < length ){
+            msg[index] = (int) msg_byte;
+            index++;
         }
-        else if (msg_index == msg_len){
+        else if (byte_iterator == length){
             msg_received = true;
-            msg_end = msg;
-            ind = 0;
-            msg_index = -1;
-            mRecCode = msg_id;
+            end_byte = msg_byte;
+            index = 0;
+            byte_iterator = -1;
+            mRecCode = id;
         }
-        msg_index++;
+        byte_iterator++;
     }
 
     public static void receive_bytes(byte[] msg, int len){
@@ -88,6 +80,9 @@ public class STMBridge {
         }
     }
 
+    public static void message_processed(){
+        msg_received = false;
+    }
 
     public void pack_message_sensors_fetch(byte msg) {
         mCode = MESSAGE_FETCH;
@@ -158,26 +153,19 @@ public class STMBridge {
         writeSTMBuf = writeBuf;
     }
 
-
-
-    public static boolean unpack_message_sensors_fetch(){
-        msg_received = false;
-        return true;
-    }
-
     public int getBridgeValue(int ID){
         //int sensor = msg_msg[2*ID]*100+msg_msg[2*ID];
-        return (int)msg_msg[ID];
+        return (int)msg[ID];
     }
 
     public int getBridgeInt16Value(int ID){
-        int sensor = (((msg_msg[2*ID+1] & 0xFF) << 8) | (msg_msg[2*ID]& 0xFF));
+        int sensor = (((msg[2*ID+1] & 0xFF) << 8) | (msg[2*ID]& 0xFF));
         return sensor;
 
     }
 
     public boolean getSensorValueBool(int ID){
-        if (msg_msg[ID] ==0){
+        if (msg[ID] ==0){
             return false;
         }
         else{

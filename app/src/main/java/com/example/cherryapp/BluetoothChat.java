@@ -91,8 +91,6 @@ public class BluetoothChat {
      */
     private synchronized void setState(int state) {
         mState = state;
-        // Give the new state to the Handler so the UI Activity can update
-        mHandler.obtainMessage(MainActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
 
     /**
@@ -394,15 +392,9 @@ public class BluetoothChat {
             while (true) {
                 try {
                     // Read from the InputStream
-
-
                         bytes = mmInStream.read(buffer);
 
                         switch(mActivityID){
-                            case MAIN_ACTIVITY_ID:
-                                mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
-                                        .sendToTarget();
-                                break;
                             case DEBUGGING_ACTIVITY_ID:
                                 mDebugHandler.obtainMessage(DebbugingActivity.MESSAGE_READ, bytes, -1, buffer)
                                         .sendToTarget();
@@ -431,18 +423,9 @@ public class BluetoothChat {
             }
         }
 
-        /**
-         * Write to the connected OutStream.
-         *
-         * @param buffer The bytes to write
-         * @param buffer The bytes to write
-         */
         public void write(byte[] buffer) {
             try {
                 mmOutStream.write(buffer);
-                // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(MainActivity.MESSAGE_WRITE, -1, -1, buffer)
-                        .sendToTarget();
             } catch (IOException e) {
             }
         }

@@ -31,14 +31,11 @@ public class TacticActivity extends AppCompatActivity {
 
     protected MyBluetoothService mService;
     protected boolean mBound = false;
-    private STMBridge mSTMBridge;
     private boolean mAttached = false;
-    private boolean mAnalog = false;
-    private boolean mFetched = false;
 
+    private STMBridge mSTMBridge;
     private byte mTacticBytes[] = new byte[5];
 
-    private int mRequest = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +74,6 @@ public class TacticActivity extends AppCompatActivity {
         final RadioGroup rgDrive = findViewById(R.id.rgDrive);
         final RadioGroup rgTime = findViewById(R.id.rgTime);
         final RadioGroup rgTurn = findViewById(R.id.rgTurn);
-
 
         final TextView tvTime = findViewById(R.id.tvTime);
         final TextView tvTurn = findViewById(R.id.tvTurn);
@@ -134,8 +130,6 @@ public class TacticActivity extends AppCompatActivity {
         });
 
     }
-
-
 
         public void setTactic(){
             final RadioButton rbDirLeft = findViewById(R.id.rbLeft);
@@ -205,9 +199,7 @@ public class TacticActivity extends AppCompatActivity {
             mSTMBridge.pack_message_tactic(mTacticBytes);
             byte[] send = mSTMBridge.writeSTMBuf;
             mService.write(mService.TACTIC_ACTIVITY_ID, send);
-
         }
-
 
         public void setupInitTactic(){
             RadioButton rbLeft = findViewById(R.id.rbLeft);
@@ -225,9 +217,7 @@ public class TacticActivity extends AppCompatActivity {
             rgTurn.setVisibility(View.INVISIBLE);
             tvTime.setVisibility(View.INVISIBLE);
             tvTurn.setVisibility(View.INVISIBLE);
-
         }
-
 
     private void attachService(){
         if (!mAttached){
@@ -265,23 +255,14 @@ public class TacticActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Sending "+ writeMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    //String readMessage = new String(readBuf, 0, msg.arg1);
+                    byte[] readBuf = (byte[]) msg.obj;;
                     mSTMBridge.receive_bytes(readBuf, msg.arg1);
 
                     if (mSTMBridge.msg_received) {
-                        boolean success = mSTMBridge.unpack_message_sensors_fetch();
+                        mSTMBridge.message_processed();
 
-                        if (success) {
-                            Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                            openFightActivity();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Not succees / len: " + msg.arg1 + " . Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "len: " + msg.arg1 + " . Not succees", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Success. Tactic set.", Toast.LENGTH_SHORT).show();
+                        openFightActivity();
                     }
                     break;
                 case MESSAGE_TOAST:
@@ -300,11 +281,6 @@ public class TacticActivity extends AppCompatActivity {
 
     public void openSensorActivity() {
         Intent intent = new Intent(this, DebbugingActivity.class);
-        startActivity(intent);
-    }
-
-    public void openMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
