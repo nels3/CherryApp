@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_CONNECTED = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_DEVICE_LOST = 6;
 
     //getting from bluetoothchatservice
     public static final String TOAST = "toast";
@@ -191,6 +192,10 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
                     break;
+                case MESSAGE_DEVICE_LOST:
+                    Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show();
+                    openMainActivity();
+                    break;
             }
         }
     };
@@ -210,6 +215,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DebbugingActivity.class);
         startActivity(intent);
     }
+
+    public void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 
 
     public void openDebuggingActivity() {
@@ -236,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                        mService.startChatService();
                     }
                 }
-
+                scanBluetoothDevices();
                 BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(WISIENKA_DeviceAddress);
                 mService.connect(device);
             }

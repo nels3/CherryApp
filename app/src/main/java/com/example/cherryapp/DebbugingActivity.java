@@ -181,7 +181,7 @@ public class DebbugingActivity extends AppCompatActivity {
         pbSensor[7] = findViewById(R.id.pbLeft);
 
         for (int i=0; i<6; ++i) {
-            pbSensor[i].setMax(2000);
+            pbSensor[i].setMax(1000);
         }
         for (int i=6; i<8; ++i) {
             pbSensor[i].setMax(4000);
@@ -204,6 +204,7 @@ public class DebbugingActivity extends AppCompatActivity {
         for (int i=0; i<8; ++i){
             pbSensor[i].setProgress(mSTMBridge.getBridgeInt16Value(i));
         }
+
 
     }
 
