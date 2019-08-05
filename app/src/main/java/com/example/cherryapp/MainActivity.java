@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
 
-    public static  String WISIENKA_DeviceName = "HC05_CHARLIE";
+    public static  String WISIENKA_DeviceName = "Wisienka";
     public static  String WISIENKA_DeviceAddress = null;
 
     public STMBridge mSTMBridge = null;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         List<BluetoothDevice> listPairedDevices = new ArrayList<BluetoothDevice>(pairedDevices);
 
         for (int i =0; i<pairedDevices.size(); ++i){
+            String name = listPairedDevices.get(i).getName();
             if (listPairedDevices.get(i).getName().equals(WISIENKA_DeviceName)){
                 WISIENKA_DeviceAddress = listPairedDevices.get(i).getAddress();
                 break;

@@ -161,7 +161,7 @@ public class DebbugingActivity extends AppCompatActivity {
             pbSensor[i].setMax(1000);
         }
         for (int i=6; i<8; ++i) {
-            pbSensor[i].setMax(4000);
+            pbSensor[i].setMax(4500);
         }
     }
 
