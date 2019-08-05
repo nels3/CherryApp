@@ -18,6 +18,7 @@ public class STMBridge {
     public static final byte MESSAGE_GET_FIGHT = 3;
     public static final byte MSG_FIGHT = 6;
     public static final byte MESSAGE_SEND_FIGHT = 4;
+    public static final byte MESSAGE_STOP_ROBOT = 5;
 
     public static byte mCode;
     public static byte mLength;
@@ -150,6 +151,18 @@ public class STMBridge {
         for (int i=0; i<3; ++i)
             writeBuf[3+i] = msg[i];
         writeBuf[6] = END_BYTE;
+        writeSTMBuf = writeBuf;
+    }
+
+    public void pack_message_stop_robot(){
+        mCode = MESSAGE_STOP_ROBOT;
+        mType = MSG_FIGHT;
+        mLength = 0;
+        byte[] writeBuf = new byte[mLength + 4];
+        writeBuf[0] = START_BYTE;
+        writeBuf[1] = mCode;
+        writeBuf[2] = mLength;
+        writeBuf[3] = END_BYTE;
         writeSTMBuf = writeBuf;
     }
 

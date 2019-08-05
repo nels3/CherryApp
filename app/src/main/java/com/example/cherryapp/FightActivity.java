@@ -22,7 +22,14 @@ import android.widget.ToggleButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class FightActivity extends AppCompatActivity {
+    public static int TIMER_PERIOD = 100;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_TOAST = 5;
@@ -37,9 +44,15 @@ public class FightActivity extends AppCompatActivity {
     private byte mDataRequest = 0;
     public static final byte MSG_FETCH = 1;
     public static final byte MSG_SEND = 2;
+    public static final byte MSG_STOP = 3;
+    public static final byte MSG_START = 4;
 
     private byte mFightBytes[] = new byte[3];
     private TextView tvOut[] = new TextView[12];
+
+    TimerTask mTimerTask;
+    final Handler handler = new Handler();
+    Timer t = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,26 +71,26 @@ public class FightActivity extends AppCompatActivity {
         final CheckBox cbTranslation = findViewById(R.id.cbTranslation);
         final CheckBox cbLeds = findViewById(R.id.cbLeds);
         final Button bSendData = findViewById(R.id.bSendData);
-
-        ToggleButton bStart = (ToggleButton) findViewById(R.id.bStart);
+        final ToggleButton bStart = (ToggleButton) findViewById(R.id.bStart);
         bStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 attachService();
                 if (isChecked) {
-                    startRobot();
                     bSendData.setEnabled(false);
                     cbDelay.setEnabled(false);
                     cbLeds.setEnabled(false);
                     cbTranslation.setEnabled(false);
-
                     mDataRequest = MSG_FETCH;
                     mSTMBridge.pack_message_fight_fetch();
-                    byte[] send = mSTMBridge.writeSTMBuf;
-                    mService.write(mService.FIGHT_ACTIVITY_ID, send);
 
+                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    doTimerSendingRequest();
                 } else{
-                    stopRobot();
+                    stopTimerSendingRequest();
+                    mDataRequest = MSG_STOP;
+                    mSTMBridge.pack_message_stop_robot();
+                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                 }
             }
         });
@@ -109,14 +122,23 @@ public class FightActivity extends AppCompatActivity {
         });
     }
 
-        public void startRobot(){
+    public void doTimerSendingRequest(){
+        mTimerTask = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    }
+                });
+            }};
+        t.schedule(mTimerTask, 10, TIMER_PERIOD);  //
+    }
 
+    public void stopTimerSendingRequest(){
+        if(mTimerTask!=null){
+            mTimerTask.cancel();
         }
-
-        public void stopRobot(){
-
-        }
-
+    }
 
     private void attachService(){
         if (!mAttached){
@@ -199,7 +221,7 @@ public class FightActivity extends AppCompatActivity {
 
     private void showDataFight(){
         for (int i=0; i<12; ++i){
-            tvOut[i].setText(Integer.toString(mSTMBridge.getBridgeValue(i)));
+            tvOut[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
         }
     }
 
@@ -208,7 +230,11 @@ public class FightActivity extends AppCompatActivity {
             case MSG_FETCH:
                 showDataFight();
                 break;
+            case MSG_STOP:
+                Toast.makeText(getApplicationContext(), "Robot stopped!", Toast.LENGTH_SHORT).show();
+                break;
         }
+
     }
 
     private void findObjectsByID() {

@@ -20,10 +20,14 @@ import android.widget.ToggleButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TuningActivity extends AppCompatActivity {
+    public static int TIMER_PERIOD = 100;
     public static final int MESSAGE_READ = 1;
     public static final int MESSAGE_TOAST = 2;
     public static final String TOAST = "toast";
@@ -45,6 +49,10 @@ public class TuningActivity extends AppCompatActivity {
     private LinearLayout llSensors, llMotors;
     private ToggleButton bStart;
     private Button bFetch, bSend, bSensors, bMotors, bDebbuging;
+
+    TimerTask mTimerTask;
+    final Handler handler = new Handler();
+    Timer t = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,8 +221,9 @@ public class TuningActivity extends AppCompatActivity {
                     bMotors.setVisibility(View.INVISIBLE);
 
                     fetchData(mSTMBridge.MSG_ANALOGY);
-
-                }else{
+                    doTimerSendingRequest();
+                } else{
+                    stopTimerSendingRequest();
                     bFetch.setEnabled(true);
                     bSend.setEnabled(true);
                     for (int i = 0; i < 8; i++){
@@ -258,11 +267,28 @@ public class TuningActivity extends AppCompatActivity {
 
     }
 
+    public void doTimerSendingRequest(){
+        mTimerTask = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        mService.write(mService.TUNING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
+                    }
+                });
+            }};
+        t.schedule(mTimerTask, 10, TIMER_PERIOD);  //
+    }
+
+    public void stopTimerSendingRequest(){
+        if(mTimerTask!=null){
+            mTimerTask.cancel();
+        }
+    }
+
     private void fetchData(byte msg){
         mDataRequest = msg;
         mSTMBridge.pack_message_sensors_fetch(msg);
-        byte[] send = mSTMBridge.writeSTMBuf;
-        mService.write(mService.TUNING_ACTIVITY_ID, send);
+        mService.write(mService.TUNING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
     }
 
     private void showDataSensors(){

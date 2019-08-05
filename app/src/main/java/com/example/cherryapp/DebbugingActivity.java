@@ -23,8 +23,12 @@ import android.widget.ToggleButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class DebbugingActivity extends AppCompatActivity {
+    public static int TIMER_PERIOD = 100;
     public static final int MESSAGE_READ = 1;
     public static final int MESSAGE_TOAST = 2;
     public static final String TOAST = "toast";
@@ -46,6 +50,10 @@ public class DebbugingActivity extends AppCompatActivity {
     private TextView tvImu[] = new TextView[4];
     private LinearLayout llSISensors, llImu, llKTIR;
     private ProgressBar pbSensor[] = new ProgressBar[8];
+
+    TimerTask mTimerTask;
+    final Handler handler = new Handler();
+    Timer t = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +82,9 @@ public class DebbugingActivity extends AppCompatActivity {
                         fetchData(MSG_ANALOG);
                     else
                         fetchData(MSG_DIGITAL);
-                }else{
+                    doTimerSendingRequest();
+                } else{
+                    stopTimerSendingRequest();
                     tbDisplay.setEnabled(true);
                     bTuning.setEnabled(true);
                     fetchData(MSG_THRESHOLD);
@@ -117,6 +127,24 @@ public class DebbugingActivity extends AppCompatActivity {
         });
         setAsNotFetched();
         handleProgressBars();
+    }
+
+    public void doTimerSendingRequest(){
+        mTimerTask = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        mService.write(mService.DEBUGGING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
+                    }
+                });
+            }};
+        t.schedule(mTimerTask, 10, TIMER_PERIOD);  //
+    }
+
+    public void stopTimerSendingRequest(){
+        if(mTimerTask!=null){
+            mTimerTask.cancel();
+        }
     }
 
     private void handleProgressBars(){
