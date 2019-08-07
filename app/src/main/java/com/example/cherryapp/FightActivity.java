@@ -29,7 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class FightActivity extends AppCompatActivity {
-    public static int TIMER_PERIOD = 100;
+    public static int TIMER_PERIOD = 300;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_TOAST = 5;
@@ -221,7 +221,17 @@ public class FightActivity extends AppCompatActivity {
 
     private void showDataFight(){
         for (int i=0; i<12; ++i){
-            tvOut[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
+            int var = mSTMBridge.getBridgeInt16Value(i);
+            if (i==0 || i ==1){
+                float fVar = (float)var / 1000.f;
+                tvOut[i].setText(Float.toString(fVar));
+            }
+            else if (i==8 || i==9 || i == 10 || i ==11){
+                float fVar = (float)var / 10.f;
+                tvOut[i].setText(Float.toString(fVar));
+            }
+            else
+                tvOut[i].setText(Integer.toString(var));
         }
     }
 

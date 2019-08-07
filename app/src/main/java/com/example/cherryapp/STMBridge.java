@@ -66,11 +66,13 @@ public class STMBridge {
             index++;
         }
         else if (byte_iterator == length){
-            msg_received = true;
             end_byte = msg_byte;
+            if (end_byte == END_BYTE) {
+                msg_received = true;
+                mRecCode = id;
+            }
             index = 0;
             byte_iterator = -1;
-            mRecCode = id;
         }
         byte_iterator++;
     }
@@ -178,7 +180,7 @@ public class STMBridge {
     }
 
     public boolean getSensorValueBool(int ID){
-        if (msg[ID] ==0){
+        if (msg[ID] == 0){
             return false;
         }
         else{

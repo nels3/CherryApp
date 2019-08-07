@@ -28,7 +28,7 @@ import java.util.TimerTask;
 
 
 public class DebbugingActivity extends AppCompatActivity {
-    public static int TIMER_PERIOD = 100;
+    public static int TIMER_PERIOD = 300;
     public static final int MESSAGE_READ = 1;
     public static final int MESSAGE_TOAST = 2;
     public static final String TOAST = "toast";
@@ -166,6 +166,7 @@ public class DebbugingActivity extends AppCompatActivity {
     }
 
     private void fetchData(byte msg_id){
+        Toast.makeText(getApplicationContext(), "Sending", Toast.LENGTH_SHORT).show();
         mDataRequest = msg_id;
         mSTMBridge.pack_message_sensors_fetch(msg_id);
         byte[] send = mSTMBridge.writeSTMBuf;
@@ -175,8 +176,11 @@ public class DebbugingActivity extends AppCompatActivity {
     private void showDataSensorsAnalog(){
         for (int i=0; i<8; ++i)
             tvSensor[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(i)));
-        for (int i=0; i<4; ++i)
-            tvImu[i].setText(Integer.toString(mSTMBridge.getBridgeInt16Value(8+i)));
+        for (int i=0; i<4; ++i) {
+            int var = mSTMBridge.getBridgeInt16Value(8 + i);
+            float fVar = (float) var / 10.f;
+            tvImu[i].setText(Float.toString(fVar));
+        }
         for (int i=0; i<8; ++i)
             pbSensor[i].setProgress(mSTMBridge.getBridgeInt16Value(i));
     }

@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TuningActivity extends AppCompatActivity {
-    public static int TIMER_PERIOD = 100;
+    public static int TIMER_PERIOD = 300;
     public static final int MESSAGE_READ = 1;
     public static final int MESSAGE_TOAST = 2;
     public static final String TOAST = "toast";
