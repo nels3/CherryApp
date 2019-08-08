@@ -84,6 +84,7 @@
     <string name="type">Tactic type:</string>
     <string name="turn_vel">Turn movement:</string>
     <string name="drive">Going forward:</string>
+    <string name="after">Turn after go</string>
     <string name="time">Drive time:</string>
     <string name="set_tactic">Set tactic</string>
     <string name="right">Right</string>
@@ -92,6 +93,7 @@
     <string name="angle_turn">Angle turn</string>
     <string name="stop">Turn - stop</string>
     <string name="slow">Slow</string>
+    <string name="vslow">Very slow</string>
     <string name="fast">Fast</string>
     <string name="very_fast">Very fast</string>
     <string name="tshort">Short</string>

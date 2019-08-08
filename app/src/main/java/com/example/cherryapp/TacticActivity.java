@@ -63,14 +63,19 @@ public class TacticActivity extends AppCompatActivity {
         final RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
         final RadioButton rbTypeTurn = findViewById(R.id.rbTurn);
         final RadioButton rbTypeStop = findViewById(R.id.rbStop);
+        final RadioButton rbTypeAfter = findViewById(R.id.rbAfter);
+        final RadioButton rbDriveVSlow = findViewById(R.id.rbDriveVSlow);
         final RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
         final RadioButton rbDriveFast = findViewById(R.id.rbDriveFast);
         final RadioButton rbDriveVFast = findViewById(R.id.rbDriveVFast);
         final RadioButton rbTurnSlow = findViewById(R.id.rbTurnSlow);
         final RadioButton rbTurnFast = findViewById(R.id.rbTurnFast);
-        final RadioButton rbTimeShort = findViewById(R.id.rbTimeShort);
-        final RadioButton rbTimeLong = findViewById(R.id.rbTimeLong);
-        final RadioButton rbTimeVLong = findViewById(R.id.rbTimeVLong);
+        final RadioButton rbTimeLongVSlow = findViewById(R.id.rbTimeLongVSlow);
+        final RadioButton rbTimeShortSlow = findViewById(R.id.rbTimeShortSlow);
+        final RadioButton rbTimeShortVSlow = findViewById(R.id.rbTimeShortVSlow);
+        final RadioButton rbTimeLongSlow = findViewById(R.id.rbTimeLongSlow);
+        final RadioButton rbTimeShortFast = findViewById(R.id.rbTimeShortFast);
+
         final RadioGroup rgDrive = findViewById(R.id.rgDrive);
         final RadioGroup rgTime = findViewById(R.id.rgTime);
         final RadioGroup rgTurn = findViewById(R.id.rgTurn);
@@ -90,6 +95,7 @@ public class TacticActivity extends AppCompatActivity {
                     tvTurn.setVisibility(View.INVISIBLE);
                     tvTime.setVisibility(View.INVISIBLE);
                     tvDrive.setVisibility(View.VISIBLE);
+
                     rbDriveSlow.setChecked(true);
                 }
             }
@@ -106,7 +112,7 @@ public class TacticActivity extends AppCompatActivity {
                     tvTurn.setVisibility(View.VISIBLE);
                     tvTime.setVisibility(View.INVISIBLE);
                     tvDrive.setVisibility(View.INVISIBLE);
-                    rbTimeVLong.setChecked(false);
+
                     rbTurnFast.setChecked(true);
                 }
             }
@@ -119,12 +125,31 @@ public class TacticActivity extends AppCompatActivity {
                 if ( isChecked ){
                     rgTurn.setVisibility(View.INVISIBLE);
                     rgTime.setVisibility(View.VISIBLE);
-                    rgDrive.setVisibility(View.VISIBLE);
+                    rgDrive.setVisibility(View.INVISIBLE);
                     tvTurn.setVisibility(View.INVISIBLE);
                     tvTime.setVisibility(View.VISIBLE);
-                    tvDrive.setVisibility(View.VISIBLE);
-                    rbDriveSlow.setChecked(true);
-                    rbTimeShort.setChecked(true);
+                    tvDrive.setVisibility(View.INVISIBLE);
+                    rbTimeLongSlow.setVisibility(View.INVISIBLE);
+                    rbTimeShortFast.setVisibility(View.INVISIBLE);
+                    rbTimeShortSlow.setChecked(true);
+                }
+            }
+        });
+        rbTypeStop.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if ( isChecked ){
+                    rgTurn.setVisibility(View.VISIBLE);
+                    rgTime.setVisibility(View.VISIBLE);
+                    rgDrive.setVisibility(View.INVISIBLE);
+                    tvTurn.setVisibility(View.VISIBLE);
+                    tvTime.setVisibility(View.VISIBLE);
+                    tvDrive.setVisibility(View.INVISIBLE);
+                    rbTimeLongSlow.setVisibility(View.VISIBLE);
+                    rbTimeShortFast.setVisibility(View.VISIBLE);
+                    rbTimeShortSlow.setChecked(true);
+                    rbTimeShortFast.setChecked(true);
                 }
             }
         });
@@ -137,17 +162,21 @@ public class TacticActivity extends AppCompatActivity {
             final RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
             final RadioButton rbTypeTurn = findViewById(R.id.rbTurn);
             final RadioButton rbTypeStop = findViewById(R.id.rbStop);
+            final RadioButton rbTypeAfter = findViewById(R.id.rbAfter);
+            final RadioButton rbDriveVSlow = findViewById(R.id.rbDriveVSlow);
             final RadioButton rbDriveSlow = findViewById(R.id.rbDriveSlow);
             final RadioButton rbDriveFast = findViewById(R.id.rbDriveFast);
             final RadioButton rbDriveVFast = findViewById(R.id.rbDriveVFast);
             final RadioButton rbTurnSlow = findViewById(R.id.rbTurnSlow);
             final RadioButton rbTurnFast = findViewById(R.id.rbTurnFast);
-            final RadioButton rbTimeShort= findViewById(R.id.rbTimeShort);
-            final RadioButton rbTimeLong = findViewById(R.id.rbTimeLong);
-            final RadioButton rbTimeVLong = findViewById(R.id.rbTimeVLong);
+            final RadioButton rbTimeLongVSlow = findViewById(R.id.rbTimeLongVSlow);
+            final RadioButton rbTimeShortSlow = findViewById(R.id.rbTimeShortSlow);
+            final RadioButton rbTimeShortVSlow = findViewById(R.id.rbTimeShortVSlow);
+            final RadioButton rbTimeLongSlow = findViewById(R.id.rbTimeLongSlow);
+            final RadioButton rbTimeShortFast = findViewById(R.id.rbTimeShortFast);
 
             for (int i=0; i<5; ++i){
-                mTacticBytes[i] = 0;
+                mTacticBytes[i] = 5;
             }
 
             //send direction
@@ -160,23 +189,29 @@ public class TacticActivity extends AppCompatActivity {
 
             if (rbTypeAngle.isChecked()){
 
-                mTacticBytes[1] = 1;
+                mTacticBytes[1] = 0;
             }
             else if (rbTypeTurn.isChecked()){
-                mTacticBytes[1] = 2;
+                mTacticBytes[1] = 1;
             }
             else if (rbTypeStop.isChecked()){
+                mTacticBytes[1] = 2;
+            }
+            else if (rbTypeAfter.isChecked()){
                 mTacticBytes[1] = 3;
             }
 
             if (rbTurnSlow.isChecked()){
-                mTacticBytes[2] = 1;
+                mTacticBytes[2] = 0;
             }
             else if (rbTurnFast.isChecked()){
-                mTacticBytes[2] = 2;
+                mTacticBytes[2] = 1;
             }
 
-            if (rbDriveSlow.isChecked()){
+            if (rbDriveVSlow.isChecked()){
+                mTacticBytes[3] = 0;
+            }
+            else if (rbDriveSlow.isChecked()){
                 mTacticBytes[3] = 1;
             }
             else if (rbDriveFast.isChecked()){
@@ -186,14 +221,20 @@ public class TacticActivity extends AppCompatActivity {
                 mTacticBytes[3] = 3;
             }
 
-            if (rbTimeShort.isChecked()){
+            if (rbTimeLongVSlow.isChecked()){
+                mTacticBytes[4] = 0;
+            }
+            else if (rbTimeShortSlow.isChecked()){
                 mTacticBytes[4] = 1;
             }
-            else if (rbTimeLong.isChecked()){
+            else if (rbTimeShortVSlow.isChecked()){
                 mTacticBytes[4] = 2;
             }
-            else if (rbTimeVLong.isChecked()){
+            else if (rbTimeLongSlow.isChecked()){
                 mTacticBytes[4] = 3;
+            }
+            else if (rbTimeShortFast.isChecked()){
+                mTacticBytes[4] = 4;
             }
 
             mSTMBridge.pack_message_tactic(mTacticBytes);
@@ -224,6 +265,18 @@ public class TacticActivity extends AppCompatActivity {
             mService.attachHandler(mService.TACTIC_ACTIVITY_ID, mHandler);
             mAttached = true;
         }
+    }
+
+    private void unpack_app_bridge_message(){
+        int tactic_status = mSTMBridge.getBridgeValue(0);
+        if (tactic_status==1){
+            Toast.makeText(getApplicationContext(), "Success. Tactic set.", Toast.LENGTH_SHORT).show();
+            openFightActivity();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Wrong tactic.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -261,8 +314,7 @@ public class TacticActivity extends AppCompatActivity {
                     if (mSTMBridge.msg_received) {
                         mSTMBridge.message_processed();
 
-                        Toast.makeText(getApplicationContext(), "Success. Tactic set.", Toast.LENGTH_SHORT).show();
-                        openFightActivity();
+                        unpack_app_bridge_message();
                     }
                     break;
                 case MESSAGE_TOAST:
