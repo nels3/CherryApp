@@ -18,7 +18,7 @@ public class STMBridge {
     public static final byte MESSAGE_GET_FIGHT = 3;
     public static final byte MSG_FIGHT = 6;
     public static final byte MESSAGE_SEND_FIGHT = 4;
-    public static final byte MESSAGE_STOP_ROBOT = 5;
+    public static final byte MESSAGE_COMMAND_ROBOT = 5;
 
     public static byte mCode;
     public static byte mLength;
@@ -156,15 +156,16 @@ public class STMBridge {
         writeSTMBuf = writeBuf;
     }
 
-    public void pack_message_stop_robot(){
-        mCode = MESSAGE_STOP_ROBOT;
+    public void pack_message_command_robot(byte msg){
+        mCode = MESSAGE_COMMAND_ROBOT;
         mType = MSG_FIGHT;
-        mLength = 0;
+        mLength = 1;
         byte[] writeBuf = new byte[mLength + 4];
         writeBuf[0] = START_BYTE;
         writeBuf[1] = mCode;
         writeBuf[2] = mLength;
-        writeBuf[3] = END_BYTE;
+        writeBuf[3] = msg;
+        writeBuf[4] = END_BYTE;
         writeSTMBuf = writeBuf;
     }
 

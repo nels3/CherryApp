@@ -12,6 +12,7 @@
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
         android:background="@color/grey_5"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
@@ -19,22 +20,38 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llVariables"
+        app:layout_constraintTop_toBottomOf="@+id/rlPopUp"
         app:menu="@menu/navigation" />
+
+    <ToggleButton
+        android:id="@+id/bFetch"
+        android:layout_width="127dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/cherry_custom_button"
+        android:checked="false"
+        android:ellipsize="middle"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textOff="Fetch Data"
+        android:textOn="Stop fetching"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ToggleButton
         android:id="@+id/bStart"
         android:layout_width="127dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="75dp"
         android:background="@drawable/cherry_custom_button"
         android:checked="false"
         android:ellipsize="middle"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textOff="@string/fight_start"
-        android:textOn="@string/fight_stop"
+        android:textOff="START"
+        android:textOn="STOP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -42,21 +59,21 @@
         android:id="@+id/bSendData"
         android:layout_width="127dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/cherry_custom_button"
         android:checked="false"
         android:ellipsize="middle"
         android:text="@string/fight_send_data"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toTopOf="@+id/bStart"
-        app:layout_constraintStart_toStartOf="@+id/bStart"
+        app:layout_constraintBottom_toTopOf="@+id/bFetch"
+        app:layout_constraintStart_toStartOf="@+id/bFetch"
         tools:text="Send data" />
 
     <CheckBox
         android:id="@+id/cbTranslation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/fight_translation"
         android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
@@ -67,24 +84,25 @@
         android:id="@+id/cbDelay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/fight_delay"
         android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/cbTranslation"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bSendData" />
 
     <CheckBox
         android:id="@+id/cbLeds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="23dp"
         android:text="@string/fight_leds"
         android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintBottom_toTopOf="@+id/bStart"
         app:layout_constraintStart_toStartOf="@+id/cbTranslation" />
 
     <LinearLayout
@@ -96,11 +114,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="220dp"
+        android:layout_marginBottom="250dp"
         android:background="@drawable/frame_drawable"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -404,5 +423,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+
+    
 
 </androidx.constraintlayout.widget.ConstraintLayout>

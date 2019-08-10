@@ -11,11 +11,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -24,9 +29,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class FightActivity extends AppCompatActivity {
     public static int TIMER_PERIOD = 300;
@@ -71,25 +73,34 @@ public class FightActivity extends AppCompatActivity {
         final CheckBox cbTranslation = findViewById(R.id.cbTranslation);
         final CheckBox cbLeds = findViewById(R.id.cbLeds);
         final Button bSendData = findViewById(R.id.bSendData);
-        final ToggleButton bStart = (ToggleButton) findViewById(R.id.bStart);
-        bStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final ToggleButton bFetch = (ToggleButton) findViewById(R.id.bFetch);
+        bFetch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 attachService();
                 if (isChecked) {
-                    bSendData.setEnabled(false);
-                    cbDelay.setEnabled(false);
-                    cbLeds.setEnabled(false);
-                    cbTranslation.setEnabled(false);
                     mDataRequest = MSG_FETCH;
                     mSTMBridge.pack_message_fight_fetch();
 
                     mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                     doTimerSendingRequest();
+
                 } else{
                     stopTimerSendingRequest();
+                }
+            }
+        });
+        final ToggleButton bStart = (ToggleButton) findViewById(R.id.bStart);
+        bStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                attachService();
+                if (isChecked) {
+                    mDataRequest = MSG_START;
+                    mSTMBridge.pack_message_command_robot((byte)1);
+                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                } else{
                     mDataRequest = MSG_STOP;
-                    mSTMBridge.pack_message_stop_robot();
+                    mSTMBridge.pack_message_command_robot((byte)2);
                     mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                 }
             }
@@ -100,15 +111,15 @@ public class FightActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 attachService();
-                if (cbDelay.isSelected())
+                if (cbDelay.isChecked())
                     mFightBytes[0] = 1;
                 else
                     mFightBytes[0] = 0;
-                if (cbTranslation.isSelected())
+                if (cbTranslation.isChecked())
                     mFightBytes[1] = 1;
                 else
                     mFightBytes[1] = 0;
-                if (cbLeds.isSelected())
+                if (cbLeds.isChecked())
                     mFightBytes[2] = 1;
                 else
                     mFightBytes[2] = 0;
@@ -120,6 +131,9 @@ public class FightActivity extends AppCompatActivity {
 
             }
         });
+        for (int i =0; i< 12; ++i){
+            tvOut[i].setText("-1");
+        }
     }
 
     public void doTimerSendingRequest(){
@@ -195,6 +209,10 @@ public class FightActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DebbugingActivity.class);
         startActivity(intent);
     }
+    public void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
@@ -236,16 +254,43 @@ public class FightActivity extends AppCompatActivity {
     }
 
     private void unpack_app_bridge_message(){
+        int status = 0;
         switch (mDataRequest){
             case MSG_FETCH:
                 showDataFight();
                 break;
+            case MSG_SEND:
+                status = mSTMBridge.getBridgeValue(0);
+                if (status == 1){
+                    Toast.makeText(getApplicationContext(), "Message send success", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error - send message", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case MSG_STOP:
-                Toast.makeText(getApplicationContext(), "Robot stopped!", Toast.LENGTH_SHORT).show();
+                status = mSTMBridge.getBridgeValue(0);
+                if (status == 2){
+                    Toast.makeText(getApplicationContext(), "Robot stopped", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error - robot stop", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case MSG_START:
+                status = mSTMBridge.getBridgeValue(0);
+                if (status == 1){
+                    Toast.makeText(getApplicationContext(), "Robot started", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error - robot stop", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
 
     }
+
 
     private void findObjectsByID() {
         tvOut[0] = findViewById(R.id.tvOutVar1);

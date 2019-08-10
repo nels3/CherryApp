@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MESSAGE_DEVICE_CONNECTED:
                     Toast.makeText(getApplicationContext(), "Connected to Wisienka", Toast.LENGTH_SHORT).show();
+                    bConnect.setText("Disconnect");
                     setViewAsConnected();
                     break;
                 case MESSAGE_TOAST:
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case MESSAGE_DEVICE_LOST:
                     Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show();
+                    bConnect.setText("Connect");
                     openMainActivity();
                     break;
             }
