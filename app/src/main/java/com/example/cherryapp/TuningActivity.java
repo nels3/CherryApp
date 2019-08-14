@@ -40,6 +40,7 @@ public class TuningActivity extends AppCompatActivity {
     private byte mDataRequest = 0;
     public final byte MSG_THRESHOLD = 3;
     public final byte MSG_ANALOGY = 4;
+    public final byte MSG_SAVE = 5;
 
     private TextView tvSensor[] = new TextView[8];
     private TextView tvThreshold[] = new TextView[8];
@@ -48,7 +49,7 @@ public class TuningActivity extends AppCompatActivity {
 
     private LinearLayout llSensors, llMotors;
     private ToggleButton bStart;
-    private Button bFetch, bSend, bSensors, bMotors, bDebbuging;
+    private Button bFetch, bSend, bSensors, bMotors, bDebbuging, bSave;
 
     TimerTask mTimerTask;
     final Handler handler = new Handler();
@@ -159,6 +160,7 @@ public class TuningActivity extends AppCompatActivity {
         bMotors = findViewById(R.id.tbTMotors);
         bDebbuging = findViewById(R.id.tbTDebbuging);
         bStart = findViewById(R.id.tbTStart);
+        bSave = findViewById(R.id.tbTSave);
 
         llSensors = findViewById(R.id.llSensors);
         llMotors = findViewById(R.id.llMotors);
@@ -265,6 +267,18 @@ public class TuningActivity extends AppCompatActivity {
             }
         });
 
+        bSend.setEnabled(false);
+        bSend.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                attachService();
+
+                mSTMBridge.pack_message_command_robot((byte)3);
+                mDataRequest = mSTMBridge.MSG_SAVE;
+                mService.write(mService.TUNING_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+            }
+        });
+
     }
 
     public void doTimerSendingRequest(){
@@ -311,7 +325,15 @@ public class TuningActivity extends AppCompatActivity {
             case MSG_THRESHOLD:
                 showFetchThreshold();
                 break;
-
+            case MSG_SAVE:
+                int status = mSTMBridge.getBridgeValue(0);
+                if (status == 1){
+                    Toast.makeText(getApplicationContext(), "Config saved successfully!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error when saving config!", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 

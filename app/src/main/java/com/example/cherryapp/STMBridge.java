@@ -11,6 +11,7 @@ public class STMBridge {
     public final byte MSG_ANALOG = 2;
     public final byte MSG_THRESHOLD = 3;
     public final byte MSG_ANALOGY = 4;
+    public final byte MSG_SAVE = 5;
 
     public static final byte MESSAGE_SEND_THRESHOLD = 1;
     public static final byte MESSAGE_SEND_TACTIC = 2;

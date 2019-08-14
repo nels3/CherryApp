@@ -55,16 +55,5 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bDisc"
-        android:layout_width="48dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@mipmap/cherry_logo3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

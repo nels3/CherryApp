@@ -199,14 +199,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bDisconnect = findViewById(R.id.bDisc);
-        bDisconnect.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mService.stopChatService();
-                setViewAsUnConnected();
-            }
-        });
-
         bFighting = findViewById(R.id.bFight);
         bFighting.setOnClickListener(new View.OnClickListener(){
             @Override

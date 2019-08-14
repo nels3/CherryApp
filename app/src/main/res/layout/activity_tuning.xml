@@ -24,12 +24,12 @@
 
     <Button
         android:id="@+id/tbTDebbuging"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/cherry_custom_button"
-        android:text="@string/t_debugging"
+        android:text="Debug"
         android:textOff="@string/t_debugging"
         android:textOn="@string/t_debugging"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,57 +37,65 @@
 
     <Button
         android:id="@+id/tbTSend"
-        android:layout_width="110dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="151dp"
-        android:layout_marginRight="151dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/t_send"
         android:textOff="@string/t_send"
         android:textOn="@string/t_send"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tbFetch"
+        app:layout_constraintEnd_toStartOf="@+id/tbTSave"
+        app:layout_constraintTop_toTopOf="@+id/tbFetch" />
+
+    <Button
+        android:id="@+id/tbTSave"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:background="@drawable/cherry_custom_button"
+        android:text="Save"
+        android:textOff="@string/t_send"
+        android:textOn="@string/t_send"
+        app:layout_constraintEnd_toStartOf="@+id/tbTStart"
         app:layout_constraintTop_toTopOf="@+id/tbFetch" />
 
     <Button
         android:id="@+id/tbTSensors"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:layout_marginBottom="480dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/t_sensors"
         android:textOff="@string/t_sensors"
         android:textOn="@string/t_fetch"
         app:layout_constraintBottom_toTopOf="@+id/tbFetch"
-        app:layout_constraintEnd_toStartOf="@+id/tbTMotors"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/tbTMotors"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="151dp"
-        android:layout_marginRight="151dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/t_motors"
         android:textOff="@string/t_motors"
         android:textOn="@string/t_motors"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tbTDebbuging"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tbTSensors"
         app:layout_constraintTop_toTopOf="@+id/tbTSensors" />
 
     <ToggleButton
         android:id="@+id/tbTStart"
-        android:layout_width="110dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/cherry_custom_button"
         android:textOff="@string/sen_starting"
         android:textOn="@string/sen_stop"
@@ -96,12 +104,12 @@
 
     <Button
         android:id="@+id/tbFetch"
-        android:layout_width="110dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/cherry_custom_button"
         android:text="@string/t_fetch"
@@ -133,8 +141,8 @@
             android:id="@+id/tvTSiSensors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/tx_color"
-            android:text="SI Sensors:" />
+            android:text="SI Sensors:"
+            android:textColor="@color/tx_color" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -163,8 +171,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvSi04"
@@ -186,16 +194,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/si1" />
+                android:text="@string/si1"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi12"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi13"
@@ -203,8 +211,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvSi14"
@@ -226,16 +234,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/si2" />
+                android:text="@string/si2"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi22"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi23"
@@ -243,8 +251,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvSi24"
@@ -266,16 +274,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/si0" />
+                android:text="@string/si0"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi32"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi33"
@@ -283,8 +291,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvSi34"
@@ -306,16 +314,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/si4" />
+                android:text="@string/si4"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi42"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi43"
@@ -323,8 +331,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvSi44"
@@ -346,16 +354,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/si5" />
+                android:text="@string/si5"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi52"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvSi53"
@@ -363,8 +371,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvSi54"
@@ -393,16 +401,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/leftkt" />
+                android:text="@string/leftkt"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvKTL2"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvKTL3"
@@ -410,8 +418,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvKTL4"
@@ -433,16 +441,16 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="@string/rightkt" />
+                android:text="@string/rightkt"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvKTR2"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <TextView
                 android:id="@+id/tvKTR3"
@@ -450,8 +458,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_color"
-                android:textColor="@color/tx_color"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/tx_color" />
 
             <EditText
                 android:id="@+id/tvKTR4"
