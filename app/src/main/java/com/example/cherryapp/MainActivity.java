@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     setViewAsConnected();
 
                     mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_HI);
-                    mService.write(mService.MAIN_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    mService.write(mService.mChatService.MAIN_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDebuggingActivity() {
-        Intent intent = new Intent(this, DebbugingActivity.class);
+        Intent intent = new Intent(this, DebuggingActivity.class);
         startActivity(intent);
     }
 

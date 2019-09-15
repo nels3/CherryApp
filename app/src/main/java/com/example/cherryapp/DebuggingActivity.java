@@ -2,7 +2,6 @@ package com.example.cherryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -20,40 +19,50 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-public class DebbugingActivity extends AppCompatActivity {
+/**
+ * Activity that handles dubugging the Wisienka device
+ */
+public class DebuggingActivity extends AppCompatActivity {
+    // time period for timer requests
     public static int TIMER_PERIOD = 300;
+
+    // handler of messages from bluetooth chat
     public static final int MESSAGE_READ = 1;
     public static final int MESSAGE_TOAST = 2;
+
     public static final String TOAST = "toast";
 
+    // object that stores STMBridge connector
     private STMBridge mSTMBridge;
+
+    TimerTask mTimerTask;
+    final Handler mTimerHandler = new Handler();
+    Timer mTimer = new Timer();
+
+    // variable connected with bluetooth service
     protected MyBluetoothService mService;
     protected boolean mBound = false;
     private boolean mAttached = false;
     private boolean mAnalog = false;
 
+    // stores what we have requested from bluettoth service
     private int mDataRequest = 0;
     public static final byte MSG_DIGITAL = 1;
     public static final byte MSG_ANALOG = 2;
     public static final byte MSG_THRESHOLD = 3;
 
+    // objects from activity
     private ToggleButton tbSensor[] = new ToggleButton[8];
-    private TextView tvSensor[] = new TextView[8];
-    private TextView tvThresholdSensor[] = new TextView[8];
-    private TextView tvImu[] = new TextView[4];
     private LinearLayout llSISensors, llImu, llKTIR;
     private ProgressBar pbSensor[] = new ProgressBar[8];
 
-    TimerTask mTimerTask;
-    final Handler handler = new Handler();
-    Timer t = new Timer();
+    private TextView tvSensor[] = new TextView[8]; // stores analog values from sensors
+    private TextView tvThresholdSensor[] = new TextView[8]; // stores threshold values
+    private TextView tvImu[] = new TextView[4]; // stores values form IMU
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +80,7 @@ public class DebbugingActivity extends AppCompatActivity {
         final ToggleButton tbDisplay = findViewById(R.id.tbTSend);
         final Button bTuning = findViewById(R.id.tbTDebbuging);
 
+        // toggle buttons that can send timer request to get variables from device
         tbStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -129,18 +139,20 @@ public class DebbugingActivity extends AppCompatActivity {
         handleProgressBars();
     }
 
+    // method that is sequentially sending request via bluetooth to device
     public void doTimerSendingRequest(){
         mTimerTask = new TimerTask() {
             public void run() {
-                handler.post(new Runnable() {
+                mTimerHandler.post(new Runnable() {
                     public void run() {
-                        mService.write(mService.DEBUGGING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
+                        mService.write(mService.mChatService.DEBUGGING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
                     }
                 });
             }};
-        t.schedule(mTimerTask, 10, TIMER_PERIOD);  //
+        mTimer.schedule(mTimerTask, 10, TIMER_PERIOD);  //
     }
 
+    // method that stops is sequentially sending request via bluetooth to device
     public void stopTimerSendingRequest(){
         if(mTimerTask!=null){
             mTimerTask.cancel();
@@ -166,11 +178,9 @@ public class DebbugingActivity extends AppCompatActivity {
     }
 
     private void fetchData(byte msg_id){
-        Toast.makeText(getApplicationContext(), "Sending", Toast.LENGTH_SHORT).show();
         mDataRequest = msg_id;
         mSTMBridge.pack_message_sensors_fetch(msg_id);
-        byte[] send = mSTMBridge.writeSTMBuf;
-        mService.write(mService.DEBUGGING_ACTIVITY_ID, send);
+        mService.write(mService.mChatService.DEBUGGING_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
     }
 
     private void showDataSensorsAnalog(){
@@ -211,19 +221,16 @@ public class DebbugingActivity extends AppCompatActivity {
 
     private void attachService(){
         if (!mAttached){
-            mService.attachHandler(mService.DEBUGGING_ACTIVITY_ID, mHandler);
+            mService.attachHandler(mService.mChatService.DEBUGGING_ACTIVITY_ID, mHandler);
             mAttached = true;
         }
     }
 
     private void setAsNotFetched(){
-        for (int i =0 ;i<8; i++){
+        for (int i =0 ;i<8; i++)
             tvSensor[i].setText("-1");
-        }
-        for (int i=0; i<4; i++){
+        for (int i=0; i<4; i++)
             tvImu[i].setText("-1");
-        }
-
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -254,7 +261,7 @@ public class DebbugingActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_sensors);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -284,7 +291,7 @@ public class DebbugingActivity extends AppCompatActivity {
                     //wait till whole message received
                     if (mSTMBridge.msg_received) {
                         mSTMBridge.message_processed();
-                        Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                         unpack_app_bridge_message();
                     }
                     break;

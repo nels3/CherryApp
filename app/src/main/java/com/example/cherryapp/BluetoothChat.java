@@ -8,21 +8,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.telephony.TelephonyManager;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.UUID;
-import android.provider.Settings.Secure;
+
 /**
- * This class does all the work for setting up and managing Bluetooth
- * connections with other devices. It has a thread that listens for
- * incoming connections, a thread for connecting with a device, and a
- * thread for performing data transmissions when connected.
+This class is responsible for managing bluettoth connection with device.
  */
 public class BluetoothChat {
+    // ID of activities that are sending requests via bluetooth chat
     final public int MAIN_ACTIVITY_ID = 0;
     final public int DEBUGGING_ACTIVITY_ID = 1;
     final public int TUNING_ACTIVITY_ID = 2;
@@ -30,10 +26,7 @@ public class BluetoothChat {
     final public int FIGHT_ACTIVITY_ID = 4;
 
     BluetoothDevice mDevice;
-    // Name for the SDP record when creating server socket
     private static final String NAME = "BluetoothChat";
-
-
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // Member fields
@@ -56,10 +49,10 @@ public class BluetoothChat {
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
     /**
-     * Constructor. Prepares a new BluetoothChat session.
-     *
-     * @param context The UI Activity Context
-     * @param handler A Handler to send messages back to the UI Activity
+     * Constructor for Bluetooth chat service
+     * @param context
+     * @param mBluetoothAdapter
+     * @param handler
      */
     public BluetoothChat(Context context, BluetoothAdapter mBluetoothAdapter, Handler handler) {
         mAdapter = mBluetoothAdapter;
@@ -84,26 +77,13 @@ public class BluetoothChat {
         }
     }
 
-    /**
-     * Set the current state of the chat connection
-     *
-     * @param state An integer defining the current connection state
-     */
     private synchronized void setState(int state) {
         mState = state;
     }
-
-    /**
-     * Return the current connection state.
-     */
     public synchronized int getState() {
         return mState;
     }
 
-    /**
-     * Start the chat service. Specifically start AcceptThread to begin a
-     * session in listening (server) mode. Called by the Activity onResume()
-     */
     public synchronized void start() {
         // Cancel any thread attempting to make a connection
         if (mConnectThread != null) {
@@ -123,11 +103,7 @@ public class BluetoothChat {
         setState(STATE_LISTEN);
     }
 
-    /**
-     * Start the ConnectThread to initiate a connection to a remote device.
-     *
-     * @param device The BluetoothDevice to connect
-     */
+
     public synchronized void connect(BluetoothDevice device) {
         mDevice = device;
         // Cancel any thread attempting to make a connection
@@ -148,12 +124,6 @@ public class BluetoothChat {
         setState(STATE_CONNECTING);
     }
 
-    /**
-     * Start the ConnectedThread to begin managing a Bluetooth connection
-     *
-     * @param socket The BluetoothSocket on which the connection was made
-     * @param device The BluetoothDevice that has been connected
-     */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
         // Cancel the thread that completed the connection
         if (mConnectThread != null) {
@@ -182,9 +152,7 @@ public class BluetoothChat {
         setState(STATE_CONNECTED);
     }
 
-    /**
-     * Stop all threads
-     */
+
     public synchronized void stop() {
         if (mConnectThread != null) {
             mConnectThread.cancel();
@@ -201,28 +169,18 @@ public class BluetoothChat {
         setState(STATE_NONE);
     }
 
-    /**
-     * Write to the ConnectedThread in an unsynchronized manner
-     *
-     * @param out The bytes to write
-     * @see ConnectedThread#write(byte[])
-     */
     public void write(int ID, byte[] out) {
         mActivityID = ID;
-        // Create temporary object
+
         ConnectedThread r;
-        // Synchronize a copy of the ConnectedThread
+
         synchronized (this) {
             if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
         }
-        // Perform the write unsynchronized
         r.write(out);
     }
 
-    /**
-     * Indicate that the connection attempt failed and notify the UI Activity.
-     */
     private void connectionFailed() {
         setState(STATE_LISTEN);
         // Send a failure message back to the Activity
@@ -233,9 +191,6 @@ public class BluetoothChat {
         mHandler.sendMessage(msg);
     }
 
-    /**
-     * Indicate that the connection was lost and notify the UI Activity.
-     */
     private void connectionLost() {
         setState(STATE_LISTEN);
         // Send a failure message back to the Activity
@@ -243,11 +198,6 @@ public class BluetoothChat {
         mHandler.sendMessage(msg);
     }
 
-    /**
-     * This thread runs while listening for incoming connections. It behaves
-     * like a server-side client. It runs until a connection is accepted
-     * (or until cancelled).
-     */
     private class AcceptThread extends Thread{
         // The local server socket
         private final BluetoothServerSocket mmServerSocket;
@@ -268,8 +218,7 @@ public class BluetoothChat {
             // Listen to the server socket if we're not connected
             while (mState != STATE_CONNECTED) {
                 try {
-                    // This is a blocking call and will only return on a
-                    // successful connection or an exception
+
                     socket = mmServerSocket.accept();
                 } catch (IOException e) {
                     break;
@@ -305,11 +254,6 @@ public class BluetoothChat {
         }
     }
 
-    /**
-     * This thread runs while attempting to make an outgoing connection
-     * with a device. It runs straight through; the connection either
-     * succeeds or fails.
-     */
     private class ConnectThread extends Thread{
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
@@ -362,10 +306,7 @@ public class BluetoothChat {
         }
     }
 
-    /**
-     * This thread runs during a connection with a remote device.
-     * It handles all incoming and outgoing transmissions.
-     */
+
     private class ConnectedThread extends Thread{
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -396,7 +337,7 @@ public class BluetoothChat {
 
                         switch(mActivityID){
                             case DEBUGGING_ACTIVITY_ID:
-                                mDebugHandler.obtainMessage(DebbugingActivity.MESSAGE_READ, bytes, -1, buffer)
+                                mDebugHandler.obtainMessage(DebuggingActivity.MESSAGE_READ, bytes, -1, buffer)
                                         .sendToTarget();
                                 break;
 

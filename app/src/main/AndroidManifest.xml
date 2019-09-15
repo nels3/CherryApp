@@ -18,7 +18,7 @@
             android:exported="false"></service>
 
         <activity android:name=".FightActivity" />
-        <activity android:name=".DebbugingActivity" />
+        <activity android:name=".DebuggingActivity" />
         <activity android:name=".TuningActivity" />
         <activity android:name=".TacticActivity" />
         <activity

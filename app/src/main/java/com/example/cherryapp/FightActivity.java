@@ -11,16 +11,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -30,8 +26,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Activity that handles communication with Wisienka device during fight
+ */
 public class FightActivity extends AppCompatActivity {
+    // time period for timer requests
     public static int TIMER_PERIOD = 300;
+
+    // handler of messages from bluetooth chat
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_TOAST = 5;
@@ -41,8 +43,14 @@ public class FightActivity extends AppCompatActivity {
     protected boolean mBound = false;
     private boolean mAttached = false;
 
+    // object that stores STMBridge connector
     private STMBridge mSTMBridge;
 
+    TimerTask mTimerTask;
+    final Handler handler = new Handler();
+    Timer t = new Timer();
+
+    // stores what we have requested from bluettoth service
     private byte mDataRequest = 0;
     public static final byte MSG_FETCH = 1;
     public static final byte MSG_SEND = 2;
@@ -50,12 +58,9 @@ public class FightActivity extends AppCompatActivity {
     public static final byte MSG_START = 4;
     public static final byte MSG_RESTART = 5;
 
+    // objects from activity
     private byte mFightBytes[] = new byte[3];
     private TextView tvOut[] = new TextView[12];
-
-    TimerTask mTimerTask;
-    final Handler handler = new Handler();
-    Timer t = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +79,8 @@ public class FightActivity extends AppCompatActivity {
         final CheckBox cbTranslation = findViewById(R.id.cbTranslation);
         final CheckBox cbLeds = findViewById(R.id.cbLeds);
         final Button bSendData = findViewById(R.id.bSendData);
-        final ToggleButton bFetch = (ToggleButton) findViewById(R.id.bFetch);
-        final ToggleButton bStart = (ToggleButton) findViewById(R.id.bStart);
+        final ToggleButton bFetch = findViewById(R.id.bFetch);
+        final ToggleButton bStart = findViewById(R.id.bStart);
         final LinearLayout llRestart = findViewById(R.id.llRestart);
         final Button bRestart = findViewById(R.id.bRestart);
         final Button bBack = findViewById(R.id.bBack);
@@ -88,7 +93,7 @@ public class FightActivity extends AppCompatActivity {
                 if (isChecked) {
                     mDataRequest = MSG_FETCH;
                     mSTMBridge.pack_message_fight_fetch();
-                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                     doTimerSendingRequest();
 
                 } else{
@@ -104,7 +109,7 @@ public class FightActivity extends AppCompatActivity {
                     stopTimerSendingRequest();
                     mDataRequest = MSG_START;
                     mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_START);
-                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                 } else{
                     bFetch.setVisibility(View.INVISIBLE);
                     bStart.setVisibility(View.INVISIBLE);
@@ -112,7 +117,7 @@ public class FightActivity extends AppCompatActivity {
                     stopTimerSendingRequest();
                     mDataRequest = MSG_STOP;
                     mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_STOP);
-                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                 }
             }
         });
@@ -138,7 +143,7 @@ public class FightActivity extends AppCompatActivity {
                 mDataRequest = MSG_SEND;
                 mSTMBridge.pack_message_fight_send(mFightBytes);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(mService.FIGHT_ACTIVITY_ID, send);
+                mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, send);
 
             }
         });
@@ -154,7 +159,7 @@ public class FightActivity extends AppCompatActivity {
                 mDataRequest = MSG_RESTART;
                 mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_RESTART);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(mService.FIGHT_ACTIVITY_ID, send);
+                mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, send);
                 openTacticActivity();
             }
         });
@@ -165,7 +170,7 @@ public class FightActivity extends AppCompatActivity {
                 mDataRequest = MSG_RESTART;
                 mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_RESTART);
                 byte[] send = mSTMBridge.writeSTMBuf;
-                mService.write(mService.FIGHT_ACTIVITY_ID, send);
+                mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, send);
                 mService.stopChatService();
                 openMainActivity();
 
@@ -178,7 +183,7 @@ public class FightActivity extends AppCompatActivity {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                        mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                     }
                 });
             }};
@@ -193,7 +198,7 @@ public class FightActivity extends AppCompatActivity {
 
     private void attachService(){
         if (!mAttached){
-            mService.attachHandler(mService.FIGHT_ACTIVITY_ID, mHandler);
+            mService.attachHandler(mService.mChatService.FIGHT_ACTIVITY_ID, mHandler);
             mAttached = true;
         }
     }
@@ -226,7 +231,7 @@ public class FightActivity extends AppCompatActivity {
 
                     if (mSTMBridge.msg_received) {
                         mSTMBridge.message_processed();
-                        Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getApplicationContext(), "Success. Got code: " + mSTMBridge.mRecCode, Toast.LENGTH_SHORT).show();
                         unpack_app_bridge_message();
                     }
                     break;
@@ -243,7 +248,7 @@ public class FightActivity extends AppCompatActivity {
     }
 
     public void openSensorActivity() {
-        Intent intent = new Intent(this, DebbugingActivity.class);
+        Intent intent = new Intent(this, DebuggingActivity.class);
         startActivity(intent);
     }
     public void openMainActivity() {
@@ -256,7 +261,7 @@ public class FightActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_fight);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -283,14 +288,14 @@ public class FightActivity extends AppCompatActivity {
             int var = mSTMBridge.getBridgeInt16Value(i);
             if (i==0 || i ==1){
                 float fVar = (float)var / 1000.f;
-                tvOut[i].setText(Float.toString(fVar));
+                tvOut[i].setText(String.format("%f", fVar));
             }
             else if (i==8 || i==9 || i == 10 || i ==11){
                 float fVar = (float)var / 10.f;
-                tvOut[i].setText(Float.toString(fVar));
+                tvOut[i].setText(String.format("%f", fVar));
             }
             else
-                tvOut[i].setText(Integer.toString(var));
+                tvOut[i].setText(String.format("%d", var));
         }
     }
 
@@ -298,58 +303,6 @@ public class FightActivity extends AppCompatActivity {
         final LinearLayout llRestart = findViewById(R.id.llRestart);
         llRestart.setVisibility(View.VISIBLE);
     }
-
-    private void unpack_app_bridge_message(){
-        int status = 0;
-        switch (mDataRequest){
-            case MSG_FETCH:
-                showDataFight();
-                break;
-            case MSG_SEND:
-                status = mSTMBridge.getBridgeValue(0);
-                if (status == 1){
-                    Toast.makeText(getApplicationContext(), "Message send success", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Error - send message", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case MSG_STOP:
-                status = mSTMBridge.getBridgeValue(0);
-                if (status == 2){
-                    Toast.makeText(getApplicationContext(), "Robot stopped", Toast.LENGTH_SHORT).show();
-                    enableRestartingRobotView();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Error - robot stop", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case MSG_START:
-                status = mSTMBridge.getBridgeValue(0);
-                if (status == 1){
-                    Toast.makeText(getApplicationContext(), "Robot started", Toast.LENGTH_SHORT).show();
-                    mDataRequest = MSG_FETCH;
-                    mSTMBridge.pack_message_fight_fetch();
-                    mService.write(mService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
-                    doTimerSendingRequest();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Error - robot start", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case MSG_RESTART:
-                status = mSTMBridge.getBridgeValue(0);
-                if (status == 4){
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Error - cannot restart robot "+status, Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-
-    }
-
 
     private void findObjectsByID() {
         tvOut[0] = findViewById(R.id.tvOutVar1);
@@ -364,5 +317,54 @@ public class FightActivity extends AppCompatActivity {
         tvOut[9] = findViewById(R.id.tvOutVar10);
         tvOut[10] = findViewById(R.id.tvOutVar11);
         tvOut[11] = findViewById(R.id.tvOutVar12);
+    }
+
+    private void unpack_app_bridge_message(){
+        int status;
+        switch (mDataRequest){
+            case MSG_FETCH:
+                showDataFight();
+                break;
+            case MSG_SEND:
+                status = mSTMBridge.getBridgeValue(0);
+                if (status == 1){
+                    Toast.makeText(getApplicationContext(), "Success - message sent to robot", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error - sending message", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case MSG_STOP:
+                status = mSTMBridge.getBridgeValue(0);
+                if (status == 2){
+                    Toast.makeText(getApplicationContext(), "Robot has stopped!", Toast.LENGTH_SHORT).show();
+                    enableRestartingRobotView();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error - stopping robot", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case MSG_START:
+                status = mSTMBridge.getBridgeValue(0);
+                if (status == 1){
+                    Toast.makeText(getApplicationContext(), "Robot has started!", Toast.LENGTH_SHORT).show();
+                    mDataRequest = MSG_FETCH;
+                    mSTMBridge.pack_message_fight_fetch();
+                    mService.write(mService.mChatService.FIGHT_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                    doTimerSendingRequest();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error - starting robot", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case MSG_RESTART:
+                status = mSTMBridge.getBridgeValue(0);
+                if (status != 4){
+                    Toast.makeText(getApplicationContext(), "Error - cannot restart robot "+status, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
     }
 }

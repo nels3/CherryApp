@@ -4,26 +4,14 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.content.Context;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.widget.Toast;
 
 public class MyBluetoothService extends Service {
-    final public int MAIN_ACTIVITY_ID = 0;
-    final public int DEBUGGING_ACTIVITY_ID = 1;
-    final public int TUNING_ACTIVITY_ID = 2;
-    final public int TACTIC_ACTIVITY_ID = 3;
-    final public int FIGHT_ACTIVITY_ID = 4;
-
-    private Handler handler = new Handler();
-    private Handler debuggingHandler = new Handler();
     private final IBinder mBinder = new LocalBinder();
 
-    private BluetoothAdapter mBluetoothAdapter = null;
-    private final Handler mHandler = null;
-    private BluetoothChat mChatService;
+    public BluetoothChat mChatService;
 
     public class LocalBinder extends Binder {
         MyBluetoothService getService() {
@@ -64,15 +52,4 @@ public class MyBluetoothService extends Service {
         mChatService.write(ID, send);
     }
 
-    public void write(){
-
-    }
-
-    public void generateToast() {
-        handler.post(new Runnable() {
-            public void run() {
-                Toast.makeText(getApplicationContext(), "WITAJ W SERWISIE(znowu)", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

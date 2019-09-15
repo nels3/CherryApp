@@ -239,7 +239,7 @@ public class TacticActivity extends AppCompatActivity {
 
             mSTMBridge.pack_message_tactic(mTacticBytes);
             byte[] send = mSTMBridge.writeSTMBuf;
-            mService.write(mService.TACTIC_ACTIVITY_ID, send);
+            mService.write(mService.mChatService.TACTIC_ACTIVITY_ID, send);
         }
 
         public void setupInitTactic(){
@@ -262,7 +262,7 @@ public class TacticActivity extends AppCompatActivity {
 
     private void attachService(){
         if (!mAttached){
-            mService.attachHandler(mService.TACTIC_ACTIVITY_ID, mHandler);
+            mService.attachHandler(mService.mChatService.TACTIC_ACTIVITY_ID, mHandler);
             mAttached = true;
         }
     }
@@ -332,7 +332,7 @@ public class TacticActivity extends AppCompatActivity {
     }
 
     public void openSensorActivity() {
-        Intent intent = new Intent(this, DebbugingActivity.class);
+        Intent intent = new Intent(this, DebuggingActivity.class);
         startActivity(intent);
     }
 

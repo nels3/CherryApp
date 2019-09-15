@@ -71,7 +71,7 @@ public class TuningActivity extends AppCompatActivity {
 
     private void attachService(){
         if (!mAttached){
-            mService.attachHandler(mService.TUNING_ACTIVITY_ID, mHandler);
+            mService.attachHandler(mService.mChatService.TUNING_ACTIVITY_ID, mHandler);
             mAttached = true;
         }
     }
@@ -263,7 +263,7 @@ public class TuningActivity extends AppCompatActivity {
                 mSTMBridge.pack_message_threshold(tvUserThresholdInput);
                 byte[] send = mSTMBridge.writeSTMBuf;
                 mDataRequest = mSTMBridge.MSG_THRESHOLD;
-                mService.write(mService.TUNING_ACTIVITY_ID, send);
+                mService.write(mService.mChatService.TUNING_ACTIVITY_ID, send);
             }
         });
 
@@ -275,7 +275,7 @@ public class TuningActivity extends AppCompatActivity {
 
                 mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_SAVE_CONFIG);
                 mDataRequest = mSTMBridge.MSG_SAVE;
-                mService.write(mService.TUNING_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
+                mService.write(mService.mChatService.TUNING_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
             }
         });
 
@@ -286,7 +286,7 @@ public class TuningActivity extends AppCompatActivity {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        mService.write(mService.TUNING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
+                        mService.write(mService.mChatService.TUNING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
                     }
                 });
             }};
@@ -302,7 +302,7 @@ public class TuningActivity extends AppCompatActivity {
     private void fetchData(byte msg){
         mDataRequest = msg;
         mSTMBridge.pack_message_sensors_fetch(msg);
-        mService.write(mService.TUNING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
+        mService.write(mService.mChatService.TUNING_ACTIVITY_ID,  mSTMBridge.writeSTMBuf);
     }
 
     private void showDataSensors(){
@@ -343,7 +343,7 @@ public class TuningActivity extends AppCompatActivity {
     }
 
     public void openSensorActivity() {
-        Intent intent = new Intent(this, DebbugingActivity.class);
+        Intent intent = new Intent(this, DebuggingActivity.class);
         startActivity(intent);
     }
 
