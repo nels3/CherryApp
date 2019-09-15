@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Connected to Wisienka", Toast.LENGTH_SHORT).show();
                     bConnect.setText("Disconnect");
                     setViewAsConnected();
+
+                    mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_HI);
+                    mService.write(mService.MAIN_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),Toast.LENGTH_SHORT).show();
@@ -179,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TuningActivity.class);
         startActivity(intent);
     }
+
+
 
 
     private void setupButtonsAction(){

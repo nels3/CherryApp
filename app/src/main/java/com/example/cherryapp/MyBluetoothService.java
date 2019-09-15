@@ -53,7 +53,7 @@ public class MyBluetoothService extends Service {
     }
 
     public void stopChatService(){
-        mChatService.start();
+        mChatService.stop();
     }
 
     public void connect(BluetoothDevice device){

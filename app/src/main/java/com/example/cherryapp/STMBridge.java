@@ -21,6 +21,12 @@ public class STMBridge {
     public static final byte MESSAGE_SEND_FIGHT = 4;
     public static final byte MESSAGE_COMMAND_ROBOT = 5;
 
+    public static final byte  MSG_START = 1;
+    public static final byte  MSG_STOP = 2;
+    public static final byte  MSG_SAVE_CONFIG = 3;
+    public static final byte  MSG_RESTART = 4;
+    public static final byte  MSG_HI = 5;
+
     public static byte mCode;
     public static byte mLength;
     public static int mRecCode;

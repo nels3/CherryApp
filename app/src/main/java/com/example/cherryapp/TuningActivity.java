@@ -267,13 +267,13 @@ public class TuningActivity extends AppCompatActivity {
             }
         });
 
-        bSend.setEnabled(false);
-        bSend.setOnClickListener(new View.OnClickListener(){
+        bSave.setEnabled(false);
+        bSave.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 attachService();
 
-                mSTMBridge.pack_message_command_robot((byte)3);
+                mSTMBridge.pack_message_command_robot(mSTMBridge.MSG_SAVE_CONFIG);
                 mDataRequest = mSTMBridge.MSG_SAVE;
                 mService.write(mService.TUNING_ACTIVITY_ID, mSTMBridge.writeSTMBuf);
             }
@@ -327,7 +327,7 @@ public class TuningActivity extends AppCompatActivity {
                 break;
             case MSG_SAVE:
                 int status = mSTMBridge.getBridgeValue(0);
-                if (status == 1){
+                if (status == 3){
                     Toast.makeText(getApplicationContext(), "Config saved successfully!", Toast.LENGTH_SHORT).show();
                 }
                 else{

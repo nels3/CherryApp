@@ -29,14 +29,13 @@
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="150dp"
         android:background="@drawable/cherry_custom_button"
         android:checked="false"
         android:ellipsize="middle"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textOff="Fetch Data"
+        android:textOff="Fetching data"
         android:textOn="Stop fetching"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/bStart"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ToggleButton
@@ -91,8 +90,7 @@
         android:textColor="@color/tx_color"
         android:textColorLink="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/cbTranslation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bSendData" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <CheckBox
         android:id="@+id/cbLeds"
@@ -424,6 +422,54 @@
         </LinearLayout>
     </LinearLayout>
 
-    
+    <LinearLayout
+        android:id="@+id/llRestart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="75dp"
+        android:background="@color/grey_5"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/tvStoped"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="100dp"
+            android:text="Robot stopped! "
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:fontFamily="sans-serif-light" />
+
+        <Button
+            android:id="@+id/bRestart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/cherry_custom_button"
+            android:text="Restart" />
+
+        <Button
+            android:id="@+id/bBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cherry_custom_button"
+            android:text="Back to start" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
