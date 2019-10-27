@@ -171,31 +171,6 @@ public class TuningActivity extends AppCompatActivity {
         llMotors.setVisibility(View.INVISIBLE);
         bSensors.setEnabled(false);
         bMotors.setEnabled(true);
-        bStart.setEnabled(true);
-
-        bSensors.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                attachService();
-                llSensors.setVisibility(View.VISIBLE);
-                llMotors.setVisibility(View.INVISIBLE);
-                bSensors.setEnabled(false);
-                bMotors.setEnabled(true);
-                bStart.setEnabled(true);
-            }
-        });
-
-        bMotors.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                attachService();
-                llSensors.setVisibility(View.INVISIBLE);
-                llMotors.setVisibility(View.VISIBLE);
-                bMotors.setEnabled(false);
-                bSensors.setEnabled(true);
-                bStart.setEnabled(true);
-            }
-        });
 
         bDebbuging.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -264,6 +239,7 @@ public class TuningActivity extends AppCompatActivity {
                 byte[] send = mSTMBridge.writeSTMBuf;
                 mDataRequest = mSTMBridge.MSG_THRESHOLD;
                 mService.write(mService.mChatService.TUNING_ACTIVITY_ID, send);
+                bSave.setEnabled(true);
             }
         });
 

@@ -60,6 +60,7 @@ public class TacticActivity extends AppCompatActivity {
 
         final RadioButton rbDirLeft = findViewById(R.id.rbLeft);
         final RadioButton rbDirRight = findViewById(R.id.rbRight);
+        final RadioButton rbIncrement = findViewById(R.id.rbIncrement);
         final RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
         final RadioButton rbTypeTurn = findViewById(R.id.rbTurn);
         final RadioButton rbTypeStop = findViewById(R.id.rbStop);
@@ -76,6 +77,7 @@ public class TacticActivity extends AppCompatActivity {
         final RadioButton rbTimeLongSlow = findViewById(R.id.rbTimeLongSlow);
         final RadioButton rbTimeShortFast = findViewById(R.id.rbTimeShortFast);
 
+        final RadioGroup rgType = findViewById(R.id.rgType);
         final RadioGroup rgDrive = findViewById(R.id.rgDrive);
         final RadioGroup rgTime = findViewById(R.id.rgTime);
         final RadioGroup rgTurn = findViewById(R.id.rgTurn);
@@ -154,11 +156,51 @@ public class TacticActivity extends AppCompatActivity {
             }
         });
 
+        rbIncrement.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if ( isChecked ){
+                    rgDrive.setVisibility(View.INVISIBLE);
+                    rgTime.setVisibility(View.INVISIBLE);
+                    rgTurn.setVisibility(View.INVISIBLE);
+                    rgType.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        rbDirLeft.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if ( isChecked ){
+                    rgDrive.setVisibility(View.VISIBLE);
+                    rgTime.setVisibility(View.VISIBLE);
+                    rgTurn.setVisibility(View.VISIBLE);
+                    rgType.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        rbDirRight.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if ( isChecked ){
+                    rgDrive.setVisibility(View.VISIBLE);
+                    rgTime.setVisibility(View.VISIBLE);
+                    rgTurn.setVisibility(View.VISIBLE);
+                    rgType.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
         public void setTactic(){
             final RadioButton rbDirLeft = findViewById(R.id.rbLeft);
             final RadioButton rbDirRight = findViewById(R.id.rbRight);
+            final RadioButton rbIncrement = findViewById(R.id.rbIncrement);
             final RadioButton rbTypeAngle = findViewById(R.id.rbAngle);
             final RadioButton rbTypeTurn = findViewById(R.id.rbTurn);
             final RadioButton rbTypeStop = findViewById(R.id.rbStop);
@@ -183,8 +225,11 @@ public class TacticActivity extends AppCompatActivity {
             if (rbDirLeft.isChecked()) {
                 mTacticBytes[0] = 1;
             }
-            else {
+            else if (rbDirRight.isChecked()){
                 mTacticBytes[0] = 2;
+            }
+            else if (rbIncrement.isChecked()){
+                mTacticBytes[0] = 3;
             }
 
             if (rbTypeAngle.isChecked()){
