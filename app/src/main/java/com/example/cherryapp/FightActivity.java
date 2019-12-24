@@ -327,7 +327,7 @@ public class FightActivity extends AppCompatActivity {
                 break;
             case MSG_SEND:
                 status = mSTMBridge.getBridgeValue(0);
-                if (status == 1){
+                if (status == 0){
                     Toast.makeText(getApplicationContext(), "Success - message sent to robot", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -336,7 +336,7 @@ public class FightActivity extends AppCompatActivity {
                 break;
             case MSG_STOP:
                 status = mSTMBridge.getBridgeValue(0);
-                if (status == 2){
+                if (status == 0){
                     Toast.makeText(getApplicationContext(), "Robot has stopped!", Toast.LENGTH_SHORT).show();
                     enableRestartingRobotView();
                 }
@@ -347,7 +347,7 @@ public class FightActivity extends AppCompatActivity {
 
             case MSG_START:
                 status = mSTMBridge.getBridgeValue(0);
-                if (status == 1){
+                if (status == 0){
                     Toast.makeText(getApplicationContext(), "Robot has started!", Toast.LENGTH_SHORT).show();
                     mDataRequest = MSG_FETCH;
                     mSTMBridge.pack_message_fight_fetch();
@@ -360,7 +360,7 @@ public class FightActivity extends AppCompatActivity {
                 break;
             case MSG_RESTART:
                 status = mSTMBridge.getBridgeValue(0);
-                if (status != 4){
+                if (status != 0){
                     Toast.makeText(getApplicationContext(), "Error - cannot restart robot "+status, Toast.LENGTH_SHORT).show();
                 }
                 break;

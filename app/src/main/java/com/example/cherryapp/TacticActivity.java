@@ -314,7 +314,7 @@ public class TacticActivity extends AppCompatActivity {
 
     private void unpack_app_bridge_message(){
         int tactic_status = mSTMBridge.getBridgeValue(0);
-        if (tactic_status==1){
+        if (tactic_status==0){
             Toast.makeText(getApplicationContext(), "Success. Tactic set.", Toast.LENGTH_SHORT).show();
             openFightActivity();
         }

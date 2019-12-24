@@ -303,7 +303,7 @@ public class TuningActivity extends AppCompatActivity {
                 break;
             case MSG_SAVE:
                 int status = mSTMBridge.getBridgeValue(0);
-                if (status == 3){
+                if (status == 0){
                     Toast.makeText(getApplicationContext(), "Config saved successfully!", Toast.LENGTH_SHORT).show();
                 }
                 else{
