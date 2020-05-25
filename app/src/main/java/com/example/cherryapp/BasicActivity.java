@@ -54,7 +54,7 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
+    protected ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -68,6 +68,7 @@ public class BasicActivity extends AppCompatActivity {
             bluetooth_bonded = false;
         }
     };
+
 
     private void unpack_app_bridge_message(){
     }
@@ -92,4 +93,13 @@ public class BasicActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openFightActivity() {
+        Intent intent = new Intent(this, FightActivity.class);
+        startActivity(intent);
+    }
+
+    public void openSensorActivity() {
+        Intent intent = new Intent(this, DebuggingActivity.class);
+        startActivity(intent);
+    }
 }

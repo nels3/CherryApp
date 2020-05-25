@@ -1,15 +1,8 @@
 package com.example.cherryapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,27 +16,14 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TacticActivity extends AppCompatActivity {
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_TOAST = 5;
-    public static final String TOAST = "toast";
+public class TacticActivity extends BasicActivity {
 
-    protected MyBluetoothService mService;
-    protected boolean mBound = false;
-    private boolean mAttached = false;
-
-    private STMBridge mSTMBridge;
+    private boolean service_attached = false;
     private byte mTacticBytes[] = new byte[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent intent = new Intent(this, MyBluetoothService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-        mSTMBridge = new STMBridge();
 
         setContentView(R.layout.activity_tactic);
         setupBottomNavigationView();
@@ -305,10 +285,10 @@ public class TacticActivity extends AppCompatActivity {
             tvTurn.setVisibility(View.INVISIBLE);
         }
 
-    private void attachService(){
-        if (!mAttached){
-            mService.attachHandler(mService.mChatService.TACTIC_ACTIVITY_ID, mHandler);
-            mAttached = true;
+    protected void attachService(){
+        if (!service_attached){
+            mService.attachHandler(mService.mChatService.FIGHT_ACTIVITY_ID, mHandler);
+            service_attached = true;
         }
     }
 
@@ -323,24 +303,6 @@ public class TacticActivity extends AppCompatActivity {
         }
 
     }
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-
-            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
 
     // The Handler that gets information back from the BluetoothChatService
     private final Handler mHandler = new Handler() {
@@ -370,16 +332,6 @@ public class TacticActivity extends AppCompatActivity {
     };
 
 
-
-    public void openFightActivity() {
-        Intent intent = new Intent(this, FightActivity.class);
-        startActivity(intent);
-    }
-
-    public void openSensorActivity() {
-        Intent intent = new Intent(this, DebuggingActivity.class);
-        startActivity(intent);
-    }
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);

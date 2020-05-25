@@ -1,14 +1,10 @@
 package com.example.cherryapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,27 +22,13 @@ import java.util.TimerTask;
 /**
  * Activity that handles dubugging the Wisienka device
  */
-public class DebuggingActivity extends AppCompatActivity {
-    // time period for timer requests
-    public static int TIMER_PERIOD = 300;
-
-    // handler of messages from bluetooth chat
-    public static final int MESSAGE_READ = 1;
-    public static final int MESSAGE_TOAST = 2;
-
-    public static final String TOAST = "toast";
-
-    // object that stores STMBridge connector
-    private STMBridge mSTMBridge;
+public class DebuggingActivity extends BasicActivity {
 
     TimerTask mTimerTask;
     final Handler mTimerHandler = new Handler();
     Timer mTimer = new Timer();
 
-    // variable connected with bluetooth service
-    protected MyBluetoothService mService;
-    protected boolean mBound = false;
-    private boolean mAttached = false;
+    private boolean service_attached = false;
     private boolean mAnalog = false;
 
     // stores what we have requested from bluettoth service
@@ -220,9 +202,9 @@ public class DebuggingActivity extends AppCompatActivity {
     }
 
     private void attachService(){
-        if (!mAttached){
+        if (!service_attached){
             mService.attachHandler(mService.mChatService.DEBUGGING_ACTIVITY_ID, mHandler);
-            mAttached = true;
+            service_attached = true;
         }
     }
 
@@ -233,32 +215,6 @@ public class DebuggingActivity extends AppCompatActivity {
             tvImu[i].setText("-1");
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-
-            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
-    public void openTuningActivity() {
-        Intent intent = new Intent(this, TuningActivity.class);
-        startActivity(intent);
-    }
-
-    public void openFightActivity() {
-        Intent intent = new Intent(this, TacticActivity.class);
-        startActivity(intent);
-    }
 
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);

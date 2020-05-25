@@ -1,15 +1,9 @@
 package com.example.cherryapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +24,7 @@ import java.util.TimerTask;
  * Activity that handles communication with Wisienka device during fight
  */
 public class FightActivity extends BasicActivity {
-
-    protected boolean mBound = false;
-    private boolean mAttached = false;
+    private boolean service_attached = false;
 
     TimerTask mTimerTask;
     final Handler handler = new Handler();
@@ -179,15 +171,6 @@ public class FightActivity extends BasicActivity {
         }
     }
 
-    private void attachService(){
-        if (!mAttached){
-            mService.attachHandler(mService.mChatService.FIGHT_ACTIVITY_ID, mHandler);
-            mAttached = true;
-        }
-    }
-
-
-
 
     // The Handler that gets information back from the BluetoothChatService
     private final Handler mHandler = new Handler() {
@@ -250,6 +233,12 @@ public class FightActivity extends BasicActivity {
                 return true;
             }
         });
+    }
+    protected void attachService(){
+        if (!service_attached){
+            mService.attachHandler(mService.mChatService.FIGHT_ACTIVITY_ID, mHandler);
+            service_attached = true;
+        }
     }
 
     private void showDataFight(){

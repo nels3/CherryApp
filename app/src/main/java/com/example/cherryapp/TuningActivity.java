@@ -1,12 +1,6 @@
 package com.example.cherryapp;
-
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,18 +18,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-public class TuningActivity extends AppCompatActivity {
-    public static int TIMER_PERIOD = 300;
-    public static final int MESSAGE_READ = 1;
-    public static final int MESSAGE_TOAST = 2;
-    public static final String TOAST = "toast";
+public class TuningActivity extends BasicActivity{
 
-    protected MyBluetoothService mService;
-    protected boolean mBound = false;
-    private STMBridge mSTMBridge;
-    private boolean mAttached = false;
+    private boolean service_attached = false;
 
     private byte mDataRequest = 0;
     public final byte MSG_THRESHOLD = 3;
@@ -59,37 +45,17 @@ public class TuningActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(this, MyBluetoothService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-        mSTMBridge = new STMBridge();
-
         setContentView(R.layout.activity_tuning);
         setupBottomNavigationView();
         findObjectsByID();
     }
 
     private void attachService(){
-        if (!mAttached){
+        if (!service_attached){
             mService.attachHandler(mService.mChatService.TUNING_ACTIVITY_ID, mHandler);
-            mAttached = true;
+            service_attached = true;
         }
     }
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
 
     // The Handler that gets information back from the BluetoothChatService
     private final Handler mHandler = new Handler() {
@@ -311,16 +277,6 @@ public class TuningActivity extends AppCompatActivity {
                 }
                 break;
         }
-    }
-
-    public void openFightActivity() {
-        Intent intent = new Intent(this, TacticActivity.class);
-        startActivity(intent);
-    }
-
-    public void openSensorActivity() {
-        Intent intent = new Intent(this, DebuggingActivity.class);
-        startActivity(intent);
     }
 
     private void setupBottomNavigationView() {
