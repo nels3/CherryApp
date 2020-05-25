@@ -29,28 +29,16 @@ import java.util.TimerTask;
 /**
  * Activity that handles communication with Wisienka device during fight
  */
-public class FightActivity extends AppCompatActivity {
-    // time period for timer requests
-    public static int TIMER_PERIOD = 300;
+public class FightActivity extends BasicActivity {
 
-    // handler of messages from bluetooth chat
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_TOAST = 5;
-    public static final String TOAST = "toast";
-
-    protected MyBluetoothService mService;
     protected boolean mBound = false;
     private boolean mAttached = false;
-
-    // object that stores STMBridge connector
-    private STMBridge mSTMBridge;
 
     TimerTask mTimerTask;
     final Handler handler = new Handler();
     Timer t = new Timer();
 
-    // stores what we have requested from bluettoth service
+    // stores what we have requested from bluetooth service
     private byte mDataRequest = 0;
     public static final byte MSG_FETCH = 1;
     public static final byte MSG_SEND = 2;
@@ -65,11 +53,6 @@ public class FightActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent intent = new Intent(this, MyBluetoothService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-        mSTMBridge = new STMBridge();
 
         setContentView(R.layout.activity_fight);
         setupBottomNavigationView();
@@ -203,21 +186,7 @@ public class FightActivity extends AppCompatActivity {
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
 
 
     // The Handler that gets information back from the BluetoothChatService

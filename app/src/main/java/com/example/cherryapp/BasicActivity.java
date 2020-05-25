@@ -26,10 +26,48 @@ public class BasicActivity extends AppCompatActivity {
     public static int TIMER_PERIOD = 300;
 
     // handler of messages from bluetooth chat
-    public static final int MESSAGE_READ = 1;
-    public static final int MESSAGE_TOAST = 2;
+    public static final int MESSAGE_TOAST = 1;
+    public static final int MESSAGE_READ = 2;
+    public static final int MESSAGE_WRITE = 3;
     public static final String TOAST = "toast";
 
+    // object that stores STMBridge connector
+    public STMBridge mSTMBridge = null;
+
+    // Local Bluetooth adapter
+    protected MyBluetoothService mService;
+    public BluetoothAdapter mBluetoothAdapter = null;
+    protected boolean bluetooth_bonded = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSTMBridge = new STMBridge();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        Intent intent = new Intent(this, MyBluetoothService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MyBluetoothService.LocalBinder binder = (MyBluetoothService.LocalBinder) service;
+            mService = binder.getService();
+            bluetooth_bonded = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            bluetooth_bonded = false;
+        }
+    };
 
     private void unpack_app_bridge_message(){
     }

@@ -34,28 +34,15 @@ public class MainActivity extends BasicActivity {
     public static final int MESSAGE_DEVICE_LOST = 3;
     public static final String TOAST = "toast";
 
-    // Local Bluetooth adapter
-    private BluetoothAdapter mBluetoothAdapter = null;
-
     public static  String WISIENKA_DeviceName = "Wisienka";
     public static  String WISIENKA_DeviceAddress = null;
 
-    public STMBridge mSTMBridge = null;
     protected MyBluetoothService mService;
-    protected boolean bluetooth_bonded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mSTMBridge = new STMBridge();
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            finish();
-        }
     }
 
     public void scanBluetoothDevices(){
