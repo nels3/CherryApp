@@ -21,6 +21,7 @@
         <activity android:name=".DebuggingActivity" />
         <activity android:name=".TuningActivity" />
         <activity android:name=".TacticActivity" />
+        <activity android:name=".BasicActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
