@@ -31,7 +31,7 @@ public class DebuggingActivity extends BasicActivity {
     private boolean service_attached = false;
     private boolean mAnalog = false;
 
-    // stores what we have requested from bluettoth service
+    // stores what we have requested from bluetooth service
     private int mDataRequest = 0;
     public static final byte MSG_DIGITAL = 1;
     public static final byte MSG_ANALOG = 2;
